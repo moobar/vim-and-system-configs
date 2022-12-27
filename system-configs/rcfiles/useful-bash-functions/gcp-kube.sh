@@ -1,0 +1,398 @@
+#!/bin/bash
+
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/common.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/common.sh"
+fi
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
+fi
+
+## [gcloud-set-stage]  ->  Alias
+# Set project config to staging (tidal-nova-135821)
+function gcloud-set-stage() {
+  gcloud config set project tidal-nova-135821
+}
+
+## [gcloud-set-prod]  ->  Alias
+# Set project config to prod
+function gcloud-set-prod() {
+  gcloud config set project current-production
+}
+
+## [gcloud-auth]  ->  Shorthand
+#  Use gcloud principal to authenticate to the cli and with local app developement (application-default)
+function gcloud-auth() {
+  gcloud auth application-default login
+  gcloud auth login
+}
+
+## [docker-auth]  ->  Shorthand
+#  use gloud princpal to authenticate to https://us.gcr.io via the gcloud cli + docker cli
+function docker-auth() {
+  gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us.gcr.io
+}
+
+## [gcloud-config]  ->  Alias
+#  List current gcloud config
+function gcloud-config() {
+  gcloud config list
+}
+
+## [gcloud-projects] | Cache enabled | ->  Alias
+#  List all the projects for the GCP instance you're authenticated to
+function gcloud-projects() {
+  cache_command \
+    -d "$(gcloud config get project)" \
+    -f "${FUNCNAME[0]}" \
+    -x 'gcloud projects list '
+}
+
+## [gcloud-container-clusters] | Cache enabled | ->  Alias
+#  List all the GKE clusters in the current working project
+function gcloud-container-clusters() {
+  cache_command \
+    -d "$(gcloud config get project)" \
+    -f "${FUNCNAME[0]}" \
+    -x 'gcloud container clusters list'
+}
+
+## [gcloud-compute-instances] | Cache enabled | ->  Alias
+#  List all the compute in the current working project
+function gcloud-compute-instances() {
+  cache_command \
+    -d "$(gcloud config get project)" \
+    -f "${FUNCNAME[0]}" \
+    -x 'gcloud compute instances list --sort-by=name'
+}
+
+## [ssh-gcloud <gcloud compute ssh ARGS>]  ->  Alias
+#  Runs [gcloud compute ssh] and makes sure it always adds the
+#    [--tunnel-trhgouh-iap] flag
+function ssh-gcloud() {
+  local FIRST_THREE=("${@:1:3}")
+  if [[ "${FIRST_THREE[*]}" == "gcloud compute ssh" ]]; then
+    set -- "${@:4}"
+  fi
+
+  local arg
+  for arg do
+    shift
+    case $arg in
+      (--tunnel-through-iap) : ;;
+        (*) set -- "$@" "$arg" ;;
+    esac
+  done
+
+  gcloud compute ssh --tunnel-through-iap "$@"
+}
+
+## [fgcloud-projects]  ->  Shorthand
+#  Calls [gcloud-projects] and pipes it to fzf
+function fgcloud-projects() {
+  gcloud-projects | fzf --tac --header-lines=1
+}
+
+## [fgcloud-container-clusters]  ->  Shorthand
+#  Calls [gcloud-container-clusters] and pipes it to fzf, with the project name
+function fgcloud-container-clusters() {
+  gcloud-container-clusters | fzf --tac --header-lines=1 --header="  [project: $(gcloud config get project)]"
+}
+
+## [fgcloud-compute-instances]  ->  Shorthand
+#  Calls [gcloud-compute-instances] and pipes it to fzf, with the project name
+function fgcloud-compute-instances() {
+  gcloud-compute-instances | fzf --tac --header-lines=1 --header="  [project: $(gcloud config get project)]"
+}
+
+## [fgcloud-set-project]
+#  Sets the project via a fzf window with all the projects.
+#
+#  RETURNS  ->
+#    Calls [gcloud config set project] on project selected from the fzf windows
+function fgcloud-set-project() {
+  local PROJECT=
+  PROJECT=$(fgcloud-projects | awk '{print $1}')
+  if [[ -z $PROJECT ]]; then
+    return 0
+  fi
+
+  local CMD=
+  # shellcheck disable=SC2116
+  CMD=$(echo gcloud config set project "${PROJECT}")
+
+  if [[ -n $CMD ]]; then
+    echo Running: "${CMD}"
+    ${CMD}
+  fi
+}
+
+## [fgcloud-get-cluster-creds]
+#  Gets credentials for a GKE cluster after picking from a fzf window with all the GKE clusters
+#  This command is project specific
+#
+#  RETURNS  ->
+#    Calls [gcloud container clusters get-credentials] on the selected GKE cluster
+function fgcloud-get-cluster-creds() {
+  local CLUSTER=
+  local CLUSTER_NAME=
+  local CLUSTER_ZONE=
+  CLUSTER=$(fgcloud-container-clusters)
+  if [[ -z $CLUSTER ]]; then
+    return 0
+  fi
+
+  CLUSTER_NAME=$(awk '{print $1}' <<< "${CLUSTER}")
+  CLUSTER_ZONE=$(awk '{print $2}' <<< "${CLUSTER}")
+
+  local CMD
+  # shellcheck disable=SC2116
+  CMD=$(echo gcloud container clusters get-credentials "${CLUSTER_NAME}" --zone="${CLUSTER_ZONE}")
+
+  if [[ -n $CMD ]]; then
+    echo Running: "${CMD}"
+    ${CMD}
+  fi
+}
+
+## [fgcloud-ssh <gcloud compute ssh ARGS>]
+#  Pulls up all the compute on the current working project and ssh's to the selected one
+#
+#  ARGS      = Any args that are available from the [gcloud compute ssh] command
+#  RETURNS  ->
+#    ssh connection to the selected GCP compute
+function fgcloud-ssh() {
+  local INSTANCE=
+  local INSTANCE_NAME=
+  local INSTANCE_ZONE=
+  INSTANCE=$(fgcloud-compute-instances)
+  if [[ -z $INSTANCE ]]; then
+    return 0
+  fi
+
+  INSTANCE_NAME=$(awk '{print $1}' <<< "${INSTANCE}")
+  INSTANCE_ZONE=$(awk '{print $2}' <<< "${INSTANCE}")
+
+  local CMD
+  # shellcheck disable=SC2116
+  CMD=$(echo gcloud compute ssh --tunnel-through-iap --zone "${INSTANCE_ZONE}" --project "$(gcloud config get project)" "${INSTANCE_NAME}")
+
+  echo Running: "${CMD}" "$@"
+  ${CMD} "$@"
+}
+
+## [fssh-gcloud <gcloud compute ssh ARGS>]   ->  Alias
+#  Alias for fgcloud-ssh
+#
+#  ARGS      = Any args that are available from the [gcloud compute ssh] command
+#  RETURNS  ->
+#    ssh connection to the selected GCP compute
+function fssh-gcloud() {
+  fgcloud-ssh "$@"
+}
+
+## [kubectl-event-logs]  ->  Alias
+#  Print out all GKE event logs for current working GKE cluster
+function kubectl-event-logs() {
+  kubectl get events --sort-by='.lastTimestamp' -w
+}
+
+## [kubectl-get-cluster-deployment] | Cache enabled
+#  Print out all of the GKE deployments (workloads) for a given cluster.
+#  This function will get the cluster credentials, if it's not authenticated
+#  By default the output is cached for 10 hours.
+#
+#  Args:
+#    -c|--cluster [CLUSTER_NAME]  Cluster to get deployment information from
+#  Options:
+#    -t|--ttl      [SECONDS]       Max seconds to cache (default 36000)
+#    -p|--project  [PROJECT_NAME]  GCP Project, (defaults to $(cloud config get project))
+#
+#  Example:
+#    kubectl-get-cluster-deployment \
+#      -c cluster_name \
+#      -p my_project
+function kubectl-get-cluster-deployment() {
+  local CLUSTER_INFO=
+  local TTL=36000
+  local PROJECT=
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -c|--cluster)
+        CLUSTER_INFO="$2"
+        shift
+        shift
+        ;;
+      -t|--ttl)
+        TTL="$2"
+        shift
+        shift
+        ;;
+      -p|--project)
+        PROJECT="$2"
+        shift
+        shift
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done
+
+  if [[ -z $CLUSTER_INFO ]]; then
+    return 1
+  fi
+
+  if [[ -z $PROJECT ]]; then
+    PROJECT=$(gcloud config get project)
+  fi
+
+  local GCLOUD_CLUSTER=
+  local CLUSTER_ZONE=
+  local GKE_CLUSTER=
+
+  GCLOUD_CLUSTER=$(awk '{print $1}' <<< "${CLUSTER_INFO}")
+  CLUSTER_ZONE=$(awk '{print $2}' <<< "${CLUSTER_INFO}");
+  GKE_CLUSTER=$(awk -v project="${PROJECT}" '{printf "gke_%s_%s_%s\n", project, $2, $1}' <<< "${CLUSTER_INFO}")
+
+  if ! kubectl config get-clusters | grep -q "${GKE_CLUSTER}" >/dev/null 2>&1 ; then
+    gcloud container clusters get-credentials "${GCLOUD_CLUSTER}" --zone="${CLUSTER_ZONE}" >/dev/null 2>&1
+  fi
+
+  CMD=$(cat<<EOM
+kubectl get deployments --cluster="${GKE_CLUSTER}" --all-namespaces
+EOM
+  )
+
+  cache_command \
+    --ttl "${TTL}"\
+    -d "${PROJECT}" \
+    -f "${FUNCNAME[0]}-${GCLOUD_CLUSTER}" \
+    -x "${CMD}"
+}
+
+#  TODO(sagar): for some reason the I can't see the datadog deployments when i do -n datadog for challenger in staging
+
+## [kubectl-get-deployments]
+#  Finds all GKE clusters in the current working project and prints the deployments for each cluster
+#    Google calls deployments [Workloads]
+#
+#  RETURNS  ->
+#    Table of every deployment, sorted by cluster
+#
+#  Options:
+#    -g|--gke-system  Include all the builtin gke deployments
+function kubectl-get-deployments() {
+  local GKE_SYSTEM_INCLUDED=
+  local DEPLOYMENTS=
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -g|--gke-system)
+        GKE_SYSTEM_INCLUDED="True"
+        shift
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done
+
+  (
+    echo 'DEPLOYMENT NAMESPACE NAME AGE'
+    DEPLOYMENTS=$(
+      local PROJECT=
+      PROJECT=$(gcloud config get project)
+      while read -r cluster_info; do
+        GCLOUD_CLUSTER=$(awk '{print $1}' <<< "${cluster_info}")
+        kubectl-get-cluster-deployment --cluster "${cluster_info}" --project "${PROJECT}" |
+          awk -v cluster="${GCLOUD_CLUSTER}" '{ printf "%-30s%-30s%-40s%-10s\n", (NR==1? "DEPLOYMENT" : cluster), $1, $2, $6 }' |
+          grep -v '^DEPLOYMENT' |
+          grep -v "kube-system"
+      done < <(gcloud-container-clusters | tail -n +2)
+    )
+
+    (
+      if [[ $GKE_SYSTEM_INCLUDED == "True" ]]; then
+        echo "${DEPLOYMENTS}"
+      else
+        echo "${DEPLOYMENTS}" | grep -Fv -- "-gkecomposer-" | grep -Fv -- -gkedefault
+      fi
+    ) | sort
+  ) | column -t
+}
+
+## [fkubectl-get-cluster-deployment]  ->  Shorthand
+#  Pulls up a fzf window with all of the GKE clusters in the current working project
+#    The selected cluster will be authed to
+function fkubectl-get-cluster-deployment() {
+  kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters)"
+}
+
+
+# Taken from Junegunn's config.
+# TODO - I should take some of these params as inspo. For example, the
+
+## [fpods]  ->  Shorthand
+#  Pulls up a fzf window with all pods in the current working cluster.
+#
+#  Preview pane:
+#    Displays logs
+#  Keybindings:
+#    <CTRL-R> - Reload logs
+#    <CTRL-O> - Open logs in vim
+#    <ENTER>  - ssh to the pod
+# shellcheck disable=SC2016
+function fpods() {
+  FZF_DEFAULT_COMMAND="kubectl get pods --all-namespaces" \
+    fzf --info=inline --layout=reverse --header-lines=1 \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
+    --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+    --bind 'enter:execute:kubectl exec -it --namespace {1} {2} -- bash > /dev/tty' \
+    --bind 'ctrl-o:execute:${EDITOR:-vim} <(kubectl logs --all-containers --namespace {1} {2}) > /dev/tty' \
+    --bind 'ctrl-r:reload:$FZF_DEFAULT_COMMAND' \
+    --preview-window up:follow \
+    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
+}
+
+## TODO: I'm not going to include this for now. Using the contexts to iterate through pods is problematic
+#        because it will include both prod and staging simultaneously. I think for now, picking a cluster and
+#        then getting the pods with fpods is better
+
+## [fpods-all]  ->  Shorthand
+#  Pulls up a fzf window with all pods in all available contexts
+#
+#  Preview pane:
+#    Displays logs
+#  Keybindings:
+#    <CTRL-R> - Reload logs
+#    <CTRL-O> - Open logs in vim
+#    <ENTER>  - ssh to the pod
+# shellcheck disable=SC2016
+# function fpods-all() {
+#   FZF_DEFAULT_COMMAND='
+#     (echo CONTEXT NAMESPACE NAME READY STATUS RESTARTS AGE
+#      for context in $(kubectl config get-contexts --no-headers -o name | sort); do
+#        kubectl get pods --all-namespaces --no-headers --context "$context" | sed "s/^/${context%-context} /" &
+#      done; wait) 2> /dev/null | column -t
+#   ' fzf --info=inline --layout=reverse --header-lines=1 \
+#     --prompt 'all-pods> ' \
+#     --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
+#     --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+#     --bind 'enter:execute:kubectl exec -it --context {1}-context --namespace {2} {3} -- bash > /dev/tty' \
+#     --bind 'ctrl-o:execute:${EDITOR:-vim} <(kubectl logs --all-containers --context {1}-context --namespace {2} {3}) > /dev/tty' \
+#     --bind 'ctrl-r:reload:eval "$FZF_DEFAULT_COMMAND"' \
+#     --preview-window up:follow \
+#     --preview 'kubectl logs --follow --tail=10000 --all-containers --context {1}-context --namespace {2} {3}' "$@"
+# }
+
+function ffg() {
+  eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
+}
+eval "${BASH_COMMON_SCRIPT_FOOTER}"
+

@@ -1,0 +1,34 @@
+#$include /etc/inputrc
+set show-mode-in-prompt on
+
+# Something about fzf fuzzy finder makes the mode matching note
+# work. Not going to worry about it right now
+$if mode=vi
+
+set keymap vi-command
+Control-a: beginning-of-line
+Control-b: backward-char
+Control-d: delete-char
+Control-e: end-of-line
+Control-f: forward-char
+Control-i: complete
+Control-k: kill-line
+Control-l: clear-screen
+Control-y: yank
+Control-p: previous-history
+Control-n: next-history
+
+set keymap vi-insert
+Control-a: beginning-of-line
+Control-b: backward-char
+Control-d: delete-char
+Control-e: end-of-line
+Control-f: forward-char
+Control-i: complete
+Control-k: kill-line
+Control-l: clear-screen
+Control-y: yank
+Control-p: previous-history
+Control-n: next-history
+
+#$endif
