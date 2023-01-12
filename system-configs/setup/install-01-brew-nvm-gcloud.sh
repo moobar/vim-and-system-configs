@@ -172,8 +172,8 @@ countdown 5
 
   ## Skip installing this packages on the minimal install
   if [[ -z $DO_MINIMAL_INSTALLATION ]]; then
-    brew install ca-certificates csvkit docker go gpatch gpatch guile lazygit \
-                 lua maven poppler protobuf
+    brew install csvkit docker go gpatch gpatch guile lazygit lua maven \
+                 poppler protobuf
 
   fi
 
