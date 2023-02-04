@@ -144,7 +144,7 @@ function moo() {
 # shellcheck disable=SC1003
 function print-tmux-colours() {
   for i in {0..255}; do
-    printf "%s" "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+    echo -en "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
   done
 }
 

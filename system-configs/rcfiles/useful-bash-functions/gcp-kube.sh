@@ -238,12 +238,14 @@ function kubectl-get-cluster-deployment() {
         shift
         ;;
       *)
+        echo "Usage: ${FUNCNAME} <-c CLUSTER> [-p PROJECT] [-t TTL]"
         return 1
         ;;
     esac
   done
 
   if [[ -z $CLUSTER_INFO ]]; then
+    echo "Usage: ${FUNCNAME} <-c CLUSTER> [-p PROJECT] [-t TTL]"
     return 1
   fi
 
@@ -264,7 +266,12 @@ function kubectl-get-cluster-deployment() {
   fi
 
   CMD=$(cat<<EOM
-kubectl get deployments --cluster="${GKE_CLUSTER}" --all-namespaces
+(
+  kubectl get cronjobs.batch --cluster="${GKE_CLUSTER}" --all-namespaces 2>/dev/null
+  kubectl get daemonsets.apps --cluster="${GKE_CLUSTER}" --all-namespaces 2>/dev/null
+  kubectl get deployments --cluster="${GKE_CLUSTER}" --all-namespaces 2>/dev/null
+  kubectl get statefulsets.apps --cluster="${GKE_CLUSTER}" --all-namespaces 2>/dev/null
+)
 EOM
   )
 
@@ -311,7 +318,7 @@ function kubectl-get-deployments() {
         GCLOUD_CLUSTER=$(awk '{print $1}' <<< "${cluster_info}")
         kubectl-get-cluster-deployment --cluster "${cluster_info}" --project "${PROJECT}" |
           awk -v cluster="${GCLOUD_CLUSTER}" '{ printf "%-30s%-30s%-40s%-10s\n", (NR==1? "DEPLOYMENT" : cluster), $1, $2, $6 }' |
-          grep -v '^DEPLOYMENT' |
+          grep -v 'NAMESPACE' |
           grep -v "kube-system"
       done < <(gcloud-container-clusters | tail -n +2)
     )

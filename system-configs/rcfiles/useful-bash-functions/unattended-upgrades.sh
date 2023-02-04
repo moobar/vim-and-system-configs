@@ -60,6 +60,9 @@ function upgrade_package_managers() {
   echo "Completed."
   echo ""
 
+  echo "## Updating pip ##"
+  python3 -m pip install --upgrade pip
+
   echo "## Updating outdated python3 pip packages.. ##"
   python3 -m pip list --outdated |
     tail -n +3 |

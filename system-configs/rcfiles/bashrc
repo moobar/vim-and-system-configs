@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 OS_NAME=$(uname -s)
 
 if [[ $OS_NAME == "Darwin" ]]; then
@@ -213,3 +215,4 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
+set +x

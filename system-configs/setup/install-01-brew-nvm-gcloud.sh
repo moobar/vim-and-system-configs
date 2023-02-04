@@ -166,9 +166,9 @@ countdown 5
   brew upgrade
   brew update
   brew install autoconf automake bc bat coreutils cowsay curl fd fx fzf gh git \
-               git-delta grpcurl htop jq mitmproxy neovim nmap pup pv python3 \
-               ripgrep shellcheck shtool socat sponge sqlite terraform tmux \
-               tree tree-sitter util-linux vim watch wget xz yq
+               git-delta grpcurl htop jq mitmproxy neovim nmap pstree pup pv \
+               python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
+               tmux tree tree-sitter util-linux vim watch wget xz yq
 
   ## Skip installing this packages on the minimal install
   if [[ -z $DO_MINIMAL_INSTALLATION ]]; then

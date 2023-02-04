@@ -34,7 +34,7 @@ function cdroot() {
 #  Output the name of the branch that was branched off of
 function gitparentbranch() {
   local PARENT=
-  PARENT=$(git show-branch | grep -F '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | grep -m1 -Eo '\[(.*?)\]' | tr -d '][')
+  PARENT=$(git show-branch | grep -F '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | grep -m1 -Eo '\[(.*?)\]' | tr -d '][' | head -n1)
   if [[ -z $PARENT ]]; then
     PARENT=origin
   fi

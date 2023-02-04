@@ -5,7 +5,7 @@ let g:neoformat_enabled_python = ['black', 'docformatter']
 
 augroup fmt
   autocmd!
-  autocmd BufWritePre * silent | Neoformat | redraw!
+  autocmd BufWritePre * silent | Neoformat | noh | redraw!
 augroup END
 
 let s:script_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')

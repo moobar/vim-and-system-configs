@@ -171,6 +171,36 @@ function to_lower() {
   tr '[:upper:]' '[:lower:]'
 }
 
+## [escape STRING]
+#  escape special characters in [STRING]
+#
+#  STRING   = Some arbitrary text
+#  RETURN  ->
+#     STRING with special characters escaped
+function escape() {
+  printf '%s\n' "${CONFIGROOT_DIR_SCRIPT}" "$@" | sed -e 's/[\/&]/\\&/g'
+}
+
+## [first STRING]
+#  print the first column from text
+#
+#  STRING   = Some arbitrary text
+#  RETURN  ->
+#     awk '{print $1}'
+function first() {
+  awk '{print $1}'
+}
+
+## [last STRING]
+#  print the first column from text
+#
+#  STRING   = Some arbitrary text
+#  RETURN  ->
+#     awk '{print $NF}'
+function last() {
+  awk '{print $NF}'
+}
+
 ## [count_leading_spaces STRING]
 #  Counts the number of whitespace characters at the beginning of [STRING]
 #

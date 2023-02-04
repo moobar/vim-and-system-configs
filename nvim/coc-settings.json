@@ -3,7 +3,7 @@
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.typeCheckingMode": "basic",
   "python.linting.mypyEnabled": true,
-  "python.linting.pytypeEnabled": true,
+  "python.linting.pytypeEnabled": false,
   "python.linting.pylintEnabled": false,
   "pyright.inlayHints.variableTypes": false,
   "python.linting.mypyArgs": [
