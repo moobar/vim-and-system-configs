@@ -7,6 +7,21 @@ function _check_network() {
   return $?
 }
 
+## [reinstall_java_jdtls_1_9]
+#  Sometimes coc-java will install its down lsp server, and it sucks
+#  this manually installs the eclipse jdtls
+function reinstall_java_jdtls_1_9() {
+  (
+    mkdir -p ~/.config/coc/extensions/coc-java-data
+    cd ~/.config/coc/extensions/coc-java-data || exit 1
+    rm -rf -- *
+    wget https://download.eclipse.org/jdtls/milestones/1.9.0/jdt-language-server-1.9.0-202203031534.tar.gz
+    mkdir -p server
+    cd server || exit 1
+    tar -xvzf ../jdt-language-server-1.9.0-202203031534.tar.gz
+  )
+}
+
 ## [upgrade_package_managers]
 #  Attempts to update npm global backages, brew, vim-plug and coc
 function upgrade_package_managers() {
@@ -84,6 +99,11 @@ function upgrade_package_managers() {
 
   echo "## Updating coc-nvim.. ##"
   nvim +CocUpdate
+  echo "Completed."
+  echo ""
+
+  echo "## Manually reinstalling jdtls (java lsp).. ##"
+  reinstall_java_jdtls_1_9
   echo "Completed."
   echo ""
 }

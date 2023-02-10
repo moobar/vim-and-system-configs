@@ -178,7 +178,7 @@ function to_lower() {
 #  RETURN  ->
 #     STRING with special characters escaped
 function escape() {
-  printf '%s\n' "${CONFIGROOT_DIR_SCRIPT}" "$@" | sed -e 's/[\/&]/\\&/g'
+  printf '%s\n' "$*" | sed -e 's/[\/&]/\\&/g'
 }
 
 ## [first STRING]

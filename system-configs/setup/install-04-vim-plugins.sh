@@ -78,10 +78,10 @@ countdown 5
 (
   mkdir -p ~/.config/coc/extensions/coc-java-data
   cd ~/.config/coc/extensions/coc-java-data || exit 1
+  rm -rf -- *
   wget https://download.eclipse.org/jdtls/milestones/1.9.0/jdt-language-server-1.9.0-202203031534.tar.gz
   mkdir -p server
   cd server || exit 1
-  rm -rf -- *
   tar -xvzf ../jdt-language-server-1.9.0-202203031534.tar.gz
 )
 
