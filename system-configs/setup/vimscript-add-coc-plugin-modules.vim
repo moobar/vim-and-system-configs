@@ -19,3 +19,4 @@ CocInstall coc-swagger
 CocInstall coc-vimlsp
 CocInstall coc-xml
 CocInstall coc-yaml
+CocInstall coc-tsserver

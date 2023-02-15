@@ -119,7 +119,7 @@ augroup end
 augroup markdown
   au!
   au BufRead,BufNewFile *.mkd,*.mmd setfiletype markdown
-  au BufRead,BufNewFile *.mkd,*.mmd set tw=80
+  au BufRead,BufNewFile *.mkd,*.mmd set tw=120
   autocmd FileType markdown normal zR
 augroup end
 
@@ -445,10 +445,10 @@ silent! set cryptmethod=blowfish2
 silent! set ttymouse=xterm2
 set mouse=a
 
-" 80 chars/line
+" 120 chars/line
 set textwidth=0
 if exists('&colorcolumn')
-  set colorcolumn=80
+  set colorcolumn=120
 endif
 
 " Some fancy statusline printing
