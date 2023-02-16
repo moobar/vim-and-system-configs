@@ -152,7 +152,7 @@ function fgcloud-projects() {
 function fgcloud-container-clusters() {
   local PROJECT
   PROJECT="$(parse-project "$@")"
-  gcloud-container-clusters "$@" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
+  gcloud-container-clusters --project "${PROJECT}" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
 }
 
 ## [fgcloud-compute-instances]  ->  Shorthand
@@ -160,7 +160,7 @@ function fgcloud-container-clusters() {
 function fgcloud-compute-instances() {
   local PROJECT
   PROJECT="$(parse-project "$@")"
-  gcloud-compute-instances "$@" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
+  gcloud-compute-instances --project "${PROJECT}" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
 }
 
 ## [fgcloud-set-project]
@@ -197,7 +197,7 @@ function fgcloud-get-cluster-creds() {
   local CLUSTER_ZONE=
   local PROJECT=
   PROJECT="$(parse-project "$@")"
-  CLUSTER=$(fgcloud-container-clusters "$@")
+  CLUSTER=$(fgcloud-container-clusters --project "${PROJECT}")
   if [[ -z $CLUSTER ]]; then
     return 0
   fi
@@ -227,7 +227,7 @@ function fgcloud-ssh() {
   local INSTANCE_ZONE=
   local PROJECT=
   PROJECT="$(parse-project "$@")"
-  INSTANCE=$(fgcloud-compute-instances "$@")
+  INSTANCE=$(fgcloud-compute-instances --project "${PROJECT}")
   if [[ -z $INSTANCE ]]; then
     return 0
   fi
@@ -391,7 +391,7 @@ function kubectl-get-deployments() {
           awk -v cluster="${GCLOUD_CLUSTER}" '{ printf "%-30s%-30s%-40s%-10s\n", (NR==1? "DEPLOYMENT" : cluster), $1, $2, $6 }' |
           grep -v 'NAMESPACE' |
           grep -v "kube-system"
-      done < <(gcloud-container-clusters "$@"| tail -n +2)
+      done < <(gcloud-container-clusters --project "${PROJECT}" | tail -n +2)
     )
 
     (
@@ -408,7 +408,9 @@ function kubectl-get-deployments() {
 #  Pulls up a fzf window with all of the GKE clusters in the current working project
 #    The selected cluster will be authed to
 function fkubectl-get-cluster-deployment() {
-  kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters "$@")"
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
+  kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters --project "${PROJECT}")"
 }
 
 
