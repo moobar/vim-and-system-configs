@@ -11,16 +11,63 @@ if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bas
   source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
 fi
 
+
+function parse-project() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --prod|--production)
+        if [[ -n "${GCP_PROD}" ]]; then
+          echo "${GCP_PROD}"
+          return 0
+        else
+          break
+        fi
+        ;;
+      --stage|--staging)
+        if [[ -n "${GCP_STAGE}" ]]; then
+          echo "${GCP_STAGE}"
+          return 0
+        else
+          break
+        fi
+        ;;
+      --dev|--development)
+        if [[ -n "${GCP_DEV}" ]]; then
+          echo "${GCP_DEV}"
+          return 0
+        else
+          break
+        fi
+        ;;
+      --project)
+        if [[ -n "${2}" ]]; then
+          echo "${2}"
+          return 0
+        else
+          break
+        fi
+        ;;
+      *)
+        shift # past argument
+        ;;
+    esac
+  done
+
+  # shellcheck disable=SC2005
+  echo "$(gcloud config get project)"
+  return 0
+}
+
 ## [gcloud-set-stage]  ->  Alias
-# Set project config to staging (tidal-nova-135821)
+# Set project config to staging
 function gcloud-set-stage() {
-  gcloud config set project tidal-nova-135821
+  gcloud config set project "${GCP_STAGE}"
 }
 
 ## [gcloud-set-prod]  ->  Alias
 # Set project config to prod
 function gcloud-set-prod() {
-  gcloud config set project current-production
+  gcloud config set project "${GCP_PROD}"
 }
 
 ## [gcloud-auth]  ->  Shorthand
@@ -46,7 +93,7 @@ function gcloud-config() {
 #  List all the projects for the GCP instance you're authenticated to
 function gcloud-projects() {
   cache_command \
-    -d "$(gcloud config get project)" \
+    -d "gcloud-global" \
     -f "${FUNCNAME[0]}" \
     -x 'gcloud projects list '
 }
@@ -54,19 +101,23 @@ function gcloud-projects() {
 ## [gcloud-container-clusters] | Cache enabled | ->  Alias
 #  List all the GKE clusters in the current working project
 function gcloud-container-clusters() {
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
   cache_command \
-    -d "$(gcloud config get project)" \
+    -d "${PROJECT}" \
     -f "${FUNCNAME[0]}" \
-    -x 'gcloud container clusters list'
+    -x "gcloud container clusters list --project=${PROJECT}"
 }
 
 ## [gcloud-compute-instances] | Cache enabled | ->  Alias
 #  List all the compute in the current working project
 function gcloud-compute-instances() {
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
   cache_command \
-    -d "$(gcloud config get project)" \
+    -d "${PROJECT}" \
     -f "${FUNCNAME[0]}" \
-    -x 'gcloud compute instances list --sort-by=name'
+    -x "gcloud compute instances list --sort-by=name --project=${PROJECT}"
 }
 
 ## [ssh-gcloud <gcloud compute ssh ARGS>]  ->  Alias
@@ -99,13 +150,17 @@ function fgcloud-projects() {
 ## [fgcloud-container-clusters]  ->  Shorthand
 #  Calls [gcloud-container-clusters] and pipes it to fzf, with the project name
 function fgcloud-container-clusters() {
-  gcloud-container-clusters | fzf --tac --header-lines=1 --header="  [project: $(gcloud config get project)]"
+  local PROJECT
+  PROJECT="$(parse-project "$@")"
+  gcloud-container-clusters "$@" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
 }
 
 ## [fgcloud-compute-instances]  ->  Shorthand
 #  Calls [gcloud-compute-instances] and pipes it to fzf, with the project name
 function fgcloud-compute-instances() {
-  gcloud-compute-instances | fzf --tac --header-lines=1 --header="  [project: $(gcloud config get project)]"
+  local PROJECT
+  PROJECT="$(parse-project "$@")"
+  gcloud-compute-instances "$@" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
 }
 
 ## [fgcloud-set-project]
@@ -140,7 +195,9 @@ function fgcloud-get-cluster-creds() {
   local CLUSTER=
   local CLUSTER_NAME=
   local CLUSTER_ZONE=
-  CLUSTER=$(fgcloud-container-clusters)
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
+  CLUSTER=$(fgcloud-container-clusters "$@")
   if [[ -z $CLUSTER ]]; then
     return 0
   fi
@@ -150,7 +207,7 @@ function fgcloud-get-cluster-creds() {
 
   local CMD
   # shellcheck disable=SC2116
-  CMD=$(echo gcloud container clusters get-credentials "${CLUSTER_NAME}" --zone="${CLUSTER_ZONE}")
+  CMD=$(echo gcloud container clusters get-credentials "${CLUSTER_NAME}" --zone="${CLUSTER_ZONE}" --project="${PROJECT}")
 
   if [[ -n $CMD ]]; then
     echo Running: "${CMD}"
@@ -168,7 +225,9 @@ function fgcloud-ssh() {
   local INSTANCE=
   local INSTANCE_NAME=
   local INSTANCE_ZONE=
-  INSTANCE=$(fgcloud-compute-instances)
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
+  INSTANCE=$(fgcloud-compute-instances "$@")
   if [[ -z $INSTANCE ]]; then
     return 0
   fi
@@ -178,7 +237,7 @@ function fgcloud-ssh() {
 
   local CMD
   # shellcheck disable=SC2116
-  CMD=$(echo gcloud compute ssh --tunnel-through-iap --zone "${INSTANCE_ZONE}" --project "$(gcloud config get project)" "${INSTANCE_NAME}")
+  CMD=$(echo gcloud compute ssh --tunnel-through-iap --zone "${INSTANCE_ZONE}" --project "${PROJECT}" "${INSTANCE_NAME}")
 
   echo Running: "${CMD}" "$@"
   ${CMD} "$@"
@@ -219,7 +278,9 @@ function kubectl-get-cluster-deployment() {
   local CLUSTER_INFO=
   local TTL=36000
   local PROJECT=
+  local UNUSED_ARGS=()
 
+  PROJECT="$(parse-project "$@")"
   while [[ $# -gt 0 ]]; do
     case $1 in
       -c|--cluster)
@@ -237,21 +298,23 @@ function kubectl-get-cluster-deployment() {
         shift
         shift
         ;;
-      *)
-        echo "Usage: ${FUNCNAME} <-c CLUSTER> [-p PROJECT] [-t TTL]"
+      -|--help)
+        echo "Usage: ${FUNCNAME[0]} <-c CLUSTER> [-p PROJECT] [-t TTL]"
         return 1
+        ;;
+      *)
+        UNUSED_ARGS+=("$1")
+        shift
         ;;
     esac
   done
+  set -- "${UNUSED_ARGS[@]}"
 
   if [[ -z $CLUSTER_INFO ]]; then
-    echo "Usage: ${FUNCNAME} <-c CLUSTER> [-p PROJECT] [-t TTL]"
+    echo "Usage: ${FUNCNAME[0]} <-c CLUSTER> [-p PROJECT] [-t TTL]"
     return 1
   fi
 
-  if [[ -z $PROJECT ]]; then
-    PROJECT=$(gcloud config get project)
-  fi
 
   local GCLOUD_CLUSTER=
   local CLUSTER_ZONE=
@@ -262,7 +325,7 @@ function kubectl-get-cluster-deployment() {
   GKE_CLUSTER=$(awk -v project="${PROJECT}" '{printf "gke_%s_%s_%s\n", project, $2, $1}' <<< "${CLUSTER_INFO}")
 
   if ! kubectl config get-clusters | grep -q "${GKE_CLUSTER}" >/dev/null 2>&1 ; then
-    gcloud container clusters get-credentials "${GCLOUD_CLUSTER}" --zone="${CLUSTER_ZONE}" >/dev/null 2>&1
+    gcloud container clusters get-credentials "${GCLOUD_CLUSTER}" --zone="${CLUSTER_ZONE}" --project="${PROJECT}" >/dev/null 2>&1
   fi
 
   CMD=$(cat<<EOM
@@ -296,31 +359,39 @@ EOM
 function kubectl-get-deployments() {
   local GKE_SYSTEM_INCLUDED=
   local DEPLOYMENTS=
+  local PROJECT=
+  local UNUSED_ARGS=()
 
+  PROJECT="$(parse-project "$@")"
   while [[ $# -gt 0 ]]; do
     case $1 in
       -g|--gke-system)
         GKE_SYSTEM_INCLUDED="True"
         shift
         ;;
-      *)
+      -h|--help)
+        echo "Usage: ${FUNCNAME[0]} <-g|gke-system>"
         return 1
+        ;;
+      *)
+        UNUSED_ARGS+=("$1")
+        shift
         ;;
     esac
   done
+  set -- "${UNUSED_ARGS[@]}"
 
   (
+    echo "PROJECT: ${PROJECT}"
     echo 'DEPLOYMENT NAMESPACE NAME AGE'
     DEPLOYMENTS=$(
-      local PROJECT=
-      PROJECT=$(gcloud config get project)
       while read -r cluster_info; do
         GCLOUD_CLUSTER=$(awk '{print $1}' <<< "${cluster_info}")
         kubectl-get-cluster-deployment --cluster "${cluster_info}" --project "${PROJECT}" |
           awk -v cluster="${GCLOUD_CLUSTER}" '{ printf "%-30s%-30s%-40s%-10s\n", (NR==1? "DEPLOYMENT" : cluster), $1, $2, $6 }' |
           grep -v 'NAMESPACE' |
           grep -v "kube-system"
-      done < <(gcloud-container-clusters | tail -n +2)
+      done < <(gcloud-container-clusters "$@"| tail -n +2)
     )
 
     (
@@ -337,7 +408,7 @@ function kubectl-get-deployments() {
 #  Pulls up a fzf window with all of the GKE clusters in the current working project
 #    The selected cluster will be authed to
 function fkubectl-get-cluster-deployment() {
-  kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters)"
+  kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters "$@")"
 }
 
 
