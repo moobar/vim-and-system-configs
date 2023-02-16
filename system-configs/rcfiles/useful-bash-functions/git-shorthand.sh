@@ -43,6 +43,7 @@ function gitparentbranch() {
 
 ## [gitbranchlog] <git log ARGS>  ->  Alias
 #  Show the git log, but only for the branch
+#  [-p] is a useful ARG for showing the commit diff
 function gitbranchlog() {
   local BRANCH_PARENT
   BRANCH_PARENT=$(gitparentbranch)
@@ -65,6 +66,7 @@ function gitbranchfiles() {
 
 ## [gitbranchlog-origin] <git log ARGS>  ->  Alias
 #  Show the git log, all the way to origin/main
+#  [-p] is a useful ARG for showing the commit diff
 function gitbranchlog-origin() {
   git log origin..HEAD "$@"
 }
@@ -78,6 +80,18 @@ function gitbranchdiff-origin() {
   # git diff -w "${ORIGIN_COMMIT}" HEAD "$@"
 
   git diff -w origin..HEAD "$@"
+}
+
+## [gitbranchlog-unpushed <git log @{upstream} ARGS>]  ->  Shorthand
+#  Show logs for committed changes that haven't been pushed
+#  [-p] is a useful ARG for showing the commit diff
+function gitbranchlog-unpushed() {
+  ## I think these two are the same thing
+  # git log --branches --not --remotes
+  # git log @{upstream}..
+  ## I slightly prefer the upstream because it's clearer
+
+  git log @{upstream}.. "$@"
 }
 
 ## [gitbranchfiles-origin <git diff -w ARGS>]  ->  Shorthand
