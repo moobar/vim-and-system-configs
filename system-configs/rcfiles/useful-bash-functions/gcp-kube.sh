@@ -215,6 +215,34 @@ function fgcloud-get-cluster-creds() {
   fi
 }
 
+## [fgcloud-get-deployment-cluster-creds]
+#  Gets credentials for a GKE cluster after picking from a fzf window with all the GKE deployments
+#  This command is project specific
+#
+#  RETURNS  ->
+#    Calls [gcloud container clusters get-credentials] on the selected GKE cluster associated with the deployment
+function fgcloud-get-deployment-cluster-creds() {
+  local CLUSTER_NAME=
+  local CLUSTER_ZONE=
+  local PROJECT=
+  PROJECT="$(parse-project "$@")"
+  CLUSTER_NAME=$(fkubectl-get-deployment --project "${PROJECT}" | awk '{print $1}')
+  if [[ -z $CLUSTER_NAME ]]; then
+    return 0
+  fi
+
+  CLUSTER_ZONE=$(gcloud-container-clusters --project "${PROJECT}" | grep "${CLUSTER_NAME}" | awk '{print $2}')
+
+  local CMD
+  # shellcheck disable=SC2116
+  CMD=$(echo gcloud container clusters get-credentials "${CLUSTER_NAME}" --zone="${CLUSTER_ZONE}" --project="${PROJECT}")
+
+  if [[ -n $CMD ]]; then
+    echo Running: "${CMD}"
+    ${CMD}
+  fi
+}
+
 ## [fgcloud-ssh <gcloud compute ssh ARGS>]
 #  Pulls up all the compute on the current working project and ssh's to the selected one
 #
@@ -402,6 +430,14 @@ function kubectl-get-deployments() {
       fi
     ) | sort
   ) | column -t
+}
+
+## [fkubectl-get-deployments]  ->  Shorthand
+#  Calls [kubectl-get-deployments] and pipes it to fzf
+function fkubectl-get-deployment() {
+  local PROJECT
+  PROJECT="$(parse-project "$@")"
+  kubectl-get-deployments --project "${PROJECT}" "$@" | fzf --tac --header-lines=1 --header="  [project: ${PROJECT}]"
 }
 
 ## [fkubectl-get-cluster-deployment]  ->  Shorthand
