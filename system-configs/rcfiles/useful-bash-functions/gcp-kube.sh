@@ -77,6 +77,42 @@ function gcloud-auth() {
   gcloud auth login
 }
 
+## [gcloud-unset-service-account]  ->  Shorthand
+#  Unset service account
+function gcloud-unset-service-account() {
+  gcloud config unset auth/impersonate_service_account
+}
+
+## [gcloud-get-service-account]  ->  Shorthand
+#  Gets service account, if set
+function gcloud-get-service-account() {
+  local SERVICE_ACCOUNT=
+  SERVICE_ACCOUNT="$(gcloud config get auth/impersonate_service_account  2> /dev/null)"
+  if [[ -z $SERVICE_ACCOUNT ]]; then
+    return 1
+  else
+    echo "${SERVICE_ACCOUNT}"
+    return 0
+  fi
+}
+
+## [gcloud-active-account]  ->  Shorthand
+#  Displays the active account that gcp is auth'd to
+function gcloud-active-account() {
+  gcloud auth list --format=json | jq -r '.[] | select(.status == "ACTIVE") | .account'
+}
+
+## [gcloud-whoami]  ->  Shorthand
+#  Displays the principal in use. Will first check if is a service account
+function gcloud-whoami() {
+  local SERVICE_ACCOUNT=
+  if ! SERVICE_ACCOUNT="$(gcloud-get-service-account)"; then
+    gcloud-active-account
+  else
+    echo "${SERVICE_ACCOUNT}"
+  fi
+}
+
 ## [docker-auth]  ->  Shorthand
 #  use gloud princpal to authenticate to https://us.gcr.io via the gcloud cli + docker cli
 function docker-auth() {
