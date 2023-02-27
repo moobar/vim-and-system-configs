@@ -1,0 +1,1 @@
+../setup/vimscript-add-coc-plugin-modules.vim
