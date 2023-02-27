@@ -50,6 +50,11 @@ endfunction
 call s:source('bundles')
 packadd! matchit
 
+" If node isn't installed, let's not load coc
+if !executable('node')
+  set runtimepath-=~/.vim/plugged/coc.nvim
+endif
+
 " }}}
 " ============================================================================
 " Settings to enable after bundles loaded / Plugin Configurations {{{1

@@ -371,8 +371,6 @@ if executable('node')
   "
   " TODO(sagar): Go through everything here and add a bunch of keys
   " https://github.com/neoclide/coc.nvim/blob/03c9add7cd867a013102dcb45fb4e75304d227d7/doc/coc.txt#L2311
-else
-  set runtimepath-=~/.vim/plugged/coc.nvim
 endif
 
 " }}}
