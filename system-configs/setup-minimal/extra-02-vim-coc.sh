@@ -40,7 +40,7 @@ echo "Updating coc plugins"
   fi
 
   SRC_DIR="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"
-  if node 2>/dev/null >/dev/null; then
+  if type node 2>/dev/null >/dev/null; then
     vim -S "${SRC_DIR}/vimscript-add-coc-plugin-modules.vim"
   fi
 )
