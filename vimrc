@@ -400,7 +400,7 @@ augroup END
 
 " ignore whitespace when diffing
 set diffopt+=iwhite
-if has(nvim-0.5.0)
+if has('nvim-0.5.0')
   set diffopt+=filler,closeoff,vertical
 else
   set diffopt+=filler,vertical
