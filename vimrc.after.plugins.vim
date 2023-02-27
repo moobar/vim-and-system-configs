@@ -332,44 +332,48 @@ nnoremap <silent> <leader>q :call Fzf_dev()<CR>
 
 " }}}
 " ============================================================================
-"  Source coc.vim and add some shortcuts {{{1
+"  Source coc.vim and add some shortcuts - only if node is installed {{{1
 " ============================================================================
 
-inoremap <expr> <C-j>               coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
-inoremap <expr> <C-k>               coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
-inoremap <expr> <Tab>           coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
-inoremap <expr> <S-Tab>         coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
+if executable('node')
+  inoremap <expr> <C-j>               coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
+  inoremap <expr> <C-k>               coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
+  inoremap <expr> <Tab>           coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+  inoremap <expr> <S-Tab>         coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
-if filereadable(s:root . '/vimrcfiles/coc.vim')
-  call s:source('vimrcfiles/coc.vim')
+  if filereadable(s:root . '/vimrcfiles/coc.vim')
+    call s:source('vimrcfiles/coc.vim')
+  endif
+
+
+  nmap <leader>hcn :h coc-nvim.txt<CR>
+  nmap <leader>hcc :h coc-config.txt<CR>
+  nmap <leader>f <Plug>(coc-format)
+
+  " Formatting cocconfig?
+  autocmd FileType json syntax match Comment +\/\/.\+$+
+
+  " Overriding the merlin thing for now, and mapping until i figure out how to
+  " deal with the filetype stuff better
+  nmap <leader>e :CocDiagnostics<CR>
+
+  "" Use K to show documentation in preview window
+  nnoremap <localleader>t :call ShowDocumentation()<CR>
+
+  nnoremap <localleader>r :call CocActionAsync('jumpReferences')<CR>
+  nnoremap <localleader>s :call CocActionAsync('jumpDefinition')<CR>
+  nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
+  nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
+  nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
+
+  " TODO(sagar): figure out how to use <Plug>
+  " https://vi.stackexchange.com/questions/31012/what-does-plug-do-in-vim
+  "
+  " TODO(sagar): Go through everything here and add a bunch of keys
+  " https://github.com/neoclide/coc.nvim/blob/03c9add7cd867a013102dcb45fb4e75304d227d7/doc/coc.txt#L2311
+else
+  set runtimepath-=~/.vim/plugged/coc.nvim
 endif
-
-
-nmap <leader>hcn :h coc-nvim.txt<CR>
-nmap <leader>hcc :h coc-config.txt<CR>
-nmap <leader>f <Plug>(coc-format)
-
-" Formatting cocconfig?
-autocmd FileType json syntax match Comment +\/\/.\+$+
-
-" Overriding the merlin thing for now, and mapping until i figure out how to
-" deal with the filetype stuff better
-nmap <leader>e :CocDiagnostics<CR>
-
-"" Use K to show documentation in preview window
-nnoremap <localleader>t :call ShowDocumentation()<CR>
-
-nnoremap <localleader>r :call CocActionAsync('jumpReferences')<CR>
-nnoremap <localleader>s :call CocActionAsync('jumpDefinition')<CR>
-nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
-nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
-nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
-
-" TODO(sagar): figure out how to use <Plug>
-" https://vi.stackexchange.com/questions/31012/what-does-plug-do-in-vim
-"
-" TODO(sagar): Go through everything here and add a bunch of keys
-" https://github.com/neoclide/coc.nvim/blob/03c9add7cd867a013102dcb45fb4e75304d227d7/doc/coc.txt#L2311
 
 " }}}
 " ============================================================================
