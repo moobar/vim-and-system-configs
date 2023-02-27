@@ -7,14 +7,19 @@ alias cdr='cd ~/repos'
 alias cdw='cd ~/workspaces'
 
 alias watch='watch --color'
-alias todo='nvim ~/forge/todo/tasks.md'
+
+if type nvim 2>/dev/null >/dev/null; then
+  alias todo='nvim ~/forge/todo/tasks.md'
+  alias vim='nvim'
+  alias vi='nvim'
+else 
+  alias todo='vim ~/forge/todo/tasks.md'
+fi 
 
 alias fcdf='cdf && cd'
 alias fcda='cda && cd'
 
 alias python='python3'
-alias vim='nvim'
-alias vi='nvim'
 
 # Remove all colour from the command line
 alias remove-colour="sed 's/\x1b\[[0-9;]*m//g'"

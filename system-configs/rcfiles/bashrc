@@ -158,8 +158,14 @@ unset CONFIGROOT_DIR_BASHRC
 export LESS=" -JiXmR"
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
-export VISUAL="nvim"
-export EDITOR="nvim"
+if type nvim 2>/dev/null >/dev/null; then
+  export VISUAL="nvim"
+  export EDITOR="nvim"
+else
+  export VISUAL="vim"
+  export EDITOR="vim"
+fi
+
 
 if [[ $OS_NAME == "Darwin" ]]; then
   export COPYFILE_DISABLE=true

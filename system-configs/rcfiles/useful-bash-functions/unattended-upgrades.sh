@@ -93,19 +93,27 @@ function upgrade_package_managers() {
   echo ""
 
   echo "## Updating Vim Plug.. ##"
-  nvim +PlugClean +PlugUpdate +qall
+  if type nvim 2>/dev/null >/dev/null; then
+    nvim +PlugClean +PlugUpdate +qall
+  else
+    vim +PlugClean +PlugUpdate +qall
+  fi
   echo "Completed."
   echo ""
 
-  echo "## Updating coc-nvim.. ##"
-  nvim +CocUpdate
-  echo "Completed."
-  echo ""
 
-  echo "## Manually reinstalling jdtls (java lsp).. ##"
-  reinstall_java_jdtls_1_9
-  echo "Completed."
-  echo ""
+  if type node 2>/dev/null >/dev/null; then
+    echo "## Updating coc-nvim.. ##"
+    nvim +CocUpdate
+    echo "Completed."
+    echo ""
+
+    echo "## Manually reinstalling jdtls (java lsp).. ##"
+    reinstall_java_jdtls_1_9
+    echo "Completed."
+    echo ""
+  fi
+
 }
 
 ## [auto_upgrade_package_managers]
