@@ -400,7 +400,11 @@ augroup END
 
 " ignore whitespace when diffing
 set diffopt+=iwhite
-set diffopt+=filler,closeoff,vertical
+if has(nvim-0.5.0)
+  set diffopt+=filler,closeoff,vertical
+else
+  set diffopt+=filler,vertical
+endif
 
 " better syntax highlighting for shell scripts
 " syntax highlight shell scripts as per POSIX,
