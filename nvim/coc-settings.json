@@ -15,6 +15,7 @@
   "suggest.autoTrigger": "none",
   "suggest.insertMode": "insert",
 
+  "java.enabled": true,
 
   "languageserver": {
     "bash": {
