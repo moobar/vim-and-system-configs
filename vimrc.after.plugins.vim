@@ -51,7 +51,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 " In my experience, treesitter has been pretty good. Use its highlighting
 " Only turn on tree-sitter highlighting for nvim
-if has('nvim')
+if has('nvim') && executable('node')
   TSEnable highlight
 endif
 

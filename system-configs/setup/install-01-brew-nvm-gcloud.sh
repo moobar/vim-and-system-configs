@@ -170,12 +170,9 @@ countdown 5
                python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
                tmux tree tree-sitter util-linux vim watch wget xz yq
 
-  ## Skip installing this packages on the minimal install
-  if [[ -z $DO_MINIMAL_INSTALLATION ]]; then
-    brew install csvkit docker go gpatch gpatch guile lazygit lua maven \
-                 poppler protobuf
-
-  fi
+  # Useful but not really super core packages
+  brew install csvkit docker go gpatch gpatch guile lazygit lua maven \
+                poppler protobuf
 
   ## Instal OS Specific Apps and CLI tools
   if [[ $(uname -s) == "Darwin" ]]; then
@@ -186,11 +183,7 @@ countdown 5
     #   for our linux installs, since we normally don't have a GUI
     #   May revisit at some point in the future
     #   Consider installing wiht the builtin package manager
-    brew install bash-completion
-
-    if [[ -z $DO_MINIMAL_INSTALLATION ]]; then
-      brew install qt
-    fi
+    brew install bash-completion qt
   fi
 
   { echo y; echo y; echo n; } | "$(brew --prefix)"/opt/fzf/install
