@@ -16,6 +16,9 @@ else
   alias todo='vim ~/forge/todo/tasks.md'
 fi 
 
+alias sudovi='sudo vim -u ~/.vimrc'
+alias sudovim='sudo vim -u ~/.vimrc'
+
 alias fcdf='cdf && cd'
 alias fcda='cda && cd'
 
