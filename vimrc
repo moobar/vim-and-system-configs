@@ -24,6 +24,7 @@ execute "set runtimepath+=".s:root."/after"
 
 if (has("nvim"))
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let &packpath = &runtimepath
 endif
 
 " }}}
@@ -52,7 +53,7 @@ packadd! matchit
 
 " If node isn't installed, let's not load coc
 if !executable('node')
-  set runtimepath-=~/.vim/plugged/coc.nvim
+  execute ("set runtimepath-=" . s:root . "/plugged/coc.nvim")
 endif
 
 " }}}

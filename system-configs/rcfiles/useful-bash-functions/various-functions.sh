@@ -219,6 +219,13 @@ function frg() {
         --highlight-line {2} {1}'
 }
 
+## [fps]  ->  Shorthand
+#  [ps auxww] in a fuzzy finder
+function fps() {
+  ps auxwww | fzf --tac --header-lines=1 --header "Process List"
+
+}
+
 ## [Rg]  ->  Shorthand
 #  [rg] with the files shown to the right of the screen
 function Rg() {

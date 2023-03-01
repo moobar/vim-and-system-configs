@@ -3,7 +3,7 @@
 let s:root = g:vim_root
 
 " Explicitly set plugin directory to make it easy to rename
-call plug#begin('~/.vim/plugged')
+call plug#begin(s:root . '/plugged')
 
 "" colorschemes ""
 Plug 'w0ng/vim-hybrid'
