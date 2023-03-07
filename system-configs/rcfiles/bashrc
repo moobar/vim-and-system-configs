@@ -9,6 +9,12 @@ if [[ $OS_NAME == "Darwin" ]]; then
   export SHELL=/bin/bash
 fi
 
+# Set a fresh path if path_helper: MacOS
+if [ -x /usr/libexec/path_helper ]; then
+  export PATH=
+  eval "$(/usr/libexec/path_helper -s)"
+fi
+
 #### Setup brew in Environment ####
 
 if [[ -r /opt/homebrew/bin/brew ]]; then
@@ -222,4 +228,3 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
-set +x

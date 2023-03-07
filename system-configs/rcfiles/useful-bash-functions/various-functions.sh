@@ -32,7 +32,7 @@ function rgjava() {
 ## [rgjavasource]  ->  Shorthand
 #  same as rgjava except ignores known [target] directory, which has generated sources
 function rgjavasource() {
-  rg -p --type java --iglob '!*/target/*' "$@" | less -XFR
+  rg -p --type java --iglob '!target' "$@" | less -XFR
 }
 
 ## [grep-urls STRING]
@@ -200,6 +200,9 @@ function fjq() {
     --preview "set -x; jq -C {q} \"$TEMP\"" \
     --header 'Press CTRL-Y to copy expression to the clipboard and quit' \
     --bind 'ctrl-y:execute-silent(echo -n {q} | pbcopy)+abort' \
+    --bind "shift-down:page-down,shift-up:page-up" \
+    --bind "ctrl-d:preview-page-down,ctrl-u:preview-page-up" \
+    --bind "ctrl-j:preview-down,ctrl-k:preview-up" \
     --print-query | head -1
   )
   [ -n "$QUERY" ] && jq "$QUERY" "$TEMP"

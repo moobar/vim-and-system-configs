@@ -16,6 +16,7 @@
   "suggest.insertMode": "insert",
 
   "java.enabled": true,
+  "java.compile.nullAnalysis.mode": "automatic",
 
   "languageserver": {
     "bash": {
