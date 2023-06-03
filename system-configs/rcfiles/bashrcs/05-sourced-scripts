@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+for script in "${CONFIGROOT_DIR_SCRIPT}/system-configs/rcfiles/sourced-scripts/"*.sh; do
+  if [[ -f ${script} ]]; then
+    # shellcheck disable=SC1090
+    source "${script}"
+  fi
+done

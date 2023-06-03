@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+## Use untracked-scripts to symlink directories that you want to source scripts from, but you don't want to track in git
+if [[ -d "${CONFIGROOT_DIR_SCRIPT}/system-configs/rcfiles/untracked-scripts" ]]; then
+  for untracked_script_dir in "${CONFIGROOT_DIR_SCRIPT}/system-configs/rcfiles/untracked-scripts/"*; do
+    if [[ -d "${untracked_script_dir}" ]]; then
+      # shellcheck disable=SC1090
+      for script in "${untracked_script_dir}/"*; do
+        if [[ -f ${script} ]]; then
+          # shellcheck disable=SC1090
+          source "${script}"
+        fi
+      done
+    fi
+  done
+fi 

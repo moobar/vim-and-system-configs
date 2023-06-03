@@ -1,0 +1,1 @@
+../setup/setup-01-overwrite-all-configs.sh

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Make a bunch of directories we want
+
+if [ ! -d ~/repos ]; then
+  mkdir ~/repos
+fi
+
+if [ ! -d ~/workspaces ]; then
+  mkdir ~/workspaces
+fi
+
+if [ ! -d ~/forge ]; then
+  mkdir ~/forge
+fi
+
+if [ ! -d ~/forge/all-repos ]; then
+  mkdir -p ~/forge/all-repos
+fi
+
+if [ ! -d ~/forge/todo ]; then
+  mkdir -p ~/forge/todo
+fi
+
+if [ ! -d ~/forge/projects ]; then
+  mkdir -p ~/forge/projects
+fi

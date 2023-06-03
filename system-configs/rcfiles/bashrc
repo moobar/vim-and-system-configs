@@ -1,0 +1,240 @@
+#!/bin/bash
+
+# set -x for debugging. bashrc hasn't stalled for a long time
+# set -x
+
+OS_NAME=$(uname -s)
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  export SHELL=/bin/bash
+fi
+
+# Set a fresh path if path_helper: MacOS
+if [ -x /usr/libexec/path_helper ]; then
+  export PATH=
+  eval "$(/usr/libexec/path_helper -s)"
+fi
+
+#### Setup brew in Environment ####
+
+if [[ -r /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
+  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+function __terminal_error_handler__() {
+  # Reset
+  local NC='\033[0m' # No Color
+
+  # Regular Colors
+  local Red='\033[0;31m'
+  local Yellow='\033[0;33m'
+
+  local last_status_code=$1;
+  local lc="$BASH_COMMAND"
+
+  echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code${NC}";
+
+}
+set -o vi
+
+#### Source bash files and autocomplete, not maintained by me ####
+## Remove trap for less annoying sourcing for files I don't maintain
+trap - ERR
+
+if [[ -r /etc/bashrc ]]; then
+  source /etc/bashrc
+fi
+
+if [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
+  # shellcheck disable=SC1091
+  source "/usr/local/etc/profile.d/bash_completion.sh"
+fi
+
+# shellcheck disable=SC1091
+if ! shopt -oq posix; then
+  if [ -r /usr/share/bash-completion/bash_completion ]; then
+    source /usr/share/bash-completion/bash_completion
+  elif [ -r /etc/bash_completion ]; then
+    source /etc/bash_completion
+  fi
+fi
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
+    # shellcheck disable=SC1091
+    source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+  fi
+fi
+
+if type kubectl >/dev/null 2>&1; then
+  # Leaving this for now. But purge at some point
+  # BASH_VERSION_SHORT="${BASH_VERSION:0:3}"
+  # if (( $(echo "${BASH_VERSION_SHORT} >= 3.3" | bc -l) )); then
+  KUBECTL_VERSION=$(kubectl version --output json 2>/dev/null | jq -r '(.clientVersion.major + "." + .clientVersion.minor)' || true)
+  (
+    if [[ -n $KUBECTL_VERSION && ! -f /tmp/kubectl-completion-bash-$KUBECTL_VERSION ]]; then
+      kubectl completion bash > "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+    fi
+  )
+
+  # shellcheck disable=SC1090
+  source "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+  unset KUBECTL_VERSION
+fi
+
+# shellcheck disable=SC1090,1091
+if [[ $OS_NAME == "Darwin" ]]; then
+  ## Apple Silicon
+  # The next lines updates PATH for the Google Cloud SDK.
+  if [[ -r "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc" ]]; then
+    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc"
+  fi
+
+  # The next lines enables shell command completion for gcloud.
+  if [[ -r "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc" ]]; then
+    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc"
+  fi
+
+  ## Intel
+  # The next lines updates PATH for the Google Cloud SDK.
+  if [[ -r "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc" ]]; then
+    source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc"
+  fi
+
+  # The next lines enables shell command completion for gcloud.
+  if [[ -r "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc" ]]; then
+    source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc"
+  fi
+else
+  ## For Linux installs where we build ourselves
+  # The next line updates PATH for the Google Cloud SDK.
+  if [ -f ~'/bin/source/google-cloud-sdk/path.bash.inc' ]; then . ~'/bin/source/google-cloud-sdk/path.bash.inc'; fi
+
+  # The next line enables shell command completion for gcloud.
+  if [ -f ~'/bin/source/google-cloud-sdk/completion.bash.inc' ]; then . ~'/bin/source/google-cloud-sdk/completion.bash.inc'; fi
+fi
+
+# Enable shell command completion for terraform
+if type terraform >/dev/null 2>&1; then
+  complete -o nospace -C "$(which terraform)" terraform
+fi
+
+## Load Node Version Manager
+export NVM_DIR=~/.nvm
+# shellcheck disable=SC1091
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# shellcheck disable=SC1091
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# git-completion
+if [ ! -e ~/.git-completion.bash ]; then
+  curl -s https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+  # shellcheck disable=SC1090
+  source ~/.git-completion.bash
+fi
+
+#### END Source bash files and autocomplete, not maintained by me ####
+
+## Turn error handling back on
+trap  '__terminal_error_handler__ $?' ERR
+
+#### Source core bash files maintained by me ####
+
+# git-prompt
+if [ ! -e ~/.git-prompt.sh ]; then
+  ## TODO: Check like once a week if there is a new version
+  curl -s https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
+fi
+
+CONFIGROOT_DIR_BASHRC="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+for script in "${CONFIGROOT_DIR_BASHRC}/system-configs/rcfiles/bashrcs/"*; do
+  # shellcheck disable=SC1090
+  source "${script}"
+done
+unset CONFIGROOT_DIR_BASHRC
+#### END Source core bash files maintained by me ####
+
+
+#### Source things that update [bindkey]/key bindings ####
+
+# shellcheck disable=SC1090
+[ -r ~/.fzf.bash ] && source ~/.fzf.bash
+
+#### END Source things that update [bindkey]/key bindings ####
+
+
+#### Some preferences
+export KUBECTL_EXTERNAL_DIFF=delta
+export LESS=" -JiXmR"
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+
+if type nvim 2>/dev/null >/dev/null; then
+  export VISUAL="nvim"
+  export EDITOR="nvim"
+else
+  export VISUAL="vim"
+  export EDITOR="vim"
+fi
+
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  export COPYFILE_DISABLE=true
+  export BASH_SILENCE_DEPRECATION_WARNING=1
+fi
+
+#### Add Path Variables here that need to take them most Precedence ###
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  UTIL_LINUX_DARWIN_BIN_PATH="$(brew --prefix)/opt/util-linux/bin"
+  UTIL_LINUX_DARWIN_SBIN_PATH="$(brew --prefix)/opt/util-linux/sbin"
+
+  ## Adding util-linux path to end of path, so none of the
+  #  binaries take precedence over the builtin ones
+  if [[ ":${PATH}:" != *":${UTIL_LINUX_DARWIN_BIN_PATH}:"* ]]; then
+    export PATH=${PATH}:${UTIL_LINUX_DARWIN_BIN_PATH}
+  fi
+
+  if [[ ":${PATH}:" != *":${UTIL_LINUX_DARWIN_SBIN_PATH}:"* ]]; then
+    export PATH=${PATH}:${UTIL_LINUX_DARWIN_SBIN_PATH}
+  fi
+
+  unset UTIL_LINUX_DARWIN_BIN_PATH
+  unset UTIL_LINUX_DARWIN_SBIN_PATH
+
+  ## Leaving here for reference
+  # For compilers to find util-linux you may need to set:
+  #   export LDFLAGS="-L/opt/homebrew/opt/util-linux/lib"
+  #   export CPPFLAGS="-I/opt/homebrew/opt/util-linux/include"
+fi
+
+if [[ ":${PATH}:" != *":${HOME}/.cargo/bin:"* ]]; then
+  export PATH=${HOME}/.cargo/bin:${PATH}
+fi
+
+if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+  export PATH=${HOME}/.local/bin:${PATH}
+fi
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-14.0.2.jdk/Contents/Home
+  export JAVA_HOME="${JDK_HOME}"
+  if [[ ":${PATH}:" != *":${JAVA_HOME}/bin:"* ]]; then
+    export PATH=${JAVA_HOME}/bin:${PATH}
+  fi
+fi
+
+# Alawys add this, because we want it to take precdence no matter what
+export PATH=${HOME}/bin:${PATH}
+
+# Temporary requirement, until gcloud gets updated to 1.26
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# Script which tries to upgrade bash, npm and packagees every 7 days!
+# This is meant to be the very last thing that runs in the bashrc.
+if [[ -z $DISABLE_UPGRADES || -f ~/.disable_upgrades ]]; then
+  auto_upgrade_terminal
+fi

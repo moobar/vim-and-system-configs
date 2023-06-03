@@ -1,0 +1,85 @@
+" vim: ft=vim
+
+let s:root = g:vim_root
+
+" Explicitly set plugin directory to make it easy to rename
+call plug#begin(s:root . '/plugged')
+
+"" colorschemes ""
+Plug 'w0ng/vim-hybrid'
+Plug 'kristijanhusak/vim-hybrid-material'
+
+"" plugins that are useful for a combo of development and productivity ""
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'ConradIrwin/vim-bracketed-paste'
+Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
+Plug 'kana/vim-altr'
+Plug 'kana/vim-textobj-user'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'mileszs/ack.vim'
+Plug 'ocaml/vim-ocaml'
+Plug 'phleet/vim-mercenary'
+Plug 'scrooloose/nerdcommenter'
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-scripts/arpeggio'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
+
+
+Plug 'wincent/command-t', { 'do': 'cd lua/wincent/commandt/lib && make' }
+
+Plug 'github/copilot.vim'
+
+set undofile
+Plug 'pixelastic/vim-undodir-tree'
+
+" mode specific
+Plug 'plasticboy/vim-markdown'
+Plug 'def-lkb/ocp-indent-vim'
+
+" Requires nodejs and yarn
+" Install yarn with: [$ npm install --global yarn]
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+
+" 2022-06-29: Trying to use marks more effectively
+Plug 'kshenoy/vim-signature'
+
+""  FZF ""
+" Github is regularly updated with good tips
+"   https://github.com/junegunn/fzf.vim
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" TODO: Go through keybindings
+"   https://github.com/yuki-yano/fzf-preview.vim
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+
+"" Vim as an IDE Plugins ""
+
+" Github is updated often, sometimes with config overhalls. for now the
+" config is in [vimrcfiles/coc.vim]
+" https://github.com/neoclide/coc.nvim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Use neoformat for autoformatting. Make sure to configure with
+" coc + black + python.
+" Other languages I'll have to do individually
+Plug 'sbdchd/neoformat'
+
+Plug 'preservim/nerdtree' |
+      \ Plug 'Xuyuanp/nerdtree-git-plugin'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+call plug#end()
+

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+alias cdf='cd ~/forge'
+alias cda='cd ~/forge/all-repos'
+alias cdt='cd ~/forge/todo'
+alias cdp='cd ~/forge/projects'
+alias cdr='cd ~/repos'
+alias cdw='cd ~/workspaces'
+
+alias watch='watch --color'
+
+if type nvim 2>/dev/null >/dev/null; then
+  alias todo='nvim ~/forge/todo/tasks.md'
+  alias vim='nvim'
+  alias vi='nvim'
+else 
+  alias todo='vim ~/forge/todo/tasks.md'
+fi 
+
+alias sudovi='sudo vim -u ~/.vimrc'
+alias sudovim='sudo vim -u ~/.vimrc'
+
+alias fcdf='cdf && cd'
+alias fcda='cda && cd'
+
+alias python='python3'
+
+# Remove all colour from the command line
+alias remove-colour="sed 's/\x1b\[[0-9;]*m//g'"
+
+alias shrug='echo "¯\_(ツ)_/¯"'
+alias give='echo "༼ つ ◕_◕ ༽つ"'
+

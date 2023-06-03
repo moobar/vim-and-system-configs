@@ -1,0 +1,112 @@
+unmap ,
+
+let maplocalleader = ",,"
+let mapleader = ","
+
+" remember a long list of our commands from the past
+set history=1000
+
+" searching should be case insensitive unless we used a capital letter
+set ignorecase
+set smartcase
+
+" jump to the matches while typing
+set incsearch
+
+" highlight the searchterms (and let us unhighlight easily)
+set hlsearch
+
+" assume /g flag on :s substitutions
+set gdefault
+
+set undolevels=1000
+
+" show partial commands
+set showcmd
+
+set showmode
+set commentary
+
+" map < and > to repeated shifting in visual and select modes
+vnoremap < <gv
+vnoremap > >gv
+
+" map <CR> to remove highlighting
+nnoremap <CR> :noh<CR>
+
+" Replay macros over visual range
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+vnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+" For whatever reason the <localleader> mapping is a little inconsistent when 
+" there are conflicts with other keys. Going to just use [,,] for now
+" nnoremap ,,t <Action>(QuickJavaDoc)
+" The docs say: 
+" Executing actions:
+"   :action {action_id}
+"   Execute an action by {action_id}. Works from Ex command line.
+"   Please don't use :action in mappings. Use <Action> instead.
+"   <Action>({action_id})
+"   For the mappings you can use a special <Action> keyword. Don't forget the parentheses.
+"   E.g. map gh <Action>(ShowErrorDescription) <- execute hover on gh.
+"   ⚠️ Mappings to <Action> don't work with noremap. If you know the case when it's needed, please let us know.
+" BUT I found that :action {action_id}<CR> works just fine so i'm going to do
+" that for now
+nnoremap ,t :action ParameterInfo<CR>
+nnoremap ,,t :action QuickJavaDoc<CR>
+
+nnoremap ,l :action ReformatCode<CR>
+vnoremap ,l :action ReformatCode<CR>
+
+nnoremap ,,r :action RenameElement<CR>
+
+nnoremap ,,i :action GotoDeclaration<CR>
+nnoremap ,,b :action GotoDeclaration<CR>
+nnoremap ,,s :action GotoImplementation<CR>
+nnoremap ,,u :action GotoSuperMetho<CR>
+
+" Search
+nnoremap ,s :action SearchEverywhere<CR>
+
+nnoremap ,u :action ShowUsages<CR>
+
+" Navigation helpers 
+nnoremap <C-o> :action Back<CR>
+nnoremap <C-i> :action Forward<CR>
+nnoremap <C-n> :action NextTab<CR>
+nnoremap <C-p> :action PreviousTab<CR>
+
+" Taken from Junegunn
+nnoremap ,,<space> :action SearchEverywhere<CR>
+nnoremap <SPACE>ff :action FindInPath<CR>
+nnoremap <SPACE>fu :action FindUsages<CR>
+nnoremap <SPACE>su :action ShowUsages<CR>
+nnoremap <SPACE>cv :action ChangeView<CR>
+nnoremap <SPACE>bb :action ToggleLineBreakpoint<CR>
+nnoremap <SPACE>br :action ViewBreakpoints<CR>
+nnoremap <SPACE>ic :action InspectCode<CR>
+nnoremap <SPACE>oi :action OptimizeImports<CR>
+nnoremap <SPACE>re :action RenameElement<CR>
+nnoremap <SPACE>rf :action RenameFile<CR>
+nnoremap <SPACE>gq :action ReformatCode<CR>
+nnoremap <SPACE>mv :action ActivateMavenProjectsToolWindow<CR>
+nnoremap <SPACE>dd :action Debug<CR>
+nnoremap <SPACE>dc :action ChooseDebugConfiguration<CR>
+nnoremap <SPACE>rr :action Run<CR>
+nnoremap <SPACE>rc :action ChooseRunConfiguration<CR>
+nnoremap <SPACE>q  :action CloseActiveTab<CR>
+nnoremap <SPACE>ga :action GotoAction<CR>
+nnoremap <SPACE>gi :action GotoImplementation<CR>
+nnoremap <SPACE>gs :action GotoSuperMethod<CR>
+nnoremap <SPACE>gd :action GotoDeclaration<CR>
+nnoremap <SPACE>gt :action GotoTest<CR>
+nnoremap <SPACE>gr :action GotoRelated<CR>
+nnoremap <SPACE>gb :action Annotate<CR>
+nnoremap <SPACE>tl Vy<CR>:action ActivateTerminalToolWindow<CR>
+vnoremap <SPACE>tl y<CR>:action ActivateTerminalToolWindow<CR>
+nnoremap ]e :action GotoNextError<CR>
+nnoremap [e :action GotoPreviousError<CR>

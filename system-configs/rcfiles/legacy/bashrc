@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+if [[ -d "${CONFIGROOT_DIR_SCRIPT}/system-configs/vim-tooling" ]]; then
+  for vim_tool in "${CONFIGROOT_DIR_SCRIPT}/system-configs/vim-tooling/"*; do
+    # shellcheck disable=SC1090
+    source "${vim_tool}"
+  done
+fi

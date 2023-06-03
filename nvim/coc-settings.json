@@ -1,0 +1,35 @@
+{
+  "python.pythonPath": "python3",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.linting.mypyEnabled": true,
+  "python.linting.pytypeEnabled": false,
+  "python.linting.pylintEnabled": false,
+  "pyright.inlayHints.variableTypes": false,
+  "python.linting.mypyArgs": [
+    "--ignore-missing-imports",
+    "--follow-imports=silent",
+    "--show-column-numbers"
+  ],
+  "python.formatting.blackArgs": [],
+  "suggest.autoTrigger": "none",
+  "suggest.insertMode": "insert",
+
+  "java.enabled": false,
+  "java.compile.nullAnalysis.mode": "automatic",
+
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": [
+        "start"
+      ],
+      "filetypes": [
+        "sh"
+      ],
+      "ignoredRootPaths": [
+        "~"
+      ]
+    }
+  }
+}
