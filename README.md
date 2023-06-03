@@ -9,6 +9,9 @@ No frills install that disables coc.nvim until node is intalled
 ```bash
 git clone https://github.com/moobar/vim-and-system-configs.git && ln -s vim-and-system-configs ~/.vim
 bash ~/.vim/system-configs/install-minimal.sh
+
+# To disable auto upgrading the terminal, also copy
+touch ~/.vim/.disable_auto_upgrade
 ```
 
 ## Install Minimal, with Node
@@ -18,6 +21,9 @@ Minimal install which also installs node so coc.nvim works
 ```bash
 git clone https://github.com/moobar/vim-and-system-configs.git && ln -s vim-and-system-configs ~/.vim
 bash ~/.vim/system-configs/install-minimal-with-node.sh
+
+# To disable auto upgrading the terminal, also copy
+touch ~/.vim/.disable_auto_upgrade
 ```
 
 ## Install

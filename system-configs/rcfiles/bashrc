@@ -235,6 +235,6 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Script which tries to upgrade bash, npm and packagees every 7 days!
 # This is meant to be the very last thing that runs in the bashrc.
-if [[ -z $DISABLE_UPGRADES || -f ~/.disable_upgrades ]]; then
+if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi

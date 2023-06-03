@@ -146,6 +146,7 @@ function auto_upgrade_package_managers() {
   local CHECK_WEEKLY=604800
 
   (
+    # shellcheck disable=SC2030
     CONFIGROOT_DIR_SUBSHELL="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
     if [ -f "${CONFIGROOT_DIR_SUBSHELL}/system-configs/bash-script-commons/common.sh" ]; then
       # shellcheck disable=SC1091
@@ -189,6 +190,14 @@ function auto_upgrade_bash() {
 
 
 function auto_upgrade_terminal() {
+  local CONFIGROOT_DIR_LOCAL=''
+  CONFIGROOT_DIR_LOCAL="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+
+  # shellcheck disable=SC2031
+  if [[ -f "${CONFIGROOT_DIR_LOCAL}/.disable_auto_upgrade" ]]; then
+    return 0
+  fi
+
   if ! _check_network; then
     # For auto upgrades, not going to error because we'll just try again
     return 0
