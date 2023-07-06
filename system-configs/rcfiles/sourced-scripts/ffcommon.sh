@@ -12,3 +12,8 @@ function ffcommon() {
   eval "$(echo "${BASH_FZF_IN_SOURCED_SCRIPT}" | sed 's/\${BASH_SOURCE\[0\]}'"/${ESCAPED_REPLACE}"'\/system-configs\/bash-script-commons\/common.sh/')"
 }
 
+
+function print-src-dir-bash() {
+  # shellcheck disable=SC2016
+  echo 'SRC_DIR="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && pwd )"'
+}

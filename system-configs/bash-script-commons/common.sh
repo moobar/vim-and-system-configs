@@ -43,8 +43,14 @@ function _unset_stdout_and_stderr() {
 #  RETURN  ->
 #    KEYS to TTY if in tmux
 #    STRING of command if not in tmux
+# shellcheck disable=SC2120
 function _send_keys_to_terminal() {
-  local KEYS=$1
+  local KEYS=
+  if test ! -t 0; then
+    KEYS=$(cat)
+  else
+    KEYS="$*"
+  fi
 
   bind "\C-^":redraw-current-line
   if [[ -z "$TMUX" ]]; then
@@ -158,6 +164,28 @@ function countdown() {
 
   if [[ -z "$FLAT" ]]; then
     echo ""
+  fi
+}
+
+## [ff SCRIPT]
+#  Fuzzy finds all functions in a script
+#
+#  STRING   = Text of a script
+#  RETURN  ->
+#     fzf input with all the functions selectable
+function ff() {
+  if test ! -t 0; then
+    cat \
+      | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf | _send_keys_to_terminal
+  else
+    if [[ -z "${1}" ]]; then
+      echo "Expecting input from pipe or a file"
+      return 1
+    fi
+
+    # shellcheck disable=SC2002
+    cat "$1" \
+      | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf | _send_keys_to_terminal
   fi
 }
 

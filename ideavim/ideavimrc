@@ -110,3 +110,51 @@ nnoremap <SPACE>tl Vy<CR>:action ActivateTerminalToolWindow<CR>
 vnoremap <SPACE>tl y<CR>:action ActivateTerminalToolWindow<CR>
 nnoremap ]e :action GotoNextError<CR>
 nnoremap [e :action GotoPreviousError<CR>
+
+nnoremap gr :action ShowUsages<CR>
+nnoremap gi :action GotoImplementation<CR>
+"nnoremap gb :Buffers<CR>
+nnoremap gf :action GotoFile<CR>
+nnoremap gs :action FindInPath<CR>
+nnoremap gz :action FindInPath<CR>
+nnoremap gt :action GotoAction<CR>
+nnoremap gb :action RecentFiles<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gG :action VimFilePrevious<CR>
+nnoremap gn :action GotoNextError<CR>
+nnoremap gp :action GotoPreviousError<CR>
+nnoremap gu :action FindUsages<CR>
+
+" Leader Shortcuts
+nnoremap <Space><Space> :noh<CR>:action HideAllWindows<CR>
+nnoremap <Space>s :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
+nnoremap <Space>w :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
+nnoremap <Space>S :action RearrangeCode<CR>:w<CR>
+nnoremap <Space>t :action Rerun<CR>
+nnoremap <Space>c :action RenameElement<CR>
+nnoremap <Space>r :action RefactoringMenu<CR>  
+nnoremap <Space>R :action Run<CR>
+nnoremap <Space>e :action RunClass<CR>
+nnoremap <Space>b :action ReformatCode<CR>:w<CR>:action MakeModule<CR>
+nnoremap <Space>B :action CompileProject<CR>
+nnoremap <Space>i :action Inline<CR>
+
+nnoremap \b :action ToggleLineBreakpoint<CR>
+nnoremap \R :action Rerun<CR>
+nnoremap \r :action Resume<CR>
+nnoremap \i :action StepInto<CR>
+nnoremap \o :action StepOut<CR>
+nnoremap \e :action EvaluateExpression<CR>
+vnoremap \e :action EvaluateExpression<CR>
+nnoremap \\ :action StepOver<CR>
+
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>  
+
+nnoremap <Space>M :action Maven.Reimport<CR>
+nnoremap <Space>m :action ShowIntentionActions<CR>
+nnoremap <Space>n :action Generate<CR>
+nnoremap <Space>E :action Maven.ExecuteGoal<CR>
+nnoremap <Space>P :action IntentionActionAsAction_com.intellij.openapi.editor.actions.lists.SplitLineIntention<CR>
+nnoremap <Space>I :action IntentionActionAsAction_com.intellij.codeInsight.intention.impl.AddSingleMemberStaticImportAction<CR>
+nnoremap <Space>. f.i<CR><ESC>l
+nnoremap <Space>, f,a<CR><ESC>l

@@ -30,6 +30,15 @@ function cdroot() {
   cd "$(gitroot)" || return
 }
 
+## [vimgitconf]  ->  Shorthand
+#  Edit the sourced git config file
+function vimgitconf() {
+  # shellcheck disable=SC2002,SC2046
+  local GITCONF=
+  GITCONF="$(cat ~/.gitconfig | grep '^\s*path' | sed -E 's/^[^=]*= *//g')"
+  vim "${GITCONF/#~/$HOME}"
+}
+
 ## [gitpullmaster]
 #  Pulls master from any branch. Useful for running before a merge with master
 function gitpullmaster() {

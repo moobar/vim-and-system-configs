@@ -12,6 +12,7 @@ function gcloud-get-service-account() {
   # shellcheck disable=SC2002
   SERVICE_ACCOUNT=$( awk -F'=' '/^impersonate_service_account/ {print $2}' \
     ~/.config/gcloud/configurations/config_"$(cat ~/.config/gcloud/active_config)" \
+    | tr -d '[:space:]'
   )
 
   if [[ -z $SERVICE_ACCOUNT ]]; then
@@ -49,6 +50,7 @@ function print-gcloud-status-for-tmux() {
   # shellcheck disable=SC2002
   GCLOUD_PROJECT=$( awk -F'=' '/^project/ {print $2}' \
     ~/.config/gcloud/configurations/config_"$(cat ~/.config/gcloud/active_config)" \
+    | tr -d '[:space:]'
   )
   if [[ $? -eq 0 && -n $GCLOUD_PROJECT ]]; then
     echo "#[bg=colour235]#[fg=colour220]<gcloud> ${GCLOUD_PROJECT} #[fg=colour219]{$(gcloud-whoami)}#[bg=colour233] "
