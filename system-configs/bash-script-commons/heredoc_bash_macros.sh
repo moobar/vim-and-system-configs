@@ -126,8 +126,9 @@ function __validate_footer_with_shellcheck() {
     }
 
     if [[ -z ${1-""} ]]; then
-      echo "Must provide a function to call. To see available functions"
-      echo "Try: bash ${BASH_SOURCE[0]} fzf"
+      echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
+      echo "To see available functions run:"
+      echo "bash ${BASH_SOURCE[0]} fzf"
       exit 1
     else
       FUNCTION="$1"
@@ -135,20 +136,28 @@ function __validate_footer_with_shellcheck() {
 
     # Check if the function exists (bash specific)
     if [[ $FUNCTION == "fzf" ]]; then
-      # shellcheck disable=SC2002
-      FUNCTION=$(cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf)
-
-      # Common to ctrl-c/esc after fzf. So only start trapping after fzf
-      trap  '__error_handler_script__ $?' ERR
-      if [[ -n "$FUNCTION" ]]; then
-        # shellcheck disable=SC2116
-        CMD=$(echo bash "${BASH_SOURCE[0]}" "$FUNCTION")
-        #_send_keys_to_terminal "${CMD}"
-        echo CMD: "${CMD}"
-        unset FUNCTION
-        unset CMD
+      if ! type fzf &>/dev/null; then
+        echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
+        echo ""
+        echo "Available Functions:"
+        # shellcheck disable=SC2002
+        cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/  \1/p' | grep -v "^\s*_" | sort
       else
-        exit 1
+        # shellcheck disable=SC2002
+        FUNCTION=$(cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf)
+
+        # Common to ctrl-c/esc after fzf. So only start trapping after fzf
+        trap  '__error_handler_script__ $?' ERR
+        if [[ -n "$FUNCTION" ]]; then
+          # shellcheck disable=SC2116
+          CMD=$(echo bash "${BASH_SOURCE[0]}" "$FUNCTION")
+          #_send_keys_to_terminal "${CMD}"
+          echo CMD: "${CMD}"
+          unset FUNCTION
+          unset CMD
+        else
+          exit 1
+        fi
       fi
     elif declare -f "$FUNCTION" > /dev/null; then
       unset FUNCTION
@@ -156,6 +165,7 @@ function __validate_footer_with_shellcheck() {
     else
       # Show a helpful error
       echo "'$1' is not a known function name" >&2
+      echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
       exit 1
     fi
   fi
@@ -181,8 +191,9 @@ BASH_COMMON_SCRIPT_FOOTER=$(cat <<'EOM'
     }
 
     if [[ -z ${1-""} ]]; then
-      echo "Must provide a function to call. To see available functions"
-      echo "Try: bash ${BASH_SOURCE[0]} fzf"
+      echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
+      echo "To see available functions run:"
+      echo "bash ${BASH_SOURCE[0]} fzf"
       exit 1
     else
       FUNCTION="$1"
@@ -190,20 +201,28 @@ BASH_COMMON_SCRIPT_FOOTER=$(cat <<'EOM'
 
     # Check if the function exists (bash specific)
     if [[ $FUNCTION == "fzf" ]]; then
-      # shellcheck disable=SC2002
-      FUNCTION=$(cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf)
-
-      # Common to ctrl-c/esc after fzf. So only start trapping after fzf
-      trap  '__error_handler_script__ $?' ERR
-      if [[ -n "$FUNCTION" ]]; then
-        # shellcheck disable=SC2116
-        CMD=$(echo bash "${BASH_SOURCE[0]}" "$FUNCTION")
-        #_send_keys_to_terminal "${CMD}"
-        echo CMD: "${CMD}"
-        unset FUNCTION
-        unset CMD
+      if ! type fzf &>/dev/null; then
+        echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
+        echo ""
+        echo "Available Functions:"
+        # shellcheck disable=SC2002
+        cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/  \1/p' | grep -v "^\s*_" | sort
       else
-        exit 1
+        # shellcheck disable=SC2002
+        FUNCTION=$(cat "${BASH_SOURCE[0]}" | sed -n -E 's/^function (([^\(]| )+).*$/\1/p' | grep -v ^_| sort | fzf)
+
+        # Common to ctrl-c/esc after fzf. So only start trapping after fzf
+        trap  '__error_handler_script__ $?' ERR
+        if [[ -n "$FUNCTION" ]]; then
+          # shellcheck disable=SC2116
+          CMD=$(echo bash "${BASH_SOURCE[0]}" "$FUNCTION")
+          #_send_keys_to_terminal "${CMD}"
+          echo CMD: "${CMD}"
+          unset FUNCTION
+          unset CMD
+        else
+          exit 1
+        fi
       fi
     elif declare -f "$FUNCTION" > /dev/null; then
       unset FUNCTION
@@ -211,6 +230,7 @@ BASH_COMMON_SCRIPT_FOOTER=$(cat <<'EOM'
     else
       # Show a helpful error
       echo "'$1' is not a known function name" >&2
+      echo "Usage: bash ${BASH_SOURCE[0]} [FUNCTION]"
       exit 1
     fi
   fi
