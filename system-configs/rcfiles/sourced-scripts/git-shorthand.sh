@@ -6,6 +6,35 @@ if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bas
   source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
 fi
 
+function _sbsSetFlag() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --sbs)
+        echo "-c delta.side-by-side=true"
+        return 0
+        ;;
+      *)
+        shift # past argument
+        ;;
+    esac
+  done
+
+  echo ""
+  return 0
+}
+
+
+function _removeSbsFlag() {
+  local new_args=()
+  for arg in "$@"; do
+    if [ "$arg" != "--sbs" ]; then
+      new_args+=("$arg")
+    fi
+  done
+  echo "${new_args[@]}"
+  return 0
+}
+
 ## [gitsbs <git ARGS>]  ->  Alias
 #  git with the [delta.side-by-side] setting enabled
 function gitsbs() {
@@ -32,8 +61,8 @@ function cdroot() {
 
 ## [vimgitconf]  ->  Shorthand
 #  Edit the sourced git config file
+# shellcheck disable=SC2002,SC2046
 function vimgitconf() {
-  # shellcheck disable=SC2002,SC2046
   local GITCONF=
   GITCONF="$(cat ~/.gitconfig | grep '^\s*path' | sed -E 's/^[^=]*= *//g')"
   vim "${GITCONF/#~/$HOME}"
@@ -44,6 +73,13 @@ function vimgitconf() {
 function gitpullmaster() {
   git fetch --all
   git fetch origin
+  local PARENT_BRANCH=
+
+  PARENT_BRANCH=$(gitparentbranch)
+  if [[ $PARENT_BRANCH != "HEAD" ]]; then
+    git fetch origin "$(gitparentbranch)":"$(gitparentbranch)"
+  fi
+
   if git rev-parse --verify origin/master &> /dev/null; then
     git fetch origin master:master
   elif git rev-parse --verify origin/main &> /dev/null; then
@@ -53,15 +89,26 @@ function gitpullmaster() {
   fi
 }
 
-## [gitparentbranch]
-#  Output the name of the branch that was branched off of
+### [gitparentbranchancestors]
+##  Output the name of the branch that was branched off of
+function gitparentancestors() {
+  for branch in $(git branch -r | awk '{print $1}' | grep -v "$(gitbranch)"); do
+    echo \
+      "$branch" \
+      "$(git log --oneline --pretty=format:"%cI %h %s" "$(git merge-base "$(git rev-parse --abbrev-ref HEAD)" "$branch")" -1)";
+  done | sort -k 2
+}
+
+### [gitparentbranchcommit]
+##  Output the name of the branch that was branched off of
+function gitparentbranchcommit() {
+  gitparentancestors | tail -1
+}
+
+### [gitparentbranch]
+##  Output the name of the branch that was branched off of
 function gitparentbranch() {
-  local PARENT=
-  PARENT=$(git show-branch | grep -F '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | grep -m1 -Eo '\[(.*?)\]' | tr -d '][' | head -n1)
-  if [[ -z $PARENT ]]; then
-    PARENT=origin
-  fi
-  echo "${PARENT}"
+  gitparentbranchcommit | awk '{print $1}' | cut -d/ -f2-
 }
 
 ## [gitbranchlog] <git log ARGS>  ->  Alias
@@ -76,9 +123,21 @@ function gitbranchlog() {
 ## [gitbranchdiff <git diff -w ARGS>]  ->  Shorthand
 #  Show the entire diff of the branch, relative to the last branch
 function gitbranchdiff() {
-  local BRANCH_PARENT
+  local BRANCH_PARENT=''
   BRANCH_PARENT=$(gitparentbranch)
-  git diff -w "${BRANCH_PARENT}"..HEAD "$@"
+
+  local SBS_FLAG='', NEW_ARGS=''
+  SBS_FLAG=$(_sbsSetFlag "$@")
+  NEW_ARGS=$(_removeSbsFlag "$@")
+
+  if [[ -z ${NEW_ARGS} ]]; then
+    set --
+  else
+    set -- "${NEW_ARGS[@]}"
+  fi
+
+  # shellcheck disable=SC2086
+  git ${SBS_FLAG} diff -w "${BRANCH_PARENT}"..HEAD "$@"
 }
 
 ## [gitbranchfiles <git diff -w ARGS>]  ->  Shorthand
@@ -102,7 +161,18 @@ function gitbranchdiff-origin() {
   # ORIGIN_COMMIT=$(git log --reverse origin..HEAD --parents --pretty=oneline | head -1 | awk '{print $2}')
   # git diff -w "${ORIGIN_COMMIT}" HEAD "$@"
 
-  git diff -w origin..HEAD "$@"
+  local SBS_FLAG='', NEW_ARGS=''
+  SBS_FLAG=$(_sbsSetFlag "$@")
+  NEW_ARGS=$(_removeSbsFlag "$@")
+
+  if [[ -z ${NEW_ARGS} ]]; then
+    set --
+  else
+    set -- "${NEW_ARGS[@]}"
+  fi
+
+  # shellcheck disable=SC2086
+  git ${SBS_FLAG} diff -w origin..HEAD "$@"
 }
 
 ## [gitbranchlog-unpushed <git log @{upstream} ARGS>]  ->  Shorthand

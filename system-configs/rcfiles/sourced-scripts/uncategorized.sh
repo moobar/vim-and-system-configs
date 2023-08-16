@@ -17,10 +17,15 @@ function diff() {
 ## [rg]  ->  Alias
 #  Sane defaults for rg (smart-case and --no-ignore) and then pipes the output to less
 #
-#  If you need to run the builtin [rg], without smart case
-#    [$ command rg]
+#  use [rgcase] for case sensitive searches
 function rg() {
   command rg --smart-case --color=always --no-ignore -p "$@" | less -XFR
+}
+
+## [rgcase]  ->  Alias
+#  Sane defaults for rg (--no-ignore) and then pipes the output to less
+function rgcase() {
+  command rg --color=always --no-ignore -p "$@" | less -XFR
 }
 
 ## [rgjava]  ->  Shorthand
@@ -48,6 +53,50 @@ function grep-urls() {
   else
     grep -EIoi --no-filename "$URL_RE" "$1" | sort -u | less
   fi
+}
+
+## [seconds-to-date STRING]
+#  Converts SECONDS to an ISO8601 date
+#
+#  STRING   = date in seconds
+#  RETURN  ->
+#    ISO8601 UTC date
+function seconds-to-date() {
+  if [[ -z $1 ]] && test -t 0 ; then
+    echo "Must provide seconds"
+    return 1
+  fi
+  local SECONDS=
+
+  if [[ -n $1 ]]; then
+    SECONDS=$1
+  else
+    SECONDS=$(cat)
+  fi
+
+  python3 -c "import datetime; print(datetime.datetime.utcfromtimestamp(${SECONDS}/1000).isoformat() + 'Z')"
+}
+
+## [mongo-compass-localhost STRING]
+#  Given a PORT generate a url for mongo compass
+#
+#  STRING   = port
+#  RETURN  ->
+#    Compass url
+function mongo-compass-localhost() {
+  if [[ -z $1 ]] && test -t 0 ; then
+    echo "Must provide port"
+    return 1
+  fi
+  local PORT=
+
+  if [[ -n $1 ]]; then
+    PORT=$1
+  else
+    PORT=$(cat)
+  fi
+
+  echo "mongodb://localhost:${PORT}/?directConnection=true"
 }
 
 ## [jq-to-csv JSON]
@@ -293,6 +342,8 @@ function chrome_history() {
   sed 's#.*\(https*://\)#\1#' | xargs open
 }
 
+## [explain-shell]
+#  Hits the explain shell website with the command you pass in
 function explain-shell() {
   local URL_QUERY='' URL_QUERY_CMD=''
   URL_QUERY_CMD=$(cat <<EOM
@@ -303,6 +354,11 @@ EOM
   local LINK="http://explainshell.com/explain?cmd=${URL_QUERY}"
 
   w3m -dump "${LINK}" | sed '1,9d' | sed '2,8d' | awk 'NR<=2{printf "%s%s",$0,(NR==1?" ":"\n"); next} 1'
+}
+## [date-utc]
+#  Returns the current date in UTC
+function date-utc() {
+  date -u +"%Y-%m-%dT%H:%M:%SZ"
 }
 
 
