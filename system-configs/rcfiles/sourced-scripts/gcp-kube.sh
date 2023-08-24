@@ -76,8 +76,8 @@ function gcloud-set-prod() {
 ## [gcloud-auth]  ->  Shorthand
 #  Use gcloud principal to authenticate to the cli and with local app developement (application-default)
 function gcloud-auth() {
-  gcloud auth application-default login
   gcloud auth login
+  gcloud auth application-default login
 }
 
 ## [gcloud-unset-service-account]  ->  Shorthand
