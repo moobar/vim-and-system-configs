@@ -95,7 +95,7 @@ function gitparentancestors() {
   for branch in $(git branch -r | awk '{print $1}' | grep -v "$(gitbranch)"); do
     echo \
       "$branch" \
-      "$(git log --oneline --pretty=format:"%cI %h %s" "$(git merge-base "$(git rev-parse --abbrev-ref HEAD)" "$branch")" -1)";
+      "$(git log --oneline --pretty=format:"%cI %H %s" "$(git merge-base "$(git rev-parse --abbrev-ref HEAD)" "$branch")" -1)";
   done | sort -k 2
 }
 

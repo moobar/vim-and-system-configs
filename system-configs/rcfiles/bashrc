@@ -238,3 +238,6 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
+
+## TODO: Add these somewhere ##
+alias mvn-clean-install-quick='mvn clean install -DskipTests -Ddockerfile.skip=true'

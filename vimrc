@@ -437,7 +437,11 @@ set autoread
 " set a default colorscheme - this should be changed in the overrides
 " file rather than here if you don't want this colorscheme
 set background=dark
-colorscheme hybrid
+
+let g:vim_monokai_tasty_italic = 1                    " allow italics, set this before the colorscheme
+let g:vim_monokai_tasty_machine_tint = 1              " use `mahcine` colour variant
+let g:vim_monokai_tasty_highlight_active_window = 1   " make the active window stand out
+colorscheme vim-monokai-tasty
 
 " Hack to always open folds unless modeline says otherwise
 set foldlevelstart=99

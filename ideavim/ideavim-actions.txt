@@ -30,7 +30,6 @@ ActivateBeanValidationToolWindow
 ActivateBookmarksToolWindow                        <M-2>
 ActivatebspToolWindow
 ActivateBuildToolWindow
-ActivateCDIToolWindow
 ActivateCheckStyleToolWindow
 ActivateCommitToolWindow                           <M-0>
 ActivateDatabaseChangesToolWindow
@@ -42,11 +41,11 @@ Activatedocumentation.v2ToolWindow
 ActivateEndpointsToolWindow
 ActivateFileTransferToolWindow
 ActivateFindToolWindow                             <M-3>
+Activategithub.copilotToolWindowToolWindow
 ActivateGradleToolWindow
 ActivateHierarchyToolWindow
 Activateinternal-profilerToolWindow
 ActivateInternalMethodTracingToolWindow
-ActivateJavaEnterpriseToolWindow
 ActivateLayoutValidationToolWindow
 ActivateLearnToolWindow
 ActivateMavenToolWindow
@@ -400,6 +399,8 @@ CollapseSelection                                  <M-.>
 CollapseTreeNode                                   <m>
 CollapsiblePanel-toggle                            < >
 CollectZippedLogs
+com.github.ragurney.spotless.actions.ReformatAllFilesAction
+com.github.ragurney.spotless.actions.ReformatFileAction
 com.intellij.analysis.pwa.actions.PwaRestartAction
 com.intellij.analysis.pwa.actions.PwaToggleAction
 com.intellij.database.actions.ToDatabaseScriptTranslationCopyAction
@@ -648,6 +649,24 @@ ConvertToMacLineSeparators
 ConvertToUnixLineSeparators
 ConvertToWebp
 ConvertToWindowsLineSeparators
+copilot.applyInlays                                <Tab>
+copilot.cycleNextInlays                            <A-]> <C-.>
+copilot.cyclePrevInlays                            <A-[> <C-,>
+copilot.disableCopilot                             <M-A-S-O>
+copilot.disableCopilotFile
+copilot.disposeInlays                              <Esc>
+copilot.enableCopilot                              <M-A-S-O>
+copilot.inlayContextMenu
+copilot.loginGitHub
+copilot.logoutGitHub
+copilot.openCopilot
+copilot.openStatus
+copilot.requestCompletions                         <A-\>
+copilot.statusBarErrorPopup
+copilot.statusBarPopup
+copilot.statusBarRestartPopup
+copilot.testException
+copilot.toolsActionGroup
 Copy.Paste.Special
 CopyAbsolutePath                                   <M-S-C>
 CopyAsPlainText

@@ -8,6 +8,7 @@ call plug#begin(s:root . '/plugged')
 "" colorschemes ""
 Plug 'w0ng/vim-hybrid'
 Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'patstockwell/vim-monokai-tasty'
 
 "" plugins that are useful for a combo of development and productivity ""
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -34,6 +35,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/arpeggio'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
+
+" Javascript/TyperScript/React/GraphQL
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'elzr/vim-json'
+Plug 'jparise/vim-graphql'
 
 
 Plug 'wincent/command-t', { 'do': 'cd lua/wincent/commandt/lib && make' }
