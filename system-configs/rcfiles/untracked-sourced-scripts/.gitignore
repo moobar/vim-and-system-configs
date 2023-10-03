@@ -3,3 +3,4 @@
 
 # But don't ignore .gitignore
 !.gitignore
+!README

@@ -26,6 +26,12 @@ fi
 rm -rf ~/.vimrc
 ln -fs ~/.vim/vimrc ~/.vimrc
 
+if [[ -e ~/.amethyst.yml && ! -L ~/.amethyst.yml ]]; then
+  mv ~/.amethyst.yml ~/.amethyst.yml.bak."$(date "+%Y-%m-%d")"
+fi
+rm -rf ~/.amethyst.yml
+ln -fs ~/.vim/system-configs/amethyst-config/amethyst.yml ~/.amethyst.yml
+
 if [[ -e ~/.ideavimrc && ! -L ~/.ideavimrc ]]; then
   mv ~/.ideavimrc ~/.ideavimrc.bak."$(date "+%Y-%m-%d")"
 fi

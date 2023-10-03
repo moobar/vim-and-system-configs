@@ -54,7 +54,7 @@ function _send_keys_to_terminal() {
 
   bind "\C-^":redraw-current-line
   if [[ -z "$TMUX" ]]; then
-    Command to run: "${KEYS}"
+    echo Command to run: "${KEYS}"
   else
     tmux send-keys -t "${TMUX_PANE}" "${KEYS}" C-^
   fi
