@@ -1,0 +1,5 @@
+Symlink directories that you want to source scripts for, but you don't want to check into the repo.
+
+
+This can be helpful if you have some system specific scripts that you want sourced, but they are system
+specific and it doesn't make sense to check them into github
