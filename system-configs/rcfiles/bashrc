@@ -225,6 +225,14 @@ if [[ $OS_NAME == "Darwin" ]]; then
   if [[ ":${PATH}:" != *":${JAVA_HOME}/bin:"* ]]; then
     export PATH=${JAVA_HOME}/bin:${PATH}
   fi
+
+  if find /Applications -maxdepth 1 -iname '*Android*Studio*' &>/dev/null; then
+    export ANDROID_JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+    function set-java-to-android-java() {
+      export JAVA_HOME="${ANDROID_JAVA_HOME}"
+    }
+    export PATH=${PATH}:~/Library/Android/sdk/tools:~/Library/Android/sdk/build-tools:~/Library/Android/sdk/platform-tools:~/Library/Android/sdk/tools/bin
+  fi 
 fi
 
 # Alawys add this, because we want it to take precdence no matter what
@@ -239,5 +247,3 @@ if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
 
-## TODO: Add these somewhere ##
-alias mvn-clean-install-quick='mvn clean install -DskipTests -Ddockerfile.skip=true'

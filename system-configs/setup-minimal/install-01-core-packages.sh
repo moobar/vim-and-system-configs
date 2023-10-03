@@ -10,9 +10,10 @@
     }
   fi
 
-  # TODO: Install yq manually
   if grep -Eqi '^ID=(.*ubuntu.*|.*debian.*)' /etc/os-release 2>/dev/null ; then
     sudo apt-get -qq install -y wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop
+    sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+
     # curl https://sh.rustup.rs -sSf -o rust-install.sh && bash rust-install.sh -y -q && rm rust-install.sh
     # cargo install git-delta
   elif grep -Eqi '^ID=(.*rocky.*|.*fedora.*|.*rhel.*|.*centos.*)' /etc/os-release 2>/dev/null; then
@@ -20,6 +21,8 @@
       sudo yum install -y -q epel-release
     fi
     sudo yum install -y -q wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop
+    sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+
     # curl https://sh.rustup.rs -sSf -o rust-install.sh && bash rust-install.sh -y -q && rm rust-install.sh
     # cargo install git-delta
   elif [[ $(uname -s) == "Darwin" ]]; then

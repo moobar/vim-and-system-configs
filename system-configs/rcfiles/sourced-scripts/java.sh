@@ -1,5 +1,10 @@
 #!/bin/bash
 
+CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
+if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
+fi
 
 ## TODO: This is still a wip
 function mvn-watch() {
@@ -79,3 +84,32 @@ function mvn-watch() {
       done
   )
 }
+
+function generate-class-path() {
+  function _generate-class-path() {
+    if test ! -t 0; then
+      cat \
+        | grep -Eo "\.m2.*" | cut -d/ -f3- | xargs dirname | rev | sed 's/\//-/' | rev | tr '/' '.' | xargs -n1 -IJARNAME echo JARNAME.jar | grep -f <(ls server/target/lib | xargs -n1) | xargs -n1 -IJAR echo ./server/target/lib/JAR | paste -sd: -
+    else
+      grep -Eo "\.m2.*" "${1}" | cut -d/ -f3- | xargs dirname | rev | sed 's/\//-/' | rev | tr '/' '.' | xargs -n1 -IJARNAME echo JARNAME.jar | grep -f <(ls server/target/lib | xargs -n1) | xargs -n1 -IJAR echo ./server/target/lib/JAR | paste -sd: -
+    fi
+  }
+  if test ! -t 0; then
+    echo "$(cat | _generate-class-path):./server/target/*"
+  else
+    echo "$(_generate-class-path "$@"):./server/target/*"
+  fi
+}
+
+#function run-jar-locally
+
+
+function mvn-clean-install-quick() {
+  mvn clean install -DskipTests -Ddockerfile.skip=true "$@"
+}
+
+function ffjava() {
+  eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
+}
+eval "${BASH_COMMON_SCRIPT_FOOTER}"
+
