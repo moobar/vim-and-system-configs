@@ -379,7 +379,7 @@ if executable('node')
   nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
   nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
   nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
-  nnoremap <leader>f :call CocList outline methods<CR>
+  nnoremap <leader>f :CocList outline<CR>
 
   " TODO(sagar): figure out how to use <Plug>
   " https://vi.stackexchange.com/questions/31012/what-does-plug-do-in-vim
