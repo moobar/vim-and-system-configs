@@ -128,6 +128,10 @@ endif
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
+" Updated default configuration
+" Format file
+nmap <space>f <Plug>(coc-format)
+
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
 

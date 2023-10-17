@@ -266,6 +266,7 @@ floating:
   - com.apple.MobileSMS
   - com.apple.Photos
   - com.apple.QuickTimePlayerX
+  - com.apple.ScreenSharing
   - com.apple.calculator
   - com.apple.finder
   - com.apple.systempreferences

@@ -361,6 +361,19 @@ function date-utc() {
   date -u +"%Y-%m-%dT%H:%M:%SZ"
 }
 
+## [body]
+# print the header (the first line of input)
+# and then run the specified command on the body (the rest of the input)
+# Source: https://unix.stackexchange.com/questions/11856/sort-but-keep-header-line-at-the-top
+#
+# Example use: [gcloud beta builds list --page-size=40 --limit=40 | body sort -k6 -k2]
+body() {
+    IFS= read -r header
+    printf '%s\n' "$header"
+    "$@"
+}
+
+
 
 function ffb() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"

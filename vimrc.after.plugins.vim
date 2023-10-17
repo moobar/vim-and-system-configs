@@ -363,16 +363,12 @@ if executable('node')
     call s:source('vimrcfiles/coc.vim')
   endif
 
-
   nmap <leader>hcn :h coc-nvim.txt<CR>
   nmap <leader>hcc :h coc-config.txt<CR>
-  nmap <leader>f <Plug>(coc-format)
 
   " Formatting cocconfig?
   autocmd FileType json syntax match Comment +\/\/.\+$+
 
-  " Overriding the merlin thing for now, and mapping until i figure out how to
-  " deal with the filetype stuff better
   nmap <leader>e :CocDiagnostics<CR>
 
   "" Use K to show documentation in preview window
@@ -383,6 +379,7 @@ if executable('node')
   nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
   nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
   nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
+  nnoremap <leader>f :call CocList outline methods<CR>
 
   " TODO(sagar): figure out how to use <Plug>
   " https://vi.stackexchange.com/questions/31012/what-does-plug-do-in-vim

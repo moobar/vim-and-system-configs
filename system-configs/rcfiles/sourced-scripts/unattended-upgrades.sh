@@ -63,19 +63,19 @@ function upgrade_package_managers() {
     countdown --seconds 5 --flat
   )
 
-  if brew --version 1>/dev/null 2>&1; then
+  if type brew &>/dev/null; then
     echo "## Updating Brew.. ##"
     brew update && brew upgrade
     echo "Completed."
     echo ""
   fi
 
-  if apt-get --version 1>/dev/null 2>&1; then
+  if type apt-get &>/dev/null; then
     echo "## Updating Apt Packages.. ##"
     sudo apt-get update -y && sudo apt-get upgrade -y
     echo "Completed."
     echo ""
-  elif yum --version 1>/dev/null 2>&1; then
+  elif type yum &>/dev/null; then
     echo "## Updating Apt Packages.. ##"
     sudo yum update -y
     echo "Completed."
@@ -83,9 +83,12 @@ function upgrade_package_managers() {
   fi
 
   echo "## Updating npm global packages.. ##"
-  npm -g upgrade
-  echo "Completed."
-  echo ""
+  if type npm &>/dev/null; then
+    npm -g upgrade
+    npm -i bash-language-server
+    echo "Completed."
+    echo ""
+  fi
 
   echo "## Updating pip ##"
   python3 -m pip install --upgrade pip
@@ -105,18 +108,18 @@ function upgrade_package_managers() {
   echo ""
 
   echo "## Updating Vim Plug.. ##"
-  if type nvim 2>/dev/null >/dev/null; then
+  if type nvim &>/dev/null; then
     nvim +PlugClean +PlugUpdate +qall
   else
-    vim +PlugClean +PlugUpdate +qall
+    command vim +PlugClean +PlugUpdate +qall
   fi
   echo "Completed."
   echo ""
 
 
-  if type node 2>/dev/null >/dev/null; then
+  if type node &>/dev/null; then
     echo "## Updating coc-nvim.. ##"
-    nvim +CocUpdate
+    nvim +CocUpdateAndQuit
     echo "Completed."
     echo ""
 

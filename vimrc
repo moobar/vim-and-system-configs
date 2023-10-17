@@ -54,6 +54,28 @@ packadd! matchit
 " If node isn't installed, let's not load coc
 if !executable('node')
   execute ("set runtimepath-=" . s:root . "/plugged/coc.nvim")
+else
+  " Helper function for updating coc
+  function! CocQuitAfterUpdate(timer_id)
+      for buf in range(1, bufnr('$'))
+          if bufexists(buf) && buflisted(buf)
+              let lines = getline(1, '$')
+              if index(lines, 'Update finished') >= 0
+                  call timer_stop(a:timer_id)
+                  :qa!
+                  return
+              endif
+          endif
+      endfor
+  endfunction
+
+  function! CocUpdateAndQuit()
+      CocUpdate
+      call timer_start(1000, 'CocQuitAfterUpdate', {'repeat': -1})
+  endfunction
+
+  command! CocUpdateAndQuit call CocUpdateAndQuit()
+
 endif
 
 " }}}
@@ -620,5 +642,4 @@ endif
 " ============================================================================
 
 let g:airline#extensions#tabline#enabled = 1
-
 
