@@ -108,7 +108,21 @@ function gitparentbranchcommit() {
 ### [gitparentbranch]
 ##  Output the name of the branch that was branched off of
 function gitparentbranch() {
-  gitparentbranchcommit | awk '{print $1}' | cut -d/ -f2-
+  local PARENT_BRANCH=
+  #gitparentbranchcommit | awk '{print $1}' | cut -d/ -f2-
+
+  PARENT_BRANCH=$(git show-branch \
+    | grep -F '*' \
+    | grep -v "$(git rev-parse --abbrev-ref HEAD)" \
+    | grep --color=never -Eo '\[[^]]*\]' \
+    | tr -d '][' \
+    | head -1)
+
+  if [[ -z $PARENT_BRANCH ]]; then
+    PARENT_BRANCH="HEAD"
+  fi
+
+  echo "${PARENT_BRANCH}"
 }
 
 ## [gitbranchlog] <git log ARGS>  ->  Alias

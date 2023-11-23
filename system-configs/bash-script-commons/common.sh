@@ -324,6 +324,22 @@ function clean_cached_commands() {
   fi
 }
 
+## [subprocesses-kill]
+# Kill all the subprocesses of the current process
+# DANGEROUS - This will kill all subprocesses of the current shell!
+# Must pass argument 'true' to run
+function subprocesses-kill() {
+  if [[ $1 != "true" ]]; then
+    echo "Must pass argument 'true' to run"
+    return 1
+  fi
+
+  for subprocess in $(pstree $$ | grep -Eo -- '[-=+] [^ ]+' | grep --color=never -Eo '[0-9]+' | tail -n +2 | tac); do
+    echo "Killing subprocess: [$(ps "${subprocess}" | tail -n +2)]"
+    kill "${subprocess}" || true
+  done
+}
+
 ## [cache_command]
 #  Lets you specify a bash statement to cache.
 #  The most common use of this function is to cache some inner

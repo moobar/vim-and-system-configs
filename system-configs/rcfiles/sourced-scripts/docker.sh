@@ -26,7 +26,31 @@ function docker-mapped-port() {
   fi
 }
 
+function docker-grep() {
+  local SEARCH_PATTERN=
+  if test ! -t 0; then
+    SEARCH_PATTERN="$(cat)"
+  else
+    if [[ -z "${1}" ]]; then
+      echo "Expecting input from pipe or grep pattern"
+      return 1
+    fi
+    SEARCH_PATTERN="$1"
+  fi
+  docker ps | grep -i "${SEARCH_PATTERN}" | awk '{print $1}'
+}
 
+function docker-kill() {
+  docker kill "$(docker-grep "$@")"
+}
+
+function docker-exec() {
+  if docker exec -it "$(docker-grep amicus)" /bin/ls /bin/bash &>/dev/null; then
+    docker exec -it "$(docker-grep "$@")" /bin/bash
+  else
+    docker exec -it "$(docker-grep "$@")" /bin/sh
+  fi
+}
 
 function ffdocker() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"

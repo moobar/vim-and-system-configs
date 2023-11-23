@@ -22,6 +22,12 @@ function rg() {
   command rg --smart-case --color=always --no-ignore -p "$@" | less -XFR
 }
 
+## [rg-no-pager]  ->  Alias
+#  same as [rg] without a pager
+function rg-no-pager() {
+  command rg --smart-case --color=always --no-ignore -p "$@"
+}
+
 ## [rgcase]  ->  Alias
 #  Sane defaults for rg (--no-ignore) and then pipes the output to less
 function rgcase() {
@@ -165,6 +171,20 @@ function cd() {
     fi
   else
     command cd "$@" || return 1
+  fi
+}
+
+## [cdd]
+#  Given a file, cd into the directory that contains it
+#
+#  RETURN  ->
+#    cd's into the directory of the file supplied
+function cdd() {
+  if [[ $# -eq 0 ]]; then
+    echo "Must supply a file"
+    return 1
+  else
+    command cd "$(dirname "$*")" || return 1
   fi
 }
 
