@@ -11,7 +11,7 @@
   fi
 
   if grep -Eqi '^ID=(.*ubuntu.*|.*debian.*)' /etc/os-release 2>/dev/null ; then
-    sudo apt-get -qq install -y wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop
+    sudo apt-get -qq install -y wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop taskwarrior
     sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 
     # curl https://sh.rustup.rs -sSf -o rust-install.sh && bash rust-install.sh -y -q && rm rust-install.sh
@@ -20,7 +20,7 @@
     if grep -Eqi '^ID=(.*rocky.*)' /etc/os-release; then
       sudo yum install -y -q epel-release
     fi
-    sudo yum install -y -q wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop
+    sudo yum install -y -q wget git tmux ripgrep fzf vim pup jq bc bat lsof netcat htop taskwarrior
     sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 
     # curl https://sh.rustup.rs -sSf -o rust-install.sh && bash rust-install.sh -y -q && rm rust-install.sh
@@ -39,7 +39,7 @@
       eval "$(/usr/local/Homebrew/bin/brew shellenv)"
     fi
 
-    brew install git-delta wget git tmux ripgrep fzf vim pup jq yq bc bat lsof netcat htop
+    brew install git-delta wget git tmux ripgrep fzf vim pup jq yq bc bat lsof netcat htop task
   fi
 )
 

@@ -171,7 +171,8 @@ countdown 5
                git-delta grpcurl htop jq mitmproxy neovim nmap pstree pup pv \
                python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
                tmux tree tree-sitter util-linux vim watch wget xz yq termshark \
-               websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz
+               websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz \
+               task taskwarrior-tui jwt-cli 1password-cli
 
   # Useful but not really super core packages
   brew install csvkit docker go gpatch gpatch guile lazygit lua maven \

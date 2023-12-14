@@ -108,6 +108,10 @@ function mvn-clean-install-quick() {
   mvn clean install -DskipTests -Ddockerfile.skip=true "$@"
 }
 
+function mvn-test() {
+  mvn test -DtrimStackTrace=false -Dstdout=F "$@"
+}
+
 function ffjava() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

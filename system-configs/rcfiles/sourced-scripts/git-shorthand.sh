@@ -207,12 +207,34 @@ function gitbranchfiles-origin() {
   gitbranchdiff-origin --name-only "$@" | awk '{print $0}'
 }
 
-function gh-list-open-prs() {
+function gh-list-authored-prs() {
+  gh search prs --limit=200 --state=open --author="@me"
+}
+
+function gh-list-authored-prs-json() {
+  gh search prs --limit=200 --state=open --author="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url | jq -c .[]
+}
+
+function gh-list-assigned-prs() {
   gh search prs --limit=200 --state=open --assignee="@me"
 }
 
-function gh-list-open-prs-json() {
+function gh-list-assigned-prs-json() {
   gh search prs --limit=200 --state=open --assignee="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url | jq -c .[]
+}
+
+function gh-search-prs() {
+  local SEARCH_TERMS=''
+  if [[ $# -eq 0 ]]; then
+    SEARCH_TERMS+="author=@me is:open"
+  else
+    SEARCH_TERMS="$*"
+  fi
+  gh search prs --limit=200 "${SEARCH_TERMS}"
+}
+
+function gh-search-prs-json() {
+  gh search prs --limit=200 --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url "$@" | jq -c .[]
 }
 
 ## [fgitswitch]  ->  Shorthand
@@ -380,7 +402,7 @@ function gh-download-all-repos() {
 
   local repo_info=
   (
-    while read -r repo_info; do
+    while read -r repo_info <&3; do
       local archive_status='' repo_name=''
 
       #printf "OWNER info: %s\n" "${owner}"
@@ -404,7 +426,7 @@ function gh-download-all-repos() {
         if [[ $RUNNING -le $MAX_PARALLEL ]]; then break; fi
         sleep 5
       done
-    done < <( gh repo list "${OWNER}" --limit 1000 )
+    done 3< <( gh repo list "${OWNER}" --limit 1000 )
     echo "The vast majority of the repos were cloned. Still waiting for"
     echo Running: 'ps auxww | grep -v grep | grep "git clone --quiet"'
     # shellcheck disable=SC2009

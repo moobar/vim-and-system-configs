@@ -38,6 +38,13 @@ fi
 rm -rf ~/.ideavimrc
 ln -fs ~/.vim/ideavim/ideavimrc ~/.ideavimrc
 
+
+if [[ -e ~/.taskrc && ! -L ~/.taskrc ]]; then
+  mv ~/.taskrc ~/.taskrc.bak."$(date "+%Y-%m-%d")"
+fi
+rm -rf ~/.taskrc
+ln -fs ~/.vim/taskwarrior/taskrc ~/.taskrc
+
 if [[  ! -d ~/.config ]]; then
   mkdir -p ~/.config
 fi
