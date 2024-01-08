@@ -434,11 +434,13 @@ nnoremap <leader>dp :call vimspector#Pause()<CR>
 nnoremap <leader>dc :call vimspector#Continue()<CR>
 nnoremap <leader>ds :call vimspector#Stop()<CR>
 
+nnoremap <S-r> :call vimspector#RunToCursor()<CR>
 nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
 nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
 nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
 nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
 
+nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
 nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
 nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
 nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
