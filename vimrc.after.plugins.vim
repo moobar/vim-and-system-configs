@@ -428,6 +428,7 @@ nmap <leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <leader>di <Plug>VimspectorBalloonEval
 
+nnoremap <S-c> :call vimspector#Continue()<CR>
 nnoremap <leader>dd :call vimspector#Launch()<CR>
 nnoremap <leader>dx :call vimspector#Reset()<CR>
 nnoremap <leader>dp :call vimspector#Pause()<CR>
