@@ -75,11 +75,11 @@ nmap <localleader>l :LinediffReset<CR>
 nmap <leader>w :windo diffthis<CR>
 nmap <localleader>w :windo diffoff<CR>
 
-nmap <leader>do :DiffviewOpen<CR>
-nmap <leader>dc :DiffviewOpen<CR>
-nmap <leader>dt :DiffviewToggleFiles<CR>
-nmap <leader>dr :DiffviewRefresh<CR>
-nmap <leader>df :DiffviewFileHistory<CR>
+nmap <localleader>do :DiffviewOpen<CR>
+nmap <localleader>dc :DiffviewOpen<CR>
+nmap <localleader>dt :DiffviewToggleFiles<CR>
+nmap <localleader>dr :DiffviewRefresh<CR>
+nmap <localleader>df :DiffviewFileHistory<CR>
 
 " }}}
 " ============================================================================
@@ -181,6 +181,9 @@ nnoremap <C-P> :bprevious<CR>
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-X> :bdelete<CR>
 
+" Maximize a split window
+nmap <leader>z :MaximizerToggle!<CR>
+
 " }}}
 " ============================================================================
 " Tab Navigation {{{1
@@ -214,6 +217,17 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 nnoremap <leader>n :NERDTreeVCS<CR>
 nnoremap <localleader>n :NERDTreeToggle<CR>
 nnoremap <leader>o :NERDTreeFind<CR>
+
+" }}}
+" ============================================================================
+" vim-test {{{1
+" ============================================================================
+
+nmap <silent> tt :TestNearest<CR>
+nmap <silent> tf :TestFile<CR>
+nmap <silent> ta :TestSuite<CR>
+nmap <silent> tl :TestLast<CR>
+nmap <silent> tg :TestVisit<CR>
 
 " }}}
 " ============================================================================
@@ -381,12 +395,88 @@ if executable('node')
   nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
   nnoremap <leader>f :CocList outline<CR>
 
+  "" Add a helper for easily restarting CoC. This is useful when you're
+  "  referencing other files and you want it
+  function! RestartCoC()
+    silent! call coc#rpc#restart() | echo "Restarted Coc to pull in external changes"
+  endfunction
+  nnoremap <leader>. :call RestartCoC()<CR>
+
   " TODO(sagar): figure out how to use <Plug>
   " https://vi.stackexchange.com/questions/31012/what-does-plug-do-in-vim
   "
   " TODO(sagar): Go through everything here and add a bunch of keys
   " https://github.com/neoclide/coc.nvim/blob/03c9add7cd867a013102dcb45fb4e75304d227d7/doc/coc.txt#L2311
 endif
+
+" }}}
+" ============================================================================
+"  Configure Vimspector for awesome debugging {{{1
+" ============================================================================
+
+" Super helpful article: https://dev.to/iggredible/debugging-in-vim-with-vimspector-4n0m
+
+" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+let g:vimspector_base_dir=s:root . "/vimspector-configs"
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_test_args = '--basedir test-base'
+let g:vimspector_install_gadgets = [ '--all', '--force-all' ]
+
+"" Shortcuts to make debugging better
+" for normal mode - the word under the cursor
+nmap <leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <leader>di <Plug>VimspectorBalloonEval
+
+nnoremap <leader>dd :call vimspector#Launch()<CR>
+nnoremap <leader>dx :call vimspector#Reset()<CR>
+nnoremap <leader>dp :call vimspector#Pause()<CR>
+nnoremap <leader>dc :call vimspector#Continue()<CR>
+nnoremap <leader>ds :call vimspector#Stop()<CR>
+
+nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
+nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
+nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
+nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
+
+nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
+nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
+
+nmap <leader>dR <Plug>VimspectorRestart
+
+nmap <S-h> <Plug>VimspectorStepOut
+nmap <S-k> <Plug>VimspectorStepInto
+nmap <S-j> <Plug>VimspectorStepOver
+nmap <leader>dh <Plug>VimspectorStepOut
+nmap <leader>dk <Plug>VimspectorStepInto
+nmap <leader>dj <Plug>VimspectorStepOver
+
+"" Example Extending a Configuration -- This will pop up in the selection menu
+
+" let g:vimspector_configurations = {
+"       \ "test_debugpy_config": {
+"       \   "adapter": "test_debugpy",
+"       \   "filetypes": [ "python" ],
+"       \   "configuration": {
+"       \     "request": "launch",
+"       \     "type": "python",
+"       \     "cwd": "${fileDirname}",
+"       \     "args": [],
+"       \     "program": "${file}",
+"       \     "stopOnEntry": v:false,
+"       \     "console": "integratedTerminal",
+"       \     "integer": 123,
+"       \   },
+"       \   "breakpoints": {
+"       \     "exception": {
+"       \       "raised": "N",
+"       \       "uncaught": "",
+"       \       "userUnhandled": ""
+"       \     }
+"       \   }
+"       \ } }
+
 
 " }}}
 " ============================================================================
@@ -417,4 +507,104 @@ vnoremap <leader>d :g/^\s*$/d<CR>
 
 " }}}
 " ============================================================================
+" Custom Python Functions/Helpers {{{1
+" ============================================================================
+
+" Global variable for scratch buffer number
+let g:scratch_buffer_number = 0
+
+" Helper function to make it easy to run a python code
+function! RunPythonScript(selected)
+    " Use a temp file for selected code or current file name
+    if a:selected
+        let l:tempfile = tempname()
+        normal! gv"xy
+        call writefile(split(@x, '\n'), l:tempfile)
+        let l:command = 'python3 ' . l:tempfile
+    else
+        let l:file_name = expand('%:p')
+        if l:file_name == ''
+            echoerr 'Please save the file first.'
+            return
+        endif
+        let l:command = 'python3 ' . l:file_name
+    endif
+
+    " Execute the Python script/command and capture the output
+    let l:output = system(l:command)
+
+    " Show the output in the command line area
+    echo l:output
+
+    " Create or reuse the scratch buffer
+    if g:scratch_buffer_number == 0 || !bufexists(g:scratch_buffer_number)
+        let l:current_buffer = bufnr('%')
+        enew
+        setlocal buftype=nofile
+        setlocal bufhidden=hide
+        setlocal noswapfile
+        let g:scratch_buffer_number = bufnr('%')
+        exec l:current_buffer . 'buffer'
+    endif
+
+    " Update the scratch buffer with the output without displaying it
+    try
+        call setbufline(g:scratch_buffer_number, 1, split(l:output, "\n"))
+    catch
+        " Handle error if scratch buffer does not exist
+        echoerr "Error updating scratch buffer."
+    endtry
+endfunction
+
+
+" Map the function to <F5> for the entire script
+nnoremap <leader><CR> :call RunPythonScript(0)<CR>
+nnoremap <leader>1 :call RunPythonScript(0)<CR>
+
+" Map the function to <F6> for the selected text
+vnoremap <leader><CR> :<C-U>call RunPythonScript(1)<CR>
+vnoremap <leader>1 :<C-U>call RunPythonScript(1)<CR>
+
+" Function to reopen the scratch buffer
+function! OpenScratchBuffer()
+    if g:scratch_buffer_number != 0 && bufexists(g:scratch_buffer_number)
+        exec g:scratch_buffer_number . 'buffer'
+    else
+        echo "No scratch buffer found."
+    endif
+endfunction
+
+" Map to reopen the scratch buffer with <F7>
+nnoremap <leader>s :call OpenScratchBuffer()<CR>
+
+function! RunPythonUnitTests()
+    " Get the full path of the current file
+    let l:file_name = expand('%:p')
+    " Check if the file is saved
+    if l:file_name == ''
+        echoerr 'Please save the file first.'
+        return
+    endif
+    " Construct the unittest command
+    let l:command = 'python3 -m unittest ' . l:file_name
+    " Run the command and show the output
+    execute '!' . l:command
+
+    " Note to self, just using the execute vs the other thing in the other
+    " python function is maybe a little more straight forward? Something to
+    " think about for a quality of life/simplify optimization
+endfunction
+
+
+nnoremap tp :call RunPythonUnitTests()<CR>
+
+
+
+" }}}
+" ============================================================================
+
+
+" Temporary while studying
+Copilot disable
+
 

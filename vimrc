@@ -223,8 +223,12 @@ augroup end
 " VIM UX Settings {{{1
 " ============================================================================
 
+" TODO - Switch to space as the leader. it's easider to get to and better
 let maplocalleader = ",,"
-let mapleader = ","
+let mapleader = " "
+
+" let maplocalleader = ",,"
+" let mapleader = ","
 
 " When splitting, don't auto move to the split buffer
 set splitbelow
@@ -643,3 +647,4 @@ endif
 
 let g:airline#extensions#tabline#enabled = 1
 
+"" Experimental ""

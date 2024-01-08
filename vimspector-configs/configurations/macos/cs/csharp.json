@@ -1,0 +1,34 @@
+{
+  "configurations": {
+    "Attach": {
+      "adapter": "netcoredbg",
+      "autoselect": false,
+      "configuration": {
+        "request": "attach"
+      }
+    }/*,
+    "launch - netcoredbg - localbuild": {
+      "adapter": "netcoredbg-debug",
+      "configuration": {
+        "request": "launch",
+        "program": "${app:${workspaceRoot\\}/bin/Debug/netcoreapp3.1/csharp.dll}",
+        "args": [],
+        "stopAtEntry": true
+      }
+    },
+    "launch - netcoredbg - socket": {
+      "adapter": "multi-session",
+      "variables": {
+        "host": "localhost",
+        "port": 4711
+      },
+      "configuration": {
+        "request": "launch",
+        "program": "${app:${workspaceRoot\\}/bin/Debug/netcoreapp3.1/csharp.dll}",
+        "args": [],
+        "stopAtEntry": true
+      }
+    }
+    */
+  }
+}

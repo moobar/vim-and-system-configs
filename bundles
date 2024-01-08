@@ -22,7 +22,6 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'mileszs/ack.vim'
 Plug 'ocaml/vim-ocaml'
 Plug 'phleet/vim-mercenary'
-Plug 'scrooloose/nerdcommenter'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -35,6 +34,16 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/arpeggio'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
+Plug 'vim-test/vim-test'
+Plug 'szw/vim-maximizer'
+Plug 'tpope/vim-repeat'
+
+" Testing "
+Plug 'airblade/vim-gitgutter'
+Plug 'mtth/scratch.vim'
+
+" Debugging with Vim
+Plug 'puremourning/vimspector'
 
 " Javascript/TyperScript/React/GraphQL
 Plug 'HerringtonDarkholme/yats.vim'

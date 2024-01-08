@@ -1,0 +1,37 @@
+{
+  "configurations": {
+    "Vimscript Run": {
+      "adapter": "vim-debug-adapter",
+      "configuration": {
+        "type": "vim",
+        "request": "launch",
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    },
+    "Vimscript Run Dev": {
+      "adapter": "vim-debug-adapter",
+      "configuration": {
+        "type": "vim",
+        "request": "launch",
+        "args": [
+          "--cmd", "let g:benj_test_ycm=1"
+        ],
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    },
+    "Vimscript Attach": {
+      "adapter": "vim-debug-adapter",
+      "configuration": {
+        "type": "vim",
+        "request": "attach",
+        "trace": {
+          "level": "Verbose"
+        }
+      }
+    }
+  }
+}
