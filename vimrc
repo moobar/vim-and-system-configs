@@ -648,3 +648,5 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 
 "" Experimental ""
+
+" Look into: https://github.com/rockerBOO/awesome-neovim

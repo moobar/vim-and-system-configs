@@ -201,6 +201,12 @@ function gitbranchlog-unpushed() {
   git log @{upstream}.. "$@"
 }
 
+## [gitpush-upstream]  ->  Shorthand
+#  First time pushing a branch, use this to set the upstream
+function gitpush-upstream() {
+  git push --set-upstream origin "$(gitbranch)"
+}
+
 ## [gitbranchfiles-origin <git diff -w ARGS>]  ->  Shorthand
 #  Show all the files that have been changed in the branch
 function gitbranchfiles-origin() {

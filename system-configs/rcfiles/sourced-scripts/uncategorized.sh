@@ -46,6 +46,13 @@ function rgjavasource() {
   rg -p --type java --iglob '!target' "$@" | less -XFR
 }
 
+## [rgsource]  ->  Shorthand
+#  similar to rgjavasource except doesn't restrict type to java files
+function rgsource() {
+  rg -p --type java --iglob '!target' "$@" | less -XFR
+}
+
+
 ## [grep-urls STRING]
 #  Try to grep through a [STRING] and find all the urls
 #

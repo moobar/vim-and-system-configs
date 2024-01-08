@@ -4,10 +4,12 @@
     "Run Current Script": {
       "adapter": "vscode-bash",
       "configuration": {
+        "pathBashdb": "/opt/homebrew/bin/bashdb",
         "request": "launch",
         "program": "${file}",
         "cwd": "${fileDirname}",
-        "args": [ "*${args}" ]
+        "args": [ "*${args}" ],
+        "terminalKind": "integrated"
       }
     }
   }

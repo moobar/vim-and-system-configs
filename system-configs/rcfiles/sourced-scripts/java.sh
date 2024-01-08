@@ -112,6 +112,32 @@ function mvn-test() {
   mvn test -DtrimStackTrace=false -Dstdout=F "$@"
 }
 
+function mvn-classpath() {
+  mvn dependency:build-classpath -pl :server \
+    | grep -Fv '[INFO]' \
+    | tr ':' '\n' \
+    | xargs -IJAR dirname JAR \
+    | sed "s|${HOME}/\.m2/repository/||g" \
+    | rev \
+    | sed 's|/|-|' \
+    | tr '/' '.' \
+    | rev \
+    | xargs -IJAR echo JAR.jar
+}
+
+function jar-find-clients() {
+  (
+    cd "$(git rev-parse --show-toplevel)" || true
+
+    # shellcheck disable=SC2010
+    for jar in $(ls server/target/lib/com.current.*.jar | grep -v -- '\client-.*\.jar'); do
+      echo JAR: "$jar"
+      jar -tvf "$jar" | grep Client.class;
+    done
+  )
+}
+
+
 function ffjava() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }
