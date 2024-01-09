@@ -9,6 +9,8 @@ alias cdw='cd ~/workspaces'
 
 alias watch='watch --color'
 
+# "Vanilla" vim for things like debugging bash scripts with vimspector
+alias vvim='command vim'
 if type nvim 2>/dev/null >/dev/null; then
   alias todo='nvim ~/forge/todo/tasks.md'
   alias vim='nvim'
