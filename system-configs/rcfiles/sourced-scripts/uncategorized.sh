@@ -394,13 +394,23 @@ function date-utc() {
 # Source: https://unix.stackexchange.com/questions/11856/sort-but-keep-header-line-at-the-top
 #
 # Example use: [gcloud beta builds list --page-size=40 --limit=40 | body sort -k6 -k2]
-body() {
+function body() {
     IFS= read -r header
     printf '%s\n' "$header"
     "$@"
 }
 
+## [curl-time]
+# Provide timing information when curling a resource
+function curl-time() {
+  time curl -s -w @"$HOME/.vim/system-configs/curl-format/timing.txt" "$@"
+}
 
+## [mkdir-today]
+#  Makes a directory named the current date in YYYY-MM-DD formate
+function mkdir-today() {
+  mkdir "$(date '+%Y-%m-%d')"
+}
 
 function ffb() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"

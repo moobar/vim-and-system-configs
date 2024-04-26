@@ -442,6 +442,12 @@ function gh-download-all-repos() {
   )
 }
 
+## [gh-pr-create]  ->  Alias
+#  Runs gh pr create --fill
+function gh-pr-create() {
+  gh pr create --fill "$@"
+}
+
 ## Taken from junegunn's rcfiles ##
 
 ## [gitzip]  ->  Alias

@@ -393,7 +393,7 @@ if executable('node')
   nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
   nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
   nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
-  nnoremap <leader>f :CocList outline<CR>
+  nnoremap <leader>fs :CocList outline<CR>
 
   "" Add a helper for easily restarting CoC. This is useful when you're
   "  referencing other files and you want it

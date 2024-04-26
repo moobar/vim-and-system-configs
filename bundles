@@ -44,6 +44,9 @@ Plug 'mtth/scratch.vim'
 
 " Debugging with Vim
 Plug 'puremourning/vimspector'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
 
 " Javascript/TyperScript/React/GraphQL
 Plug 'HerringtonDarkholme/yats.vim'

@@ -103,6 +103,9 @@ function generate-class-path() {
 
 #function run-jar-locally
 
+function mvn-clean-install-skipTests() {
+  mvn clean install -DskipTests "$@"
+}
 
 function mvn-clean-install-quick() {
   mvn clean install -DskipTests -Ddockerfile.skip=true "$@"
@@ -134,6 +137,34 @@ function jar-find-clients() {
       echo JAR: "$jar"
       jar -tvf "$jar" | grep Client.class;
     done
+  )
+}
+
+function mvn-find-runtime-dependencies() {
+  if test ! -t 0; then
+    cat | grep -F ':jar' | grep runtime | awk '{print $NF}' | sort | uniq -c
+  else
+    mvn dependency:tree "$@" | grep -F ':jar' | grep -F ':runtime' | awk '{print $NF}' | sort | uniq -c
+  fi
+}
+
+load () {
+	open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"${1}"
+}
+
+intellij() {
+  (
+    if [[ -n $1 ]]; then
+      open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"$1"
+    else
+      if cd "$(git rev-parse --show-toplevel)"; then
+        if [[ -f pom.xml ]]; then
+          open -na "IntelliJ IDEA.app" --args .
+        else
+          echo "Not a java repo. Not opening IntelliJ"
+        fi
+      fi
+    fi
   )
 }
 

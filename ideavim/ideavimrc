@@ -2,7 +2,7 @@ unmap ,
 unmap ;
 
 let maplocalleader = ",,"
-let mapleader = ","
+let mapleader = " "
 
 " remember a long list of our commands from the past
 set history=1000
@@ -48,8 +48,8 @@ vnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 """""""""""""""
 " If you want to see what a key is mapped to, use the following command:
 " :actionlist
-nnoremap ,a :actionlist<CR>
-nnoremap ,r :source ~/.ideavimrc<CR>
+nnoremap <SPACE>,a :actionlist<CR>
+nnoremap <SPACE>,r :source ~/.ideavimrc<CR>
 
 " For whatever reason the <localleader> mapping is a little inconsistent when 
 " there are conflicts with other keys. Going to just use [,,] for now
@@ -69,8 +69,8 @@ nnoremap ,r :source ~/.ideavimrc<CR>
 nnoremap ,t :action ParameterInfo<CR>
 nnoremap ,,t :action QuickJavaDoc<CR>
 
-nnoremap ,l :action ReformatCode<CR>
-vnoremap ,l :action ReformatCode<CR>
+nnoremap <SPACE>,l :action ReformatCode<CR>
+vnoremap <SPACE>,l :action ReformatCode<CR>
 
 nnoremap ,,r :action RenameElement<CR>
 
@@ -79,12 +79,12 @@ nnoremap ,,b :action GotoDeclaration<CR>
 nnoremap ,,s :action GotoImplementation<CR>
 nnoremap ,,u :action GotoSuperMethod<CR>
 
-nnoremap ,f :action FileStructurePopup<CR>
+nnoremap <SPACE>fs :action FileStructurePopup<CR>
 nnoremap ,,f :action GotoFile<CR>
 
 " Search
-nnoremap ,s :action SearchEverywhere<CR>
-nnoremap ,u :action ShowUsages<CR>
+nnoremap <SPACE>s :action SearchEverywhere<CR>
+nnoremap <SPACE>u :action ShowUsages<CR>
 
 " Debugging
 nnoremap ;d :action Debug<CR>
@@ -153,7 +153,7 @@ nnoremap gp :action GotoPreviousError<CR>
 nnoremap gu :action FindUsages<CR>
 
 " More Leader Shortcuts (space)
-nnoremap <Space><Space> :noh<CR>:action HideAllWindows<CR>
+"nnoremap <Space><Space> :noh<CR>:action HideAllWindows<CR>
 nnoremap <Space>s :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
 nnoremap <Space>w :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
 nnoremap <Space>S :action RearrangeCode<CR>:w<CR>

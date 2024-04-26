@@ -6,7 +6,8 @@
 OS_NAME=$(uname -s)
 
 if [[ $OS_NAME == "Darwin" ]]; then
-  export SHELL=/bin/bash
+  #export SHELL=/bin/bash
+  export SHELL=~/bin/bash
 fi
 
 # Set a fresh path if path_helper: MacOS
