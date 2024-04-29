@@ -128,6 +128,38 @@ function jq-to-csv ()
   fi
 }
 
+function to-snake-case() {
+  if test ! -t 0; then
+    cat | jq '
+    def camel_to_snake:
+    gsub("(?<lower>[a-z])(?<upper>[A-Z])"; "\(.lower)_\(.upper|ascii_downcase)");
+
+    walk(
+    if type == "object" then
+      with_entries(.key |= camel_to_snake)
+    else
+      .
+    end
+    )'
+  else
+    if [[ -z "${1}" ]]; then
+      echo "Must pass json file name"
+      return 1
+    fi
+    jq '
+    def camel_to_snake:
+    gsub("(?<lower>[a-z])(?<upper>[A-Z])"; "\(.lower)_\(.upper|ascii_downcase)");
+
+    walk(
+    if type == "object" then
+      with_entries(.key |= camel_to_snake)
+    else
+      .
+    end
+    )' "$1"
+  fi
+}
+
 ## [tmux-new-share]
 #  Makes a new tmux socket that's world readable. Useful for two people sshing onto one box
 #
