@@ -33,15 +33,6 @@ function mvn-watch() {
 
     cd "$(git rev-parse --show-toplevel)" || true
 
-    function clean_compile() {
-      if [[ -n "$project_name" ]]; then
-        echo "Compiling project: $project_name"
-        mvn clean compile -pl ":$project_name" -am
-      else
-        echo "Compiling project"
-        mvn clean compile
-      fi
-    }
 
     # Define the command to run when a change is detected
     function on_change_command() {
@@ -57,6 +48,15 @@ function mvn-watch() {
     }
 
     #echo "Running mvn clean compile on project"
+    #function clean_compile() {
+    #  if [[ -n "$project_name" ]]; then
+    #    echo "Compiling project: $project_name"
+    #    mvn clean compile -pl ":$project_name" -am
+    #  else
+    #    echo "Compiling project"
+    #    mvn clean compile
+    #  fi
+    #}
     #clean_compile
 
     echo ""
@@ -148,11 +148,67 @@ function mvn-find-runtime-dependencies() {
   fi
 }
 
-load () {
+function get-app-version() {
+  xq -x '/project/version' "$(git rev-parse --show-toplevel)/pom.xml"
+}
+
+function rc-generate() {
+  local RC_NUMBER=
+  local APP_SNAPSHOT_VERSION=
+  local APP_VERSION=
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -r|--rc)
+        local RC_NUMBER="$2"
+        shift
+        shift
+        ;;
+      *)
+        echo "Invalid argument: $1"
+        return 1
+        ;;
+    esac
+  done
+
+  if [[ -z "$RC_NUMBER" ]]; then
+    echo "Must provide a release candidate number as rcNUMBER"
+    echo "use flag [-r|--rc] to provide the release candidate number"
+    return 1
+  fi
+  APP_SNAPSHOT_VERSION="$(get-app-version)"
+  APP_VERSION="${APP_SNAPSHOT_VERSION//-SNAPSHOT/}"
+
+  echo "About to run:"
+  cat <<EOM
+  mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}.${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
+EOM
+
+  read -r -p "Are you sure you want to continue? [y/N] " response
+  if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    return 1
+  fi
+
+  mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}.${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
+}
+
+function rc-release() {
+  echo "About to run:"
+  cat <<EOM
+  mvn -Darguments="-Dfindbugs.skip=true -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip -DgenerateClientJs" -Dmaven.javadoc.skip=true -DskipTests -Dcheckstyle.skip release:perform
+EOM
+
+  read -r -p "Are you sure you want to continue? [y/N] " response
+  if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    return 1
+  fi
+  mvn -Darguments="-Dfindbugs.skip=true -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip -DgenerateClientJs" -Dmaven.javadoc.skip=true -DskipTests -Dcheckstyle.skip release:perform
+}
+
+function load () {
 	open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"${1}"
 }
 
-intellij() {
+function intellij() {
   (
     if [[ -n $1 ]]; then
       open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"$1"
@@ -167,6 +223,20 @@ intellij() {
     fi
   )
 }
+
+function generate-dto-from-proto() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: generate-dto-from-proto <proto-file> <output-directory>"
+    return 1
+  fi
+  local PROTO_FILE="$1"
+  local OUTPUT_DIRECTORY="$2"
+
+  ~/.vim/system-configs/python-scripts/java-generator-code/proto_to_java_dto.py \
+    "${PROTO_FILE}" \
+    "${OUTPUT_DIRECTORY}"
+}
+
 
 
 function ffjava() {
