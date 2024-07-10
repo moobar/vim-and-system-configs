@@ -222,6 +222,7 @@ fi
 
 if [[ $OS_NAME == "Darwin" ]]; then
   export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-14.0.2.jdk/Contents/Home
+  #export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
   export JAVA_HOME="${JDK_HOME}"
   if [[ ":${PATH}:" != *":${JAVA_HOME}/bin:"* ]]; then
     export PATH=${JAVA_HOME}/bin:${PATH}
@@ -248,3 +249,4 @@ if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
 
+shopt -s globstar

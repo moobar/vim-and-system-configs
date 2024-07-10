@@ -232,7 +232,7 @@ function generate-dto-from-proto() {
   local PROTO_FILE="$1"
   local OUTPUT_DIRECTORY="$2"
 
-  ~/.vim/system-configs/python-scripts/java-generator-code/proto_to_java_dto.py \
+  python ~/.vim/system-configs/python-scripts/java-generator-code/proto_to_java_dto.py \
     "${PROTO_FILE}" \
     "${OUTPUT_DIRECTORY}"
 }

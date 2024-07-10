@@ -229,6 +229,10 @@ function gh-list-assigned-prs-json() {
   gh search prs --limit=200 --state=open --assignee="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url | jq -c .[]
 }
 
+function repo-name() {
+  basename -s .git "$(git config --get remote.origin.url)"
+}
+
 function gh-search-prs() {
   local SEARCH_TERMS=''
   if [[ $# -eq 0 ]]; then

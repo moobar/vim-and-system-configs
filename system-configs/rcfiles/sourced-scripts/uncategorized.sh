@@ -52,6 +52,12 @@ function rgsource() {
   rg -p --type java --iglob '!target' "$@" | less -XFR
 }
 
+## [rg-ips]  ->  Shorthand
+#  Search recursively for anything that matches what an IP should look like, with
+function rg-ips() {
+  rg --pcre2 '\b(?!127\.0\.0\.1\b|0\.0\.0\.0\b)(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\b' "$@"
+}
+
 
 ## [grep-urls STRING]
 #  Try to grep through a [STRING] and find all the urls

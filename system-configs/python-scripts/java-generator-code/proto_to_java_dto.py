@@ -67,10 +67,19 @@ def generate_java_pojo(proto_file, output_dir):
     for block_name, block_lines in message_blocks:
         fields = []
         oneof_blocks = []
+        enum_blocks = []
         inside_oneof = False
+        inside_enum = False
 
         for line in block_lines:
-            if inside_oneof:
+            if inside_enum:
+                enum_field_match = re.match(r"\s*(\w+)\s*=\s*\d+;", line)
+                if enum_field_match:
+                    enum_value = enum_field_match.group(1)
+                    # enum_blocks.append(enum_value)
+                if re.search(r"}", line):
+                    inside_enum = False
+            elif inside_oneof:
                 field_match = re.match(r"\s*(\w+\s*\w*)\s+(\w+)\s*=\s*(\d+);", line)
                 if field_match:
                     field_type = field_match.group(1).strip()
@@ -79,13 +88,17 @@ def generate_java_pojo(proto_file, output_dir):
                 if re.search(r"}", line):
                     inside_oneof = False
             else:
-                field_match = re.match(r"\s*(\w+\s*\w*)\s+(\w+)\s*=\s*(\d+);", line)
-                if field_match:
-                    field_type = field_match.group(1).strip()
-                    field_name = field_match.group(2)
-                    fields.append((field_type, field_name))
-                if re.search(r"oneof\s+(\w+)\s*{", line):
-                    inside_oneof = True
+                if re.search(r"enum\s+\w+\s*{", line):
+                    inside_enum = True
+                    # enum_blocks.append(line)
+                else:
+                    field_match = re.match(r"\s*(\w+\s*\w*)\s+(\w+)\s*=\s*(\d+);", line)
+                    if field_match:
+                        field_type = field_match.group(1).strip()
+                        field_name = field_match.group(2)
+                        fields.append((field_type, field_name))
+                    if re.search(r"oneof\s+(\w+)\s*{", line):
+                        inside_oneof = True
 
         interface_name = block_name
         proto_class_name = f"Client.{block_name}"
@@ -130,6 +143,10 @@ def generate_java_pojo(proto_file, output_dir):
         )
         pojo_lines.append(f"    }}")
         pojo_lines.append("}")
+
+        if enum_blocks:
+            pojo_lines.extend(enum_blocks)
+            pojo_lines.append("")
 
     with open(output_file, "w") as f:
         f.write("\n".join(pojo_lines))

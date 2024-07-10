@@ -48,8 +48,8 @@ vnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 """""""""""""""
 " If you want to see what a key is mapped to, use the following command:
 " :actionlist
-nnoremap <SPACE>,a :actionlist<CR>
-nnoremap <SPACE>,r :source ~/.ideavimrc<CR>
+nnoremap <SPACE>a :actionlist<CR>
+nnoremap <SPACE>r :source ~/.ideavimrc<CR>
 
 " For whatever reason the <localleader> mapping is a little inconsistent when 
 " there are conflicts with other keys. Going to just use [,,] for now
@@ -65,12 +65,17 @@ nnoremap <SPACE>,r :source ~/.ideavimrc<CR>
 "   ⚠️ Mappings to <Action> don't work with noremap. If you know the case when it's needed, please let us know.
 " BUT I found that :action {action_id}<CR> works just fine so i'm going to do
 " that for now
-"
+
 nnoremap ,t :action ParameterInfo<CR>
 nnoremap ,,t :action QuickJavaDoc<CR>
 
-nnoremap <SPACE>,l :action ReformatCode<CR>
-vnoremap <SPACE>,l :action ReformatCode<CR>
+nnoremap <SPACE><SPACE> :action MaximizeEditorInSplit<CR>
+vnoremap <SPACE><SPACE> :action MaximizeEditorInSplit<CR>
+nnoremap <Space>w :action HideAllWindows<CR>
+vnoremap <Space>w :action HideAllWindows<CR>
+nnoremap <C-w><SPACE> :action MoveEditorToOppositeTabGroup<CR>
+vnoremap <C-w><SPACE> :action MoveEditorToOppositeTabGroup<CR>
+
 
 nnoremap ,,r :action RenameElement<CR>
 
@@ -91,11 +96,20 @@ nnoremap ;d :action Debug<CR>
 nnoremap ;b :action ToggleLineBreakpoint<CR>
 nnoremap ;R :action Rerun<CR>
 nnoremap ;r :action Resume<CR>
+nnoremap ;n :action StepOver<CR>    
 nnoremap ;i :action StepInto<CR>
 nnoremap ;o :action StepOut<CR>
 nnoremap ;e :action EvaluateExpression<CR>
 vnoremap ;e :action EvaluateExpression<CR>
-nnoremap ;n :action StepOver<CR>    
+
+" Debugging with some vim like keys
+nnoremap ;j :action StepOver<CR>    
+nnoremap ;k :action StepInto<CR>
+nnoremap ;h :action StepOut<CR>
+nnoremap ;l :action Resume<CR>
+nnoremap ;<SPACE> :action Resume<CR>
+nnoremap ;; :action EvaluateExpression<CR>
+vnoremap ;; :action EvaluateExpression<CR>
 " n=next
 nnoremap ;c :action Resume<CR>
 " c=continue
@@ -155,7 +169,6 @@ nnoremap gu :action FindUsages<CR>
 " More Leader Shortcuts (space)
 "nnoremap <Space><Space> :noh<CR>:action HideAllWindows<CR>
 nnoremap <Space>s :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
-nnoremap <Space>w :action ReformatCode<CR>:action OptimizeImports<CR>:w<CR>
 nnoremap <Space>S :action RearrangeCode<CR>:w<CR>
 nnoremap <Space>t :action Rerun<CR>
 nnoremap <Space>c :action RenameElement<CR>
