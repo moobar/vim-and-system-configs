@@ -8,7 +8,6 @@ fi
 
 ## TODO: This is still a wip
 function mvn-watch() {
-
   (
     # Define the directory to watch
     local watch_directory=""
@@ -170,7 +169,7 @@ function rc-generate() {
     esac
   done
 
-  if [[ -z "$RC_NUMBER" ]]; then
+  if [[ -z "$RC_NUMBER" || "$RC_NUMBER" != rc* ]]; then
     echo "Must provide a release candidate number as rcNUMBER"
     echo "use flag [-r|--rc] to provide the release candidate number"
     return 1
@@ -180,7 +179,7 @@ function rc-generate() {
 
   echo "About to run:"
   cat <<EOM
-  mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}.${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
+  mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
 EOM
 
   read -r -p "Are you sure you want to continue? [y/N] " response
@@ -188,7 +187,10 @@ EOM
     return 1
   fi
 
-  mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}.${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
+  (
+    cd "$(git rev-parse --show-toplevel)" || return 1
+    mvn -Dcheckstyle.skip -Dfindbugs.skip=true -Dmaven.test.skip=true -DskipTests -Darguments="-DskipTests -Dcheckstyle.skip -DgenerateClientJs" release:prepare  -DreleaseVersion="${APP_VERSION}${RC_NUMBER}" -DdevelopmentVersion="${APP_SNAPSHOT_VERSION}"
+  )
 }
 
 function rc-release() {
@@ -201,11 +203,10 @@ EOM
   if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     return 1
   fi
-  mvn -Darguments="-Dfindbugs.skip=true -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip -DgenerateClientJs" -Dmaven.javadoc.skip=true -DskipTests -Dcheckstyle.skip release:perform
-}
-
-function load () {
-	open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"${1}"
+  (
+    cd "$(git rev-parse --show-toplevel)" || return 1
+    mvn -Darguments="-Dfindbugs.skip=true -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip -DgenerateClientJs" -Dmaven.javadoc.skip=true -DskipTests -Dcheckstyle.skip release:perform
+  )
 }
 
 function intellij() {
