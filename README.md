@@ -12,6 +12,9 @@ bash ~/.vim/system-configs/install-minimal.sh
 
 # To disable auto upgrading the terminal, also copy
 touch ~/.vim/.disable_auto_upgrade
+
+# If running on a VPC change prefix to C-f
+sed -i 's/prefix C-g/prefix C-f/' ~/.tmux.conf
 ```
 
 ## Install Minimal, with Node
@@ -24,15 +27,36 @@ bash ~/.vim/system-configs/install-minimal-with-node.sh
 
 # To disable auto upgrading the terminal, also copy
 touch ~/.vim/.disable_auto_upgrade
+
+# If running on a VPC change prefix to C-f
+sed -i 's/prefix C-g/prefix C-f/' ~/.tmux.conf
 ```
 
-## Install
+## Install Locally
 
 Install brew, node, gcloud and lots of useful packages. Can take up to an hour to complete
 
 ```bash
 git clone https://github.com/moobar/vim-and-system-configs.git && ln -s vim-and-system-configs ~/.vim
 bash ~/.vim/system-configs/install-everything.sh
+```
+
+
+## Install on a VPS
+
+Install brew, node, gcloud and lots of useful packages. Can take up to an hour to complete
+
+From OSX
+```bash
+cat linux-bootstrap.sh | pbcopy
+```
+
+Otherwise copy this script
+https://github.com/moobar/vim-and-system-configs/blob/main/system-configs/vps-setup/linux-bootstrap.sh
+
+```bash
+ssh root@SERVER
+# <Paste contents of linux-bootstrap directly into the terminal>
 ```
 
 ## Overview

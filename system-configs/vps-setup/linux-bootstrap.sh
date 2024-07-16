@@ -31,8 +31,10 @@
 
   mkdir -p /home/"${NEW_USER}"/.ssh
   chmod 700 /home/"${NEW_USER}"/.ssh
+  cp -f ~/.ssh/authorized_keys /home/"${NEW_USER}"/.ssh/
   touch /home/"${NEW_USER}"/.ssh/authorized_keys
   chmod 600 /home/"${NEW_USER}"/.ssh/authorized_keys
+
   echo "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG4PL+No4yd0Wd+NCWVp/PSATC6eDUExTz7+hEiiXcLIEY1LB6BSptUz/04kouEXXMJ2gappdk9Dia1cIsOqlII= ${NEW_USER}@laptop" >> /home/"${NEW_USER}"/.ssh/authorized_keys
   chown -R "${NEW_USER}":${NEW_USER_GROUP} /home/"${NEW_USER}"/.ssh
   sed -Ei.bak "s|(${NEW_USER}.*/home/${NEW_USER}):.*|\1:/bin/bash|" /etc/passwd && rm -f /etc/passwd.bak
@@ -48,6 +50,11 @@
 
   # Clone the repo and run the installation in screen
   su - "${NEW_USER}" -c 'git clone https://github.com/moobar/vim-and-system-configs.git && ln -s vim-and-system-configs ~/.vim'
-  su - "${NEW_USER}" -c 'screen -S install-everything bash ~/.vim/system-configs/install-everything.sh'
+  if type tmux; then
+    su - "${NEW_USER}" -c 'tmux new -s bootstrap bash ~/.vim/system-configs/install-everything.sh'
+  else
+    su - "${NEW_USER}" -c 'screen -S bootstrap bash ~/.vim/system-configs/install-everything.sh'
+  fi
+  su - "${NEW_USER}" -c 'sed -i "s/prefix C-g/prefix C-f/" ~/.tmux.conf'
 )
 
