@@ -48,6 +48,11 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'theHamsta/nvim-dap-virtual-text'
 
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'nvim-neotest/nvim-nio'
+
 " Javascript/TyperScript/React/GraphQL
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'pangloss/vim-javascript'

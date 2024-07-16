@@ -168,11 +168,11 @@ countdown 5
   brew upgrade
   brew update
   brew install autoconf automake bc bat coreutils cowsay curl fd fx fzf gh git \
-               git-delta grpcurl htop jq mitmproxy neovim nmap pstree pup pv \
+               git-delta grpcurl htop jq neovim nmap pstree pup pv \
                python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
                tmux tree tree-sitter util-linux vim watch wget xz yq termshark \
                websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz \
-               task taskwarrior-tui jwt-cli 1password-cli terraform-ls
+               task taskwarrior-tui terraform-ls bashdb
 
   # Useful but not really super core packages
   brew install csvkit docker go gpatch gpatch guile lazygit lua maven \
@@ -206,6 +206,7 @@ countdown 5
   if [[ $(uname -s) == "Darwin" ]]; then
     echo "OSX: Installing casks for iterm and gcloud"
     countdown 3
+    brew install mitmproxy jwt-cli 1password-cli
     brew install --cask iterm2 || true
     brew remove --cask google-cloud-sdk -f || true
     brew install --cask google-cloud-sdk

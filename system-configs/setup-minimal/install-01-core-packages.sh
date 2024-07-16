@@ -39,7 +39,7 @@
       eval "$(/usr/local/Homebrew/bin/brew shellenv)"
     fi
 
-    brew install git-delta wget git tmux ripgrep fzf vim pup jq yq bc bat lsof netcat htop task
+    brew install git-delta wget git tmux ripgrep fzf vim pup jq yq bc bat lsof netcat htop task bashdb
   fi
 )
 
