@@ -602,7 +602,7 @@ noremap X "0X
 " inoremap <C-w> <esc>"_d^i
 
 " TODO: OSX Specific
-function! Copy_to_X() range abort
+function! To_clipboard() range abort
   " silent let l:output=systemlist("xclip -f -sel clip | xclip -f | wc -l", @9)
   silent let l:output=systemlist("pbcopy && pbpaste | wc -l | awk '{print $1}'", @9)
   if "0" == l:output[0]
@@ -615,11 +615,11 @@ function! Copy_to_X() range abort
 endfunction
 
 " copy and paste from/to x clipboard
-" vnoremap <leader>x "9ygvx:<C-U>call Copy_to_X()<CR>
-" nnoremap <leader>c "9yy:call Copy_to_X()<CR>
+" vnoremap <leader>x "9ygvx:<C-U>call To_clipboard()<CR>
+" nnoremap <leader>c "9yy:call To_clipboard()<CR>
 
-vnoremap <leader>c "9ygv:<C-U>call Copy_to_X()<CR>
-nnoremap <leader>c "9yy:call Copy_to_X()<CR>
+vnoremap <leader>c "9ygv:<C-U>call To_clipboard()<CR>
+nnoremap <leader>c "9yy:call To_clipboard()<CR>
 
 " TODO: OSX Specific
 vmap <leader>v :r !pbpaste<CR>

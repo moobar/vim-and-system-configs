@@ -611,3 +611,25 @@ nnoremap tp :call RunPythonUnitTests()<CR>
 Copilot disable
 
 
+if has('nvim')
+  " nvim-dap setup for bash
+  lua << EOF
+    local dap = require('dap')
+    dap.adapters.bash = {
+      type = 'server';
+      command = '/usr/bin/bashdb';
+      args = {'-q', '-c', 'target/bin/bash'};
+  }
+    dap.configurations.bash = {
+      {
+      type = 'bashdb',
+      request = 'launch',
+      name = "Bash Debug",
+      }
+    }
+  require("dapui").setup()
+
+
+EOF
+endif
+

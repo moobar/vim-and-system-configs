@@ -234,7 +234,7 @@ if [[ $OS_NAME == "Darwin" ]]; then
       export JAVA_HOME="${ANDROID_JAVA_HOME}"
     }
     export PATH=${PATH}:~/Library/Android/sdk/tools:~/Library/Android/sdk/build-tools:~/Library/Android/sdk/platform-tools:~/Library/Android/sdk/tools/bin
-  fi 
+  fi
 fi
 
 # Alawys add this, because we want it to take precdence no matter what
@@ -249,4 +249,4 @@ if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
 
-shopt -s globstar
+# shopt -s globstar
