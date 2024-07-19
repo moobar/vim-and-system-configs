@@ -26,16 +26,17 @@ DISABLE_UPGRADES=True source ~/.bashrc
 echo "python, install mypy and black for formatting"
 echo "Also installing generally useful packages like pyyaml and requests"
 (
-  python3 -m pip install --upgrade pip
-  python3 -m pip install pybind11
-  python3 -m pip install pynvim
-  python3 -m pip install mypy black pytype
-  python3 -m pip install sortedcontainers
-
-  # Other package
-  python3 -m pip install pyyaml
-  python3 -m pip install 'httpx[http2,cli]'
+  echo "NO PYTHON PACAKGES INSTALLED. Brew is weird now and they really don't want you installing packages"
+  echo "Their guidance generally is 'Use a venv'"
+  # TODO: This whole thing is a lil borked now with homebrew and system-packages
+  # python3 -m pip install --upgrade pip
+  # python3 -m pip install pybind11
+  # python3 -m pip install pynvim
+  # python3 -m pip install mypy black pytype
+  # python3 -m pip install sortedcontainers                                                                                                                                                                                                                                             37                                                                                                                                                                                                                                                                                         38   # Other package                                                                                                                                                                                                                                                                       39   # python3 -m pip install pyyaml
+  # python3 -m pip install 'httpx[http2,cli]'
 )
+
 
 # }}}}
 # ============================================================================

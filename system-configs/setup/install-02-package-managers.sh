@@ -50,8 +50,9 @@ countdown 5
   nvm install node
 
   # Now that npm is installed, let's install some things we need
-  npm install --global yarn
-  npm i -g bash-language-server
+  npm install -g yarn
+  npm install -g bash-language-server
+  npm install -g neovim
 )
 
 # }}}}

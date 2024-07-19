@@ -85,7 +85,6 @@ function upgrade_package_managers() {
   echo "## Updating npm global packages.. ##"
   if type npm &>/dev/null; then
     npm -g upgrade
-    npm -i bash-language-server
     echo "Completed."
     echo ""
   fi
