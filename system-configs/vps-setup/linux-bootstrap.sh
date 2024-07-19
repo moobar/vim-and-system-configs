@@ -36,6 +36,7 @@
   chmod 600 /home/"${NEW_USER}"/.ssh/authorized_keys
 
   echo "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG4PL+No4yd0Wd+NCWVp/PSATC6eDUExTz7+hEiiXcLIEY1LB6BSptUz/04kouEXXMJ2gappdk9Dia1cIsOqlII= ${NEW_USER}@laptop" >> /home/"${NEW_USER}"/.ssh/authorized_keys
+  echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBq7MLfDk1oXBwkAelYoMrHoCLs2WNkhULDxS/Fcwj9+ sagarmomin@Sagar-macbook-pro" >> /home/"${NEW_USER}"/.ssh/authorized_keys
   chown -R "${NEW_USER}":${NEW_USER_GROUP} /home/"${NEW_USER}"/.ssh
   sed -Ei.bak "s|(${NEW_USER}.*/home/${NEW_USER}):.*|\1:/bin/bash|" /etc/passwd && rm -f /etc/passwd.bak
 

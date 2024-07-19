@@ -219,9 +219,9 @@ countdown 5
     # shellcheck disable=SC2164
     cd ~/bin/source
     if [[ ! -d google-cloud-sdk ]]; then
-      curl -s -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-412.0.0-linux-x86.tar.gz
-      tar -xf google-cloud-cli-412.0.0-linux-x86.tar.gz
-      rm google-cloud-cli-412.0.0-linux-x86.tar.gz
+      curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+      tar -xf google-cloud-cli-linux-x86_64.tar.gz
+      rm google-cloud-cli-linux-x86_64.tar.gz
       { echo n; echo n; } | ./google-cloud-sdk/install.sh
       ln -sf ~/bin/source/google-cloud-sdk/bin/gcloud ~/bin/gcloud
     fi
