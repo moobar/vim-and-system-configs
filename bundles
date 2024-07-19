@@ -9,6 +9,8 @@ call plug#begin(s:root . '/plugged')
 Plug 'w0ng/vim-hybrid'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'sainnhe/sonokai'
+Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
 
 "" plugins that are useful for a combo of development and productivity ""
 Plug 'powerman/vim-plugin-AnsiEsc'

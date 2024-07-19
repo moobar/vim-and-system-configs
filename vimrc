@@ -196,7 +196,8 @@ augroup end
 
 augroup py
   au!
-  au BufWinEnter *.{py} let w:m1=matchadd('ErrorMsg', '\%>90v.\+', -1)
+  " This red error message was driving me crazy. wtf
+  " au BufWinEnter *.{py} let w:m1=matchadd('ErrorMsg', '\%>90v.\+', -1)
 augroup end
 
 augroup sh
