@@ -656,4 +656,12 @@ let g:airline#extensions#tabline#enabled = 1
 
 "" Experimental ""
 
+" For insert mode
+inoremap <PageUp> <C-o><C-u>
+inoremap <PageDown> <C-o><C-d>
+
+" For operator-pending mode
+onoremap <PageUp> <C-u>
+onoremap <PageDown> <C-d>
+
 " Look into: https://github.com/rockerBOO/awesome-neovim
