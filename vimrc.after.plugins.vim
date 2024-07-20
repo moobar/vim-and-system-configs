@@ -15,6 +15,15 @@ nnoremap <leader><Space> :Commands<CR>
 nnoremap <localleader><Space> :Maps<CR>
 
 " ============================================================================
+" Exit Early if VS Code {{{1
+" ============================================================================
+" Check if running in VSCode
+" if exists('g:vscode')
+"   finish
+" endif
+
+" }}}
+" ============================================================================
 " Helper Functions {{{1
 " ============================================================================
 
@@ -51,7 +60,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 " In my experience, treesitter has been pretty good. Use its highlighting
 " Only turn on tree-sitter highlighting for nvim
-if has('nvim') && executable('node')
+if has('nvim') && executable('node') && !exists('g:vscode')
   TSEnable highlight
 endif
 
@@ -367,7 +376,7 @@ nnoremap <silent> <leader>q :call Fzf_dev()<CR>
 "  Source coc.vim and add some shortcuts - only if node is installed {{{1
 " ============================================================================
 
-if executable('node')
+if executable('node') && !exists('g:vscode')
   inoremap <expr> <C-j>               coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
   inoremap <expr> <C-k>               coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
   inoremap <expr> <Tab>           coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
@@ -611,7 +620,7 @@ nnoremap tp :call RunPythonUnitTests()<CR>
 Copilot disable
 
 
-if has('nvim')
+if has('nvim') && !exists('g:vscode')
   " nvim-dap setup for bash
   lua << EOF
     local dap = require('dap')
@@ -628,8 +637,6 @@ if has('nvim')
       }
     }
   require("dapui").setup()
-
-
 EOF
 endif
 

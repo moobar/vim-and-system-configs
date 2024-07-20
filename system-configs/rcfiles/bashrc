@@ -220,6 +220,11 @@ if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
   export PATH=${HOME}/.local/bin:${PATH}
 fi
 
+
+if [[ $OS_NAME == "Darwin" ]]; then
+  defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+fi
+
 if [[ $OS_NAME == "Darwin" ]]; then
   export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-14.0.2.jdk/Contents/Home
   #export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home

@@ -27,6 +27,10 @@ if (has("nvim"))
   let &packpath = &runtimepath
 endif
 
+if exists('g:vscode')
+  let g:coc_start_at_startup = 0  " Disable Coc, use [CocStart] if I want to start it, as per the docs
+endif
+
 " }}}
 " ============================================================================
 " Helper Functions {{{1
@@ -52,7 +56,7 @@ call s:source('bundles')
 packadd! matchit
 
 " If node isn't installed, let's not load coc
-if !executable('node')
+if !executable('node') || exists('g:vscode')
   execute ("set runtimepath-=" . s:root . "/plugged/coc.nvim")
 else
   " Helper function for updating coc

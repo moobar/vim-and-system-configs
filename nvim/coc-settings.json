@@ -13,6 +13,10 @@
   ],
   "codeLens.enable": true,
   "python.formatting.blackArgs": [],
+  "pyright.inlayHints.functionReturnTypes": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+  },
+  "pyright.enable": true,
   "suggest.autoTrigger": "none",
   "suggest.insertMode": "insert",
   "java.enabled": false,
