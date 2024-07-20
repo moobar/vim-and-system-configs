@@ -63,10 +63,6 @@
         "command": "workbench.action.toggleMaximizedPanel"
     },
     {
-        "key": "ctrl+cmd+c",
-        "command": "workbench.action.closeSidebar"
-    },
-    {
         "key": "ctrl+cmd+e",
         "command": "workbench.view.explorer",
         "when": "viewContainer.workbench.view.explorer.enabled"
@@ -98,5 +94,15 @@
     {
         "key": "ctrl+cmd+b",
         "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+u",
+        "command": "cursorPageUp",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "cursorPageDown",
+        "when": "textInputFocus"
     },
 ]

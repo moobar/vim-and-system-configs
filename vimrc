@@ -521,6 +521,20 @@ let &statusline = s:statusline_expr()
 " load arpeggio, so we have access to chords for mapping
 call arpeggio#load()
 
+" Page up/down is wonky, but C-u/C-d is great
+nnoremap <PageDown> <C-d>
+nnoremap <PageUp> <C-u>
+
+inoremap <PageDown> <C-o><C-d>
+inoremap <PageUp> <C-o><C-u>
+
+onoremap <PageDown> <C-d>
+onoremap <PageUp> <C-u>
+
+vnoremap <PageDown> <C-d>
+vnoremap <PageUp> <C-u>
+
+
 " ' is easier to get to than `
 nnoremap ' `
 nnoremap ` '
@@ -655,13 +669,5 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 
 "" Experimental ""
-
-" For insert mode
-inoremap <PageUp> <C-o><C-u>
-inoremap <PageDown> <C-o><C-d>
-
-" For operator-pending mode
-onoremap <PageUp> <C-u>
-onoremap <PageDown> <C-d>
 
 " Look into: https://github.com/rockerBOO/awesome-neovim
