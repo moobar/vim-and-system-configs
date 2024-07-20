@@ -9,7 +9,6 @@ call plug#begin(s:root . '/plugged')
 Plug 'w0ng/vim-hybrid'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'patstockwell/vim-monokai-tasty'
-Plug 'sainnhe/sonokai'
 Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
 Plug 'projekt0n/github-nvim-theme'
 
@@ -45,16 +44,18 @@ Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
 Plug 'mtth/scratch.vim'
 
-" Debugging with Vim
-Plug 'puremourning/vimspector'
-Plug 'mfussenegger/nvim-dap'
-Plug 'rcarriga/nvim-dap-ui'
-Plug 'theHamsta/nvim-dap-virtual-text'
+" Debugging with Neovim, don't load with vscode
+if !exists('g:vscode')
+  Plug 'puremourning/vimspector'
+  Plug 'mfussenegger/nvim-dap'
+  Plug 'rcarriga/nvim-dap-ui'
+  Plug 'theHamsta/nvim-dap-virtual-text'
 
-Plug 'mfussenegger/nvim-dap'
-Plug 'rcarriga/nvim-dap-ui'
-Plug 'theHamsta/nvim-dap-virtual-text'
-Plug 'nvim-neotest/nvim-nio'
+  Plug 'mfussenegger/nvim-dap'
+  Plug 'rcarriga/nvim-dap-ui'
+  Plug 'theHamsta/nvim-dap-virtual-text'
+  Plug 'nvim-neotest/nvim-nio'
+endif
 
 " Javascript/TyperScript/React/GraphQL
 Plug 'HerringtonDarkholme/yats.vim'
@@ -93,21 +94,25 @@ Plug 'junegunn/fzf.vim'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 
 "" Vim as an IDE Plugins ""
+" Only load these when running native nvim, not through VS Code
 
-" Github is updated often, sometimes with config overhalls. for now the
-" config is in [vimrcfiles/coc.vim]
-" https://github.com/neoclide/coc.nvim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if !exists('g:vscode')
+  " Github is updated often, sometimes with config overhalls. for now the
+  " config is in [vimrcfiles/coc.vim]
+  " https://github.com/neoclide/coc.nvim
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Use neoformat for autoformatting. Make sure to configure with
-" coc + black + python.
-" Other languages I'll have to do individually
-Plug 'sbdchd/neoformat'
+  " Use neoformat for autoformatting. Make sure to configure with
+  " coc + black + python.
+  " Other languages I'll have to do individually
+  Plug 'sbdchd/neoformat'
+
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+endif
+
 
 Plug 'preservim/nerdtree' |
       \ Plug 'Xuyuanp/nerdtree-git-plugin'
-
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 

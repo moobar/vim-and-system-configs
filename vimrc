@@ -28,7 +28,11 @@ if (has("nvim"))
 endif
 
 if exists('g:vscode')
-  let g:coc_start_at_startup = 0  " Disable Coc, use [CocStart] if I want to start it, as per the docs
+  " Instead of disabling here, I've moved the disable to the bundle code. We
+  " don't even want to load the plugin at all. There are a bunch of plugins we
+  " don't want to load when running neovim in VS Code
+
+  " let g:coc_start_at_startup = 0  " Disable Coc, use [CocStart] if I want to start it, as per the docs
 endif
 
 " }}}
@@ -607,6 +611,10 @@ imap   <S-Right>   <esc><C-w><Right>
 "" OSX - Hack so yank and all that stuff won't squash the clipboard
 nnoremap yy "0yy
 nnoremap dd "0dd
+
+nnoremap cw "0cw
+nnoremap dw "0dw
+nnoremap yw "0yw
 
 noremap y "0y
 " Y yanks to the sytem clipeboard
