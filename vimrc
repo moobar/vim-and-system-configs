@@ -468,7 +468,9 @@ set background=dark
 let g:vim_monokai_tasty_italic = 1                    " allow italics, set this before the colorscheme
 let g:vim_monokai_tasty_machine_tint = 1              " use `mahcine` colour variant
 let g:vim_monokai_tasty_highlight_active_window = 1   " make the active window stand out
-colorscheme vim-monokai-tasty
+" colorscheme vim-monokai-tasty
+" colorscheme github_dark_colorblind
+colorscheme github_dark_default
 
 " Hack to always open folds unless modeline says otherwise
 set foldlevelstart=99
