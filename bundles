@@ -64,9 +64,6 @@ Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'elzr/vim-json'
 Plug 'jparise/vim-graphql'
 
-
-Plug 'wincent/command-t', { 'do': 'cd lua/wincent/commandt/lib && make' }
-
 Plug 'github/copilot.vim'
 
 set undofile
@@ -103,7 +100,7 @@ if !exists('g:vscode')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " Use neoformat for autoformatting. Make sure to configure with
-  " coc + black + python.
+  " coc + ruff + python. (black is out, ruff is in)
   " Other languages I'll have to do individually
   Plug 'sbdchd/neoformat'
 

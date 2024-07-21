@@ -39,11 +39,6 @@
         "when": "canNavigateForward"
     },
     {
-        "key": "ctrl+cmd+.",
-        "command": "workbench.action.terminal.toggleTerminal",
-        "when": "terminal.active"
-    },
-    {
         "key": "ctrl+cmd+t",
         "command": "editor.debug.action.toggleBreakpoint",
         "when": "debuggersAvailable && disassemblyViewFocus || debuggersAvailable && editorTextFocus"
@@ -105,4 +100,18 @@
         "command": "cursorPageDown",
         "when": "textInputFocus"
     },
+    {
+        "key": "space e",
+        "command": "workbench.action.problems.focus",
+        "when": "neovim.init && neovim.recording || editorTextFocus && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+cmd+h",
+        "command": "workbench.action.closePanel"
+    },
+    {
+        "key": "space t",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "neovim.init && neovim.recording || editorTextFocus && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    }
 ]

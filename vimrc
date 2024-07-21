@@ -560,10 +560,6 @@ nnoremap K i<CR><Esc>
 " previous mapping if any
 nnoremap <expr> <cr> &buftype=="" ? ":w<cr>" : "<cr>"
 
-" space is also useless in normal mode, : is awesome
-nnoremap <space> :
-vnoremap <space> :
-
 " ex-mode is weird, remap Q
 nnoremap Q q
 
@@ -662,12 +658,6 @@ nmap <leader>p :r! cat /tmp/vitmp<CR>
 " ============================================================================
 " Post Plugin Settings and Functions - Before after/plugins {{{1
 " ============================================================================
-
-if has('nvim') && executable('lua')
-  let g:CommandTPreferredImplementation='lua'
-else
-  let g:CommandTPreferredImplementation='ruby'
-endif
 
 "" Other Settings can be configured in [.vim/after/plugin]
 

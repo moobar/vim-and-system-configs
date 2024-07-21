@@ -394,15 +394,46 @@ if executable('node') && !exists('g:vscode')
 
   nmap <leader>e :CocDiagnostics<CR>
 
-  "" Use K to show documentation in preview window
-  nnoremap <localleader>t :call ShowDocumentation()<CR>
+  " GoTo code navigation -- from coc directly. Why nmap instead of nnoremap?
+  " nmap <silent> gd <Plug>(coc-definition)
+  " nmap <silent> gy <Plug>(coc-type-definition)
+  " nmap <silent> gi <Plug>(coc-implementation)
+  " nmap <silent> gr <Plug>(coc-references)
 
-  nnoremap <localleader>r :call CocActionAsync('jumpReferences')<CR>
-  nnoremap <localleader>s :call CocActionAsync('jumpDefinition')<CR>
-  nnoremap <localleader>i :call CocActionAsync('jumpImplementation')<CR>
-  nnoremap <localleader>d :call CocActionAsync('jumpDeclaration')<CR>
-  nnoremap <leader>i :call CocActionAsync('jumpTypeDefinition')<CR>
-  nnoremap <leader>fs :CocList outline<CR>
+  "" Adding keybindings to match VS Code. Checkout [vscode.vim] ""
+  " Instead of do hover, I used to use: nnoremap <localleader>t :call ShowDocumentation()<CR>
+  nnoremap gh :call CocActionAsync('doHover')<CR>
+  nnoremap gf :call CocActionAsync('jumpDeclaration')<CR>
+  nnoremap gd :call CocActionAsync('jumpDefinition')<CR>
+  nnoremap gi :call CocActionAsync('jumpImplementation')<CR>
+  nnoremap gO :CocList outline<CR>
+  "" No good way to make the jump declaration or definition in a float
+  " nnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
+  " nnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
+  nnoremap gH :call CocActionAsync('jumpReferences')<CR>
+  nnoremap gy :call CocActionAsync('jumpTypeDefinition')<CR>
+  nnoremap z= <Plug>(coc-codeaction-cursor)
+  nnoremap g= <Plug>(coc-codeaction-cursor)
+  nnoremap g. <Plug>(coc-codeaction-cursor)
+  nnoremap z- <Plug>(coc-codeaction-line)
+  nnoremap g- <Plug>(coc-codeaction-line)
+
+  xnoremap gh :call CocActionAsync('doHover')<CR>
+  xnoremap gf :call CocActionAsync('jumpDeclaration')<CR>
+  xnoremap gd :call CocActionAsync('jumpDefinition')<CR>
+  xnoremap gi :call CocActionAsync('jumpImplementation')<CR>
+  xnoremap gO :CocList outline<CR>
+  xnoremap gH :call CocActionAsync('jumpReferences')<CR>
+  xnoremap z= <Plug>(coc-codeaction-cursor)
+  xnoremap g= <Plug>(coc-codeaction-cursor)
+  xnoremap g. <Plug>(coc-codeaction-cursor)
+  xnoremap z- <Plug>(coc-codeaction-line)
+  xnoremap g- <Plug>(coc-codeaction-line)
+
+  nnoremap <C-w>gf :call CocAction('jumpDefinition', 'vsplit')<CR>
+  nnoremap <C-w>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
+  xnoremap <C-w>gf :call CocAction('jumpDefinition', 'vsplit')<CR>
+  xnoremap <C-w>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
 
   "" Add a helper for easily restarting CoC. This is useful when you're
   "  referencing other files and you want it
@@ -416,6 +447,17 @@ if executable('node') && !exists('g:vscode')
   "
   " TODO(sagar): Go through everything here and add a bunch of keys
   " https://github.com/neoclide/coc.nvim/blob/03c9add7cd867a013102dcb45fb4e75304d227d7/doc/coc.txt#L2311
+endif
+
+" }}}
+" ============================================================================
+"  Source vscode.vim and add the vscode commands if we're running in vscod3
+" ============================================================================
+
+if exists('g:vscode')
+  if filereadable(s:root . '/vimrcfiles/vscode.vim')
+    call s:source('vimrcfiles/vscode.vim')
+  endif
 endif
 
 " }}}

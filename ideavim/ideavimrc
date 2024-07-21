@@ -91,30 +91,6 @@ nnoremap ,,f :action GotoFile<CR>
 nnoremap <SPACE>s :action SearchEverywhere<CR>
 nnoremap <SPACE>u :action ShowUsages<CR>
 
-" Debugging
-nnoremap ;d :action Debug<CR>
-nnoremap ;b :action ToggleLineBreakpoint<CR>
-nnoremap ;R :action Rerun<CR>
-nnoremap ;r :action Resume<CR>
-nnoremap ;n :action StepOver<CR>    
-nnoremap ;i :action StepInto<CR>
-nnoremap ;o :action StepOut<CR>
-nnoremap ;e :action EvaluateExpression<CR>
-vnoremap ;e :action EvaluateExpression<CR>
-
-" Debugging with some vim like keys
-nnoremap ;j :action StepOver<CR>    
-nnoremap ;k :action StepInto<CR>
-nnoremap ;h :action StepOut<CR>
-nnoremap ;l :action Resume<CR>
-nnoremap ;<SPACE> :action Resume<CR>
-nnoremap ;; :action EvaluateExpression<CR>
-vnoremap ;; :action EvaluateExpression<CR>
-" n=next
-nnoremap ;c :action Resume<CR>
-" c=continue
-
-
 " Navigation helpers 
 nnoremap <C-o> :action Back<CR>
 nnoremap <C-i> :action Forward<CR>
@@ -179,14 +155,6 @@ nnoremap <Space>b :action ReformatCode<CR>:w<CR>:action MakeModule<CR>
 nnoremap <Space>B :action CompileProject<CR>
 nnoremap <Space>i :action Inline<CR>
 
-nnoremap \b :action ToggleLineBreakpoint<CR>
-nnoremap \R :action Rerun<CR>
-nnoremap \r :action Resume<CR>
-nnoremap \i :action StepInto<CR>
-nnoremap \o :action StepOut<CR>
-nnoremap \e :action EvaluateExpression<CR>
-vnoremap \e :action EvaluateExpression<CR>
-nnoremap \\ :action StepOver<CR>
 
 nnoremap <C-t> :action ActivateTerminalToolWindow<CR>  
 
@@ -198,3 +166,95 @@ nnoremap <Space>P :action IntentionActionAsAction_com.intellij.openapi.editor.ac
 nnoremap <Space>I :action IntentionActionAsAction_com.intellij.codeInsight.intention.impl.AddSingleMemberStaticImportAction<CR>
 nnoremap <Space>. f.i<CR><ESC>l
 nnoremap <Space>, f,a<CR><ESC>l
+
+
+
+" Matching code with vscode - unifying all configs
+nnoremap gj :action NextTab<CR>
+nnoremap gk :action PreviousTab<CR>
+
+"" VS Code Commands to migrate over
+" " gf/gF . Map to go to definition for now
+" nnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+" nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+" nnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
+" nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+" nnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+" nnoremap gO <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+" nnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
+" nnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
+" nnoremap gH <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
+"
+" xnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+" xnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+" xnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
+" xnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+" xnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+" xnoremap gO <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+" xnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
+" xnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
+" xnoremap gH <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
+"
+" " <C-w> gf opens definition on the side
+" nnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+" nnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+" xnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+" xnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+"
+" " open quickfix menu for spelling corrections and refactoring
+" nnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+"
+
+
+
+" Debugging
+nnoremap ;d :action Debug<CR>
+nnoremap ;b :action ToggleLineBreakpoint<CR>
+nnoremap ;R :action Rerun<CR>
+nnoremap ;r :action Resume<CR>
+nnoremap ;n :action StepOver<CR>    
+nnoremap ;i :action StepInto<CR>
+nnoremap ;o :action StepOut<CR>
+nnoremap ;e :action EvaluateExpression<CR>
+vnoremap ;e :action EvaluateExpression<CR>
+
+" Debugging with some vim like keys
+nnoremap ;j :action StepOver<CR>    
+nnoremap ;k :action StepInto<CR>
+nnoremap ;h :action StepOut<CR>
+nnoremap ;l :action Resume<CR>
+nnoremap ;<SPACE> :action Resume<CR>
+nnoremap ;; :action EvaluateExpression<CR>
+vnoremap ;; :action EvaluateExpression<CR>
+" n=next
+nnoremap ;c :action Resume<CR>
+" c=continue
+"
+" VIM CONFIGS TO CONSILIDATE
+" nnoremap <S-c> :call vimspector#Continue()<CR>
+" nnoremap <leader>dd :call vimspector#Launch()<CR>
+" nnoremap <leader>dx :call vimspector#Reset()<CR>
+" nnoremap <leader>dp :call vimspector#Pause()<CR>
+" nnoremap <leader>dc :call vimspector#Continue()<CR>
+" nnoremap <leader>ds :call vimspector#Stop()<CR>
+"
+" nnoremap <S-r> :call vimspector#RunToCursor()<CR>
+" nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
+" nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
+" nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
+" nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
+"
+" nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
+" nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
+" nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
+" nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
+"
+" nmap <leader>dR <Plug>VimspectorRestart
+"
+" nmap <S-h> <Plug>VimspectorStepOut
+" nmap <S-k> <Plug>VimspectorStepInto
+" nmap <S-j> <Plug>VimspectorStepOver
+" nmap <leader>dh <Plug>VimspectorStepOut
+" nmap <leader>dk <Plug>VimspectorStepInto
+" nmap <leader>dj <Plug>VimspectorStepOver
+

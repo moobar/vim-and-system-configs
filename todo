@@ -1,0 +1,5 @@
+Update intellij to follow the new style I just copie over
+Copy all debug stuff. Test switching intellij mappings to the shfit style - that's SO much nicer
+
+In visual studio start using space as a leader for some of the UI only command (keybindings.json).
+Doing this means I need to add the "when" conditions

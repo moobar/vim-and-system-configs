@@ -21,5 +21,16 @@
     "vscode-neovim.revealCursorScrollLine": true,
     "terminal.integrated.fontFamily": "Monaco",
     "editor.fontFamily": "Monaco, 'Courier New', monospace",
-    "editor.fontSize": 12
+    "editor.fontSize": 12,
+    "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "javascript.inlayHints.parameterNames.enabled": "all",
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": true,
+    "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "typescript.inlayHints.parameterTypes.enabled": true,
+    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "typescript.inlayHints.enumMemberValues.enabled": true,
+    "javascript.inlayHints.variableTypes.enabled": true
 }
