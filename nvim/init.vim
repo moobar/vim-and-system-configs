@@ -16,4 +16,12 @@ augroup vimrc
   autocmd VimLeavePre * :delmarks!
 augroup END
 
+lua << EOF
+function GetCurrentFileURI()
+  local uri = vim.uri_from_bufnr(0)
+  return uri
+end
+EOF
+
+
 execute ('source ' . s:root . '/vimrc')

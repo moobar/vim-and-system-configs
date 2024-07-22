@@ -258,3 +258,7 @@ nnoremap ;c :action Resume<CR>
 " nmap <leader>dk <Plug>VimspectorStepInto
 " nmap <leader>dj <Plug>VimspectorStepOver
 
+
+" TODO Consider adding command+shift++] for next windows
+" TODO Consider adding command+shift++[ for next windows  -- these are vscode
+" defaults and quite nice

@@ -101,18 +101,8 @@
         "when": "textInputFocus"
     },
     {
-        "key": "space e",
-        "command": "workbench.action.problems.focus",
-        "when": "neovim.init && neovim.recording || editorTextFocus && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
-    },
-    {
         "key": "ctrl+cmd+h",
         "command": "workbench.action.closePanel"
-    },
-    {
-        "key": "space t",
-        "command": "workbench.action.terminal.toggleTerminal",
-        "when": "neovim.init && neovim.recording || editorTextFocus && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
     },
     {
         "key": "ctrl+cmd+.",

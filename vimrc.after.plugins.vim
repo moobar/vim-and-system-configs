@@ -377,6 +377,84 @@ nnoremap <silent> <leader>q :call Fzf_dev()<CR>
 " ============================================================================
 
 if executable('node') && !exists('g:vscode')
+  " Function to get the type string
+  function! GetPythonTypeInfo()
+    " Get the hover information using CocAction
+    let l:result = CocAction('getHover')
+
+    " Check if the result is a list and contains at least one element
+    if type(l:result) == type([]) && len(l:result) > 0
+      let l:hover_text = l:result[0]
+
+      " Check if the hover text contains '(variable)'
+      if l:hover_text =~ '(variable)'
+        " Extract the part after the colon
+        let l:type_info = matchstr(l:hover_text, ':\s*\zs.*')
+
+        " Remove leading and trailing backticks
+        let l:type_info = substitute(l:type_info, '^\s*```', '', '')
+        let l:type_info = substitute(l:type_info, '```\s*$', '', '')
+
+        " Remove newlines
+        let l:type_info = substitute(l:type_info, '\n', '', 'g')
+
+        " Add a space at the end
+        let l:type_info = l:type_info . ' '
+
+        return l:type_info
+      endif
+    endif
+    return ''
+  endfunction
+
+  " Function to copy the type string to the clipboard
+  function! CopyPythonTypeInfoToClipboard()
+    let l:type_info = GetPythonTypeInfo()
+    if l:type_info != ''
+      call setreg('+', l:type_info)
+      echom 'Type information copied to clipboard: ' . l:type_info
+    else
+      echom 'No variable type information found.'
+    endif
+  endfunction
+
+  " Function to copy the type string to the 0 paste buffer
+  function! CopyPythonTypeInfoToPasteBuffer()
+    let l:type_info = GetPythonTypeInfo()
+    if l:type_info != ''
+      call setreg('0', l:type_info)
+      echom 'Type information copied to paste buffer: ' . l:type_info
+    else
+      echom 'No variable type information found.'
+    endif
+  endfunction
+
+  " Function to append type information to the current word
+  function! AppendPythonTypeInfo()
+    " Get the type information
+    let l:type_info = GetPythonTypeInfo()
+
+    " Check if type information is available
+    if l:type_info != ''
+      " Save the current position
+      let l:current_pos = getpos('.')
+
+      " Move to the end of the current word
+      normal! e
+
+      " Append the type information
+      execute "normal! a: " . l:type_info
+
+      " Restore the cursor position
+      call setpos('.', l:current_pos)
+
+      " Provide feedback
+      echom 'Appended type information: ' . l:type_info
+    else
+      echom 'No variable type information found.'
+    endif
+  endfunction
+
   inoremap <expr> <C-j>               coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
   inoremap <expr> <C-k>               coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
   inoremap <expr> <Tab>           coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
@@ -434,6 +512,11 @@ if executable('node') && !exists('g:vscode')
   nnoremap <C-w>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
   xnoremap <C-w>gf :call CocAction('jumpDefinition', 'vsplit')<CR>
   xnoremap <C-w>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
+
+  " Helpful functions for getting type info
+  nnoremap <silent> YT :call CopyPythonTypeInfoToClipboard()<CR>
+  nnoremap <silent> yt :call CopyPythonTypeInfoToPasteBuffer()<CR>
+  nnoremap <silent> gt :call AppendPythonTypeInfo()<CR>
 
   "" Add a helper for easily restarting CoC. This is useful when you're
   "  referencing other files and you want it
@@ -682,3 +765,8 @@ if has('nvim') && !exists('g:vscode')
 EOF
 endif
 
+"" EXPERIMENTAL Code/Functions ""
+function! GetCurrentBufferUri()
+    let l:path = has('nvim') ? nvim_buf_get_name(0) : expand('%:p')
+    return 'file://' . substitute(l:path, '\', '/', 'g')
+endfunction
