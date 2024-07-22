@@ -1,37 +1,77 @@
 {
-    "vim.vimrc.enable": true,
-    "editor.inlineSuggest.enabled": true,
-    "security.workspace.trust.untrustedFiles": "open",
-    "git.openRepositoryInParentFolders": "always",
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
+  "vim.vimrc.enable": true,
+  "editor.inlineSuggest.enabled": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "git.openRepositoryInParentFolders": "always",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "settingsSync.ignoredSettings": [],
+  "vscode-neovim.logOutputToConsole": true,
+  "settingsSync.ignoredExtensions": [],
+  "workbench.sideBar.location": "right",
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.callArgumentNames": "all",
+  "editor.formatOnSave": true,
+  "githd.blameView.enabled": false,
+  "window.zoomLevel": 1,
+  "vscode-neovim.revealCursorScrollLine": true,
+  "terminal.integrated.fontFamily": "Monaco",
+  "editor.fontFamily": "Monaco, 'Courier New', monospace",
+  "editor.fontSize": 12,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "redhat.telemetry.enabled": false,
+  "cloudcode.apigee.gemini.options": {
+    "enterpriseContext": {
+      "enabled": true,
+      "includeMetadata": true,
+      "includeSecurity": true,
+      "includeSchema": true
     },
-    "settingsSync.ignoredSettings": [],
-    "workbench.colorTheme": "GitHub Dark Default",
-    "vscode-neovim.logOutputToConsole": true,
-    "settingsSync.ignoredExtensions": [],
-    "workbench.sideBar.location": "right",
-    "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.inlayHints.pytestParameters": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.inlayHints.callArgumentNames": "all",
-    "editor.formatOnSave": true,
-    "githd.blameView.enabled": false,
-    "window.zoomLevel": 1.25,
-    "vscode-neovim.revealCursorScrollLine": true,
-    "terminal.integrated.fontFamily": "Monaco",
-    "editor.fontFamily": "Monaco, 'Courier New', monospace",
-    "editor.fontSize": 12,
-    "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
-    "javascript.inlayHints.parameterNames.enabled": "all",
-    "javascript.inlayHints.parameterTypes.enabled": true,
-    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
-    "typescript.inlayHints.variableTypes.enabled": true,
-    "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-    "typescript.inlayHints.parameterTypes.enabled": true,
-    "typescript.inlayHints.parameterNames.enabled": "all",
-    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-    "typescript.inlayHints.enumMemberValues.enabled": true,
-    "javascript.inlayHints.variableTypes.enabled": true,
-    "terminal.external.osxExec": "iterm.app"
+    "enableRemoteMockServer": false
+  },
+  "terminal.external.osxExec": "iterm.app",
+  "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
+  "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
+  "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
+  "workbench.preferredLightColorTheme": "GitHub Light Colorblind (Beta)",
+  "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
+  "editor.tokenColorCustomizations": {
+    "[GitHub Dark Colorblind (Beta)]": {
+      "textMateRules": [
+        {
+          "scope": [
+            "source.ini",
+            "text.plain",
+            "variable.other.normal.shell",
+            "variable.other.special.shell",
+            "variable.other.positional.shell",
+          ],
+          "settings": {
+            "foreground": "#FFFFFF"
+          }
+        }
+      ]
+    }
+  },
+  "git.terminalGitEditor": true,
+  "git.closeDiffOnOperation": true,
+  "git.mergeEditor": true,
+  "scm.diffDecorationsGutterPattern": {
+    "added": true
+  },
+  "scm.diffDecorationsIgnoreTrimWhitespace": "true",
+  "githubPullRequests.quickDiff": true
 }

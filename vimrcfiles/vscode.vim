@@ -60,59 +60,58 @@ nnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<C
 xnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
 xnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
 
-
 "" REMOVED "" " nnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 "" REMOVED "" nnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
 "" REMOVED "" " xnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 "" REMOVED "" xnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
-
 "" END VS Code Commands to migrate over ""
+
 
 "" Commands from keyboard shorcuts that are managed via vimrc ""
 nnoremap <leader>e <Cmd>call VSCodeNotify('workbench.action.problems.focus')<CR>
 nnoremap <leader>t <Cmd>call VSCodeNotify('workbench.action.terminal.toggleTerminal')<CR>
 
-" This has been converted to a keybinding "View: Focus Problems" which shows errors
-" nmap <leader>e :CocDiagnostics<CR>
-
-
 
 "" DEBUGGING KEYBINDINGS "" -- FIND by searching [editor.debug]  in Keyboard Shortcuts
-" I set up to integrate with VS Code keymappings.json
-" "" Shortcuts to make debugging better
-" " for normal mode - the word under the cursor
-" nmap <leader>di <Plug>VimspectorBalloonEval
-" " for visual mode, the visually selected text
-" xmap <leader>di <Plug>VimspectorBalloonEval
-"
-" nnoremap <S-c> :call vimspector#Continue()<CR>
-" nnoremap <leader>dd :call vimspector#Launch()<CR>
-" nnoremap <leader>dx :call vimspector#Reset()<CR>
-" nnoremap <leader>dp :call vimspector#Pause()<CR>
-" nnoremap <leader>dc :call vimspector#Continue()<CR>
-" nnoremap <leader>ds :call vimspector#Stop()<CR>
-"
-" nnoremap <S-r> :call vimspector#RunToCursor()<CR>
-" nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
-" nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
-" nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
-" nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
-"
-" nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
-" nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
-" nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
-" nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
-"
-" nmap <leader>dR <Plug>VimspectorRestart
-"
-" nmap <S-h> <Plug>VimspectorStepOut
-" nmap <S-k> <Plug>VimspectorStepInto
-" nmap <S-j> <Plug>VimspectorStepOver
-" nmap <leader>dh <Plug>VimspectorStepOut
-" nmap <leader>dk <Plug>VimspectorStepInto
-" nmap <leader>dj <Plug>VimspectorStepOver
-"
-"
+" Debugging
+nnoremap ;d <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
+
+nnoremap ;R <Cmd>call VSCodeNotify('workbench.action.debug.restart')<CR>
+
+nnoremap ;p <Cmd>call VSCodeNotify('workbench.action.debug.pause')<CR>
+
+nnoremap ;p <Cmd>call VSCodeNotify('workbench.action.debug.continue')<CR>
+" nnoremap <S-c> <Cmd>call VSCodeNotify('workbench.action.debug.continue')<CR>
+" <S-c> is already a VS Code default
+nnoremap ;<SPACE> <Cmd>call VSCodeNotify('workbench.action.debug.continue')<CR>
+
+nnoremap ;c <Cmd>call VSCodeNotify('editor.debug.action.runToCursor')<CR>
+
+nnoremap ;x <Cmd>call VSCodeNotify('workbench.action.debug.stop')<CR>
+
+" " Debugging with some vim like keys
+nnoremap <S-j> <Cmd>call VSCodeNotify('workbench.action.debug.stepOver')<CR>
+nnoremap ;n <Cmd>call VSCodeNotify('workbench.action.debug.stepOver')<CR>
+
+nnoremap <S-k> <Cmd>call VSCodeNotify('workbench.action.debug.stepInto')<CR>
+nnoremap ;i <Cmd>call VSCodeNotify('workbench.action.debug.stepInto')<CR>
+
+nnoremap <S-h> <Cmd>call VSCodeNotify('workbench.action.debug.stepOut')<CR>
+nnoremap ;o <Cmd>call VSCodeNotify('workbench.action.debug.stepOut')<CR>
+
+" " Breakpoints
+nnoremap <S-t> <Cmd>call VSCodeNotify('editor.debug.action.toggleBreakpoint')<CR>
+nnoremap ;b <Cmd>call VSCodeNotify('workbench.debug.action.focusBreakpointsView')<CR>
+nnoremap ;B <Cmd>call VSCodeNotify('workbench.debug.viewlet.action.removeAllBreakpoints')<CR>
+
+nnoremap ;; <Cmd>call VSCodeNotify('workbench.debug.action.toggleRepl')<CR>
+vnoremap ;; <Cmd>call VSCodeNotify('workbench.debug.action.toggleRepl')<CR>
+
+nnoremap ;e <Cmd>call VSCodeNotify('editor.debug.action.selectionToRepl')<CR>
+vnoremap ;e <Cmd>call VSCodeNotify('editor.debug.action.selectionToRepl')<CR>
+
+
+"" EXPERIMENTAL ""
 function! GetHoverInfoInVSCode()
   " Execute the VS Code command to show hover information
   call VSCodeNotify('editor.action.showHover')

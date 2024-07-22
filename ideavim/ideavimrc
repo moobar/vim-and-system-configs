@@ -209,54 +209,41 @@ nnoremap gk :action PreviousTab<CR>
 
 " Debugging
 nnoremap ;d :action Debug<CR>
-nnoremap ;b :action ToggleLineBreakpoint<CR>
+
 nnoremap ;R :action Rerun<CR>
+
+nnoremap ;p :action Pause<CR>
+
+nnoremap ;<SPACE> :action Resume<CR>
 nnoremap ;r :action Resume<CR>
-nnoremap ;n :action StepOver<CR>    
-nnoremap ;i :action StepInto<CR>
-nnoremap ;o :action StepOut<CR>
-nnoremap ;e :action EvaluateExpression<CR>
-vnoremap ;e :action EvaluateExpression<CR>
+nnoremap <S-c> :action Resume<CR>
+
+nnoremap ;c :action RunToCursor<CR>
+
+nnoremap ;x :action Stop<CR>
 
 " Debugging with some vim like keys
+nnoremap <S-j> :action StepOver<CR>    
 nnoremap ;j :action StepOver<CR>    
+nnoremap ;n :action StepOver<CR>    
+
+nnoremap <S-k> :action StepInto<CR>
 nnoremap ;k :action StepInto<CR>
+nnoremap ;i :action StepInto<CR>
+
+nnoremap <S-h> :action StepInto<CR>
 nnoremap ;h :action StepOut<CR>
-nnoremap ;l :action Resume<CR>
-nnoremap ;<SPACE> :action Resume<CR>
+nnoremap ;o :action StepOut<CR>
+
+" Breakpoints
+nnoremap <S-t> :action ToggleLineBreakpoint<CR>
+nnoremap ;b :action ViewBreakpoints<CR>
+nnoremap ;B :action Debugger.RemoveAllBreakpoints<CR>
+
 nnoremap ;; :action EvaluateExpression<CR>
 vnoremap ;; :action EvaluateExpression<CR>
-" n=next
-nnoremap ;c :action Resume<CR>
-" c=continue
-"
-" VIM CONFIGS TO CONSILIDATE
-" nnoremap <S-c> :call vimspector#Continue()<CR>
-" nnoremap <leader>dd :call vimspector#Launch()<CR>
-" nnoremap <leader>dx :call vimspector#Reset()<CR>
-" nnoremap <leader>dp :call vimspector#Pause()<CR>
-" nnoremap <leader>dc :call vimspector#Continue()<CR>
-" nnoremap <leader>ds :call vimspector#Stop()<CR>
-"
-" nnoremap <S-r> :call vimspector#RunToCursor()<CR>
-" nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
-" nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
-" nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
-" nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
-"
-" nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
-" nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
-" nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
-" nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
-"
-" nmap <leader>dR <Plug>VimspectorRestart
-"
-" nmap <S-h> <Plug>VimspectorStepOut
-" nmap <S-k> <Plug>VimspectorStepInto
-" nmap <S-j> <Plug>VimspectorStepOver
-" nmap <leader>dh <Plug>VimspectorStepOut
-" nmap <leader>dk <Plug>VimspectorStepInto
-" nmap <leader>dj <Plug>VimspectorStepOver
+nnoremap ;e :action EvaluateExpression<CR>
+vnoremap ;e :action EvaluateExpression<CR>
 
 
 " TODO Consider adding command+shift++] for next windows

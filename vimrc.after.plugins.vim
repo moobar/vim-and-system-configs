@@ -534,86 +534,101 @@ endif
 
 " }}}
 " ============================================================================
-"  Source vscode.vim and add the vscode commands if we're running in vscod3
+"  Configure Vimspector for awesome debugging, when in nvim - otherwise use
+"  vscode  {{{1
 " ============================================================================
 
-if exists('g:vscode')
-  if filereadable(s:root . '/vimrcfiles/vscode.vim')
-    call s:source('vimrcfiles/vscode.vim')
-  endif
+if executable('node') && !exists('g:vscode')
+
+  " Super helpful article: https://dev.to/iggredible/debugging-in-vim-with-vimspector-4n0m
+
+  " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+  let g:vimspector_base_dir=s:root . "/vimspector-configs"
+  let g:vimspector_enable_mappings = 'HUMAN'
+  let g:vimspector_test_args = '--basedir test-base'
+  let g:vimspector_install_gadgets = [ '--all', '--force-all' ]
+
+  " Restart if Vimspector is totally borked
+  nmap <leader>dR <Plug>VimspectorRestart
+
+  nnoremap <leader>dd :call vimspector#Launch()<CR>
+  nnoremap ;d :call vimspector#Launch()<CR>
+  " nnoremap ;d :action Debug<CR> -- Intellij
+
+  nnoremap <leader>dx :call vimspector#Reset()<CR>
+  nnoremap ;R :call vimspector#Reset()<CR>
+  "nnoremap ;R :action Rerun<CR> -- Intellij
+
+  nnoremap <leader>dp :call vimspector#Pause()<CR>
+  nnoremap ;p :call vimspector#Pause()<CR>
+  "nnoremap ;p :action Pause<CR> -- Intellij
+
+  nnoremap <leader>dc :call vimspector#Continue()<CR>
+  nnoremap ;<SPACE> :call vimspector#Continue()<CR>
+  nnoremap ;c :call vimspector#Continue()<CR>
+  nnoremap <S-c> :call vimspector#Continue()<CR>
+  " nnoremap ;r :action Resume<CR> -- Intellij
+
+  " nnoremap <S-r> :call vimspector#RunToCursor()<CR> -- not worth burning <S-r>
+  nnoremap <leader>dc :call vimspector#RunToCursor()<CR>
+  nnoremap ;c :call vimspector#RunToCursor()<CR>
+
+  nnoremap <leader>dx :call vimspector#Stop()<CR>
+  nnoremap ;x :call vimspector#Stop()<CR>
+
+  nmap <S-j> <Plug>VimspectorStepOver
+  nmap ;n <Plug>VimspectorStepOver
+
+  nmap <S-k> <Plug>VimspectorStepInto
+  nmap ;i <Plug>VimspectorStepInto
+
+  nmap <S-h> <Plug>VimspectorStepOut
+  nmap ;o <Plug>VimspectorStepInto
+
+  " Breakpoints
+  nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
+  nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
+
+  nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
+  nnoremap <leader>dB :call vimspector#ClearBreakpoints()<CR>
+  nnoremap ;b :call vimspector#ListBreakpoints()<CR>
+  nnoremap ;B :call vimspector#ClearBreakpoints()<CR>
+
+  nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
+  nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
+  nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
+
+  "" Shortcuts to make debugging better
+  " for normal mode - the word under the cursor
+  nmap <leader>di <Plug>VimspectorBalloonEval
+  " for visual mode, the visually selected text
+  xmap <leader>di <Plug>VimspectorBalloonEval
+
+  "" Example Extending a Configuration -- This will pop up in the selection menu
+
+  " let g:vimspector_configurations = {
+  "       \ "test_debugpy_config": {
+  "       \   "adapter": "test_debugpy",
+  "       \   "filetypes": [ "python" ],
+  "       \   "configuration": {
+  "       \     "request": "launch",
+  "       \     "type": "python",
+  "       \     "cwd": "${fileDirname}",
+  "       \     "args": [],
+  "       \     "program": "${file}",
+  "       \     "stopOnEntry": v:false,
+  "       \     "console": "integratedTerminal",
+  "       \     "integer": 123,
+  "       \   },
+  "       \   "breakpoints": {
+  "       \     "exception": {
+  "       \       "raised": "N",
+  "       \       "uncaught": "",
+  "       \       "userUnhandled": ""
+  "       \     }
+  "       \   }
+  "       \ } }
 endif
-
-" }}}
-" ============================================================================
-"  Configure Vimspector for awesome debugging {{{1
-" ============================================================================
-
-" Super helpful article: https://dev.to/iggredible/debugging-in-vim-with-vimspector-4n0m
-
-" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-let g:vimspector_base_dir=s:root . "/vimspector-configs"
-let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_test_args = '--basedir test-base'
-let g:vimspector_install_gadgets = [ '--all', '--force-all' ]
-
-"" Shortcuts to make debugging better
-" for normal mode - the word under the cursor
-nmap <leader>di <Plug>VimspectorBalloonEval
-" for visual mode, the visually selected text
-xmap <leader>di <Plug>VimspectorBalloonEval
-
-nnoremap <S-c> :call vimspector#Continue()<CR>
-nnoremap <leader>dd :call vimspector#Launch()<CR>
-nnoremap <leader>dx :call vimspector#Reset()<CR>
-nnoremap <leader>dp :call vimspector#Pause()<CR>
-nnoremap <leader>dc :call vimspector#Continue()<CR>
-nnoremap <leader>ds :call vimspector#Stop()<CR>
-
-nnoremap <S-r> :call vimspector#RunToCursor()<CR>
-nnoremap <leader>dr :call vimspector#RunToCursor()<CR>
-nnoremap <leader>dD :call vimspector#ShowDisassembly()<CR>
-nnoremap <leader>dn :call vimspector#JumpToNextBreakpoint()<CR>
-nnoremap <leader>dp :call vimspector#JumpToPreviousBreakpoint()<CR>
-
-nnoremap <S-t> :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <leader>db :call vimspector#ListBreakpoints()<CR>
-nnoremap <leader>dt :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <leader>dT :call vimspector#ClearBreakpoints()<CR>
-
-nmap <leader>dR <Plug>VimspectorRestart
-
-nmap <S-h> <Plug>VimspectorStepOut
-nmap <S-k> <Plug>VimspectorStepInto
-nmap <S-j> <Plug>VimspectorStepOver
-nmap <leader>dh <Plug>VimspectorStepOut
-nmap <leader>dk <Plug>VimspectorStepInto
-nmap <leader>dj <Plug>VimspectorStepOver
-
-"" Example Extending a Configuration -- This will pop up in the selection menu
-
-" let g:vimspector_configurations = {
-"       \ "test_debugpy_config": {
-"       \   "adapter": "test_debugpy",
-"       \   "filetypes": [ "python" ],
-"       \   "configuration": {
-"       \     "request": "launch",
-"       \     "type": "python",
-"       \     "cwd": "${fileDirname}",
-"       \     "args": [],
-"       \     "program": "${file}",
-"       \     "stopOnEntry": v:false,
-"       \     "console": "integratedTerminal",
-"       \     "integer": 123,
-"       \   },
-"       \   "breakpoints": {
-"       \     "exception": {
-"       \       "raised": "N",
-"       \       "uncaught": "",
-"       \       "userUnhandled": ""
-"       \     }
-"       \   }
-"       \ } }
-
 
 " }}}
 " ============================================================================
@@ -736,6 +751,18 @@ endfunction
 nnoremap tp :call RunPythonUnitTests()<CR>
 
 
+
+" }}}
+" ============================================================================
+"  Source vscode.vim and add the vscode commands if we're running in vscode.
+"  Do it last so all its keybindings take precedence
+" ============================================================================
+
+if exists('g:vscode')
+  if filereadable(s:root . '/vimrcfiles/vscode.vim')
+    call s:source('vimrcfiles/vscode.vim')
+  endif
+endif
 
 " }}}
 " ============================================================================
