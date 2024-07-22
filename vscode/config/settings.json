@@ -73,5 +73,6 @@
     "added": true
   },
   "scm.diffDecorationsIgnoreTrimWhitespace": "true",
-  "githubPullRequests.quickDiff": true
+  "githubPullRequests.quickDiff": true,
+  "cloudcode.duetAI.project": "sagarlikelogger"
 }
