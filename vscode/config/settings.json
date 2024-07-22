@@ -57,7 +57,7 @@
             "text.plain",
             "variable.other.normal.shell",
             "variable.other.special.shell",
-            "variable.other.positional.shell",
+            "variable.other.positional.shell"
           ],
           "settings": {
             "foreground": "#FFFFFF"
