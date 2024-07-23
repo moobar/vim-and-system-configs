@@ -195,7 +195,7 @@ if [[ $OS_NAME == "Darwin" ]]; then
   # Add a symlink to settings and keybindings 
   if [[ -d ~/"Library/Application Support/Code/User" ]]; then
     # Symlink keybindings
-    if [[ -d ~/"Library/Application Support/Code/User/" && -f ~/".vim/vscode/config/keybindings.json" ]]; then
+    if [[ -d ~/"Library/Application Support/Code/User/" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/keybindings.json" ]]; then
         mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null
         ln -s ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
@@ -203,7 +203,7 @@ if [[ $OS_NAME == "Darwin" ]]; then
     fi
 
     # Symlink settings
-    if [[ -d ~/"Library/Application Support/Code/User/" && -f ~/".vim/vscode/config/settings.json" ]]; then
+    if [[ -d ~/"Library/Application Support/Code/User/" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/settings.json" ]]; then
         mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null
         ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"

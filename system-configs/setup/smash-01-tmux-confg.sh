@@ -9,22 +9,23 @@ fi
 set -e -o pipefail
 
 PREFIX=
-# I like C-g and want to always set that as my default.
-MY_PREFERRED_PREFIX='set-option -g prefix C-g'
+# C-g is really convenient for one handed prefix (with CAPS -> CTRL)
+PREFERRED_PREFIX='set-option -g prefix C-g'
+
+``
+SECONDARY_PREFIX='set-option -g prefix C-f'
 if [[ -r ~/.tmux.conf ]]; then
   # If tmux is already there, use that existing prefix
   PREFIX=$(grep -F 'set-option -g prefix' ~/.tmux.conf 2>/dev/null)
-else
-  PREFIX="${MY_PREFERRED_PREFIX}"
+elif [[ "$OS_NAME" == "Darwin" ]]; then
+  PREFIX="${PREFERRED_PREFIX}"
+else 
+  PREFIX="${SECONDARY_PREFIX}"
 fi
 
 cat << EOF > ~/.tmux.conf
-# If you haven't already, consider changing the default prefix.
-# Here are some suggestions:
-# Sagar remaps caps to ctrl and uses C-g      [one handed/left hand]
-# For multi hand prefix, try C-j              [opposite hands]
-# For single handed prefix consider C-a       [one handed/left hand]
-# C-b is the default tmux prefix
+# For main/physical computer, use C-g as prefix
+# For VPS/Secondary (tmux within tmux), use C-f as prefix
 
 ${PREFIX}
 

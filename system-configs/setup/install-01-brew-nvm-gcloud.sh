@@ -208,8 +208,8 @@ countdown 5
     countdown 3
     brew install mitmproxy jwt-cli 1password-cli
     brew install --cask iterm2 || true
-    brew remove --cask google-cloud-sdk -f || true
-    brew install --cask google-cloud-sdk
+    brew remove google-cloud-sdk -f || true
+    brew install google-cloud-sdk
   elif [[ $(uname -s) == "Linux" ]]; then
     echo "Installing google cloud CLI directly from tar.gz"
     countdown 5
