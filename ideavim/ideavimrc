@@ -175,8 +175,8 @@ nnoremap gk :action PreviousTab<CR>
 
 "" VS Code Commands to migrate over
 " " gf/gF . Map to go to definition for now
-" nnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 " nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+nnoremap gh :action QuickJavaDoc<CR>
 " nnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
 " nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
 " nnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>

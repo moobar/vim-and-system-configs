@@ -74,26 +74,54 @@ function grep-urls() {
   fi
 }
 
-## [seconds-to-date STRING]
-#  Converts SECONDS to an ISO8601 date
+## [milliseconds-to-date STRING]
+#  Converts MILLISECONDS to an ISO8601 date
 #
-#  STRING   = date in seconds
+#  STRING   = date in milliseconds
 #  RETURN  ->
 #    ISO8601 UTC date
-function seconds-to-date() {
+function milliseconds-to-iso8601() {
   if [[ -z $1 ]] && test -t 0 ; then
-    echo "Must provide seconds"
+    echo "Must provide milliseconds"
     return 1
   fi
-  local SECONDS=
+  local MILLISECONDS=
 
   if [[ -n $1 ]]; then
-    SECONDS=$1
+    MILLISECONDS=$1
   else
-    SECONDS=$(cat)
+    MILLISECONDS=$(cat)
   fi
 
-  python3 -c "import datetime; print(datetime.datetime.utcfromtimestamp(${SECONDS}/1000).isoformat() + 'Z')"
+  python3 -c "import datetime; print(datetime.datetime.fromtimestamp(${MILLISECONDS}/1000, datetime.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'))"
+}
+
+
+## [date-to-milliseconds STRING]
+#  Converts MILLISECONDS to an ISO8601 date
+#
+#  STRING   = date as iso string
+#  RETURN  ->
+#    long milliseconds since epoch
+function date-to-milliseconds() {
+  if [[ -z $1 ]] && test -t 0 ; then
+    echo "Must provide DATE"
+    return 1
+  fi
+  local DATE=
+  if [[ -n $1 ]]; then
+    DATE=$1
+  else
+    DATE=$(cat)
+  fi
+
+  python3 -c "$(CAT <<EOM
+import datetime
+dt = datetime.datetime.fromisoformat('$DATE')
+dt = dt.replace(tzinfo=datetime.timezone.utc)
+print(int(dt.timestamp() * 1000))
+EOM
+)"
 }
 
 ## [mongo-compass-localhost STRING]

@@ -159,6 +159,15 @@ function gcloud-compute-instances() {
     -x "gcloud compute instances list --sort-by=name --project=${PROJECT}"
 }
 
+## [gcloud-build-list] -> Alias
+#  List the last 500 builds
+function gcloud-build-list() {
+  gcloud beta builds list \
+    --format="table(substitutions.REPO_NAME, substitutions.BRANCH_NAME, status, id, substitutions.SHORT_SHA)" \
+    --limit=500 \
+    --page-size=500
+}
+
 ## [gcloud-compute-instances]  ->  Alias
 #  Helper command to search gcloud logs
 #  DEFAULT ARGS:  --limit=10000 --freshness=1d

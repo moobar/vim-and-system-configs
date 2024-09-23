@@ -538,11 +538,6 @@ onoremap <PageUp> <C-u>
 vnoremap <PageDown> <C-d>
 vnoremap <PageUp> <C-u>
 
-
-" ' is easier to get to than `
-nnoremap ' `
-nnoremap ` '
-
 " Open a fold at the lower part of it, instead of the top of it.
 " Useful for vimdiffing files
 nmap zl zo]z

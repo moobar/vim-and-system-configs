@@ -107,7 +107,7 @@ function mvn-clean-install-skipTests() {
 }
 
 function mvn-clean-install-quick() {
-  mvn clean install -DskipTests -Ddockerfile.skip=true "$@"
+  mvn clean install -DskipTests -Ddockerfile.skip=true -Ddocker.skip=true "$@"
 }
 
 function mvn-test() {
@@ -211,12 +211,16 @@ EOM
 
 function intellij() {
   (
+    INTELLIJ="$(find /Applications -maxdepth 2 -iname '*intellij*idea*' | head -1)"
+    if [[ -z "$INTELLIJ" ]]; then
+      echo "Intellij not found"
+    fi
     if [[ -n $1 ]]; then
-      open -na "IntelliJ IDEA.app" --args ~/forge/all-repos/"$1"
+      open -na "${INTELLIJ}" --args ~/forge/all-repos/"$1"
     else
       if cd "$(git rev-parse --show-toplevel)"; then
         if [[ -f pom.xml ]]; then
-          open -na "IntelliJ IDEA.app" --args .
+          open -na "${INTELLIJ}" --args .
         else
           echo "Not a java repo. Not opening IntelliJ"
         fi

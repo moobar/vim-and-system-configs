@@ -246,9 +246,12 @@ if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
 fi
 
 if [[ $OS_NAME == "Darwin" ]]; then
-  export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-14.0.2.jdk/Contents/Home
-  #export JDK_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
+  export JDK_HOME_21=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+  export JAVA_HOME_21="${JDK_HOME_21}"
+  
+  export JDK_HOME="${JDK_HOME_21}"
   export JAVA_HOME="${JDK_HOME}"
+
   if [[ ":${PATH}:" != *":${JAVA_HOME}/bin:"* ]]; then
     export PATH=${JAVA_HOME}/bin:${PATH}
   fi
