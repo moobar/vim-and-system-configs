@@ -14,6 +14,8 @@ endfunction
 
 "" VS Code Commands to migrate over ""
 " gj, and gk added by me
+nnoremap <C-n> <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
+nnoremap <C-p> <Cmd>call <SID>switchEditor(v:count, 'prev')<CR>
 nnoremap gj <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
 nnoremap gk <Cmd>call <SID>switchEditor(v:count, 'prev')<CR>
 nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>

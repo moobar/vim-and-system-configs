@@ -15,6 +15,7 @@ if type nvim 2>/dev/null >/dev/null; then
   alias todo='nvim ~/forge/todo/tasks.md'
   alias vim='nvim'
   alias vi='nvim'
+  alias nvimdiff='nvim -d'
 else 
   alias todo='vim ~/forge/todo/tasks.md'
 fi 

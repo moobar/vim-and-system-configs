@@ -29,6 +29,7 @@
 
 [merge]
   conflictstyle = diff3
+  tool = nvimdiff
 
 [diff]
   algorithm = patience

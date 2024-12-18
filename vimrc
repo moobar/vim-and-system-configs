@@ -664,3 +664,7 @@ let g:airline#extensions#tabline#enabled = 1
 "" Experimental ""
 
 " Look into: https://github.com/rockerBOO/awesome-neovim
+
+"" Diff a PR!
+" DiffviewOpen origin/HEAD...HEAD --imply-local
+" https://github.com/sindrets/diffview.nvim/blob/main/USAGE.md

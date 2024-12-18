@@ -39,6 +39,7 @@ Plug 'sindrets/diffview.nvim'
 Plug 'vim-test/vim-test'
 Plug 'szw/vim-maximizer'
 Plug 'tpope/vim-repeat'
+Plug 'kdheepak/lazygit.nvim'
 
 " Testing "
 Plug 'airblade/vim-gitgutter'

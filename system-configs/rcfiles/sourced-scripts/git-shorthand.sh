@@ -204,7 +204,7 @@ function gitbranchlog-unpushed() {
 ## [gitpush-upstream]  ->  Shorthand
 #  First time pushing a branch, use this to set the upstream
 function gitpush-upstream() {
-  git push --set-upstream origin "$(gitbranch)"
+  git push --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
 }
 
 ## [gitbranchfiles-origin <git diff -w ARGS>]  ->  Shorthand

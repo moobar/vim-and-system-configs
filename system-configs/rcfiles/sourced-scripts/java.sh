@@ -103,11 +103,11 @@ function generate-class-path() {
 #function run-jar-locally
 
 function mvn-clean-install-skipTests() {
-  mvn clean install -DskipTests "$@"
+  mvn clean install -T1C -DskipTests "$@"
 }
 
 function mvn-clean-install-quick() {
-  mvn clean install -DskipTests -Ddockerfile.skip=true -Ddocker.skip=true "$@"
+  mvn clean install -T1C -DskipTests -Ddocker.skip=true "$@"
 }
 
 function mvn-test() {
