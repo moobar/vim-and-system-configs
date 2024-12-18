@@ -26,7 +26,7 @@ function venv-create() {
 }
 
 # shellcheck disable=SC1090
-## [venv-active]
+## [venv-activate]
 #  Finds a venv and activates it
 function venv-activate() {
   local VENV=
@@ -52,7 +52,31 @@ function venv-deactivate() {
   else
     echo "Not in a venv"
   fi
+}
 
+# shellcheck disable=SC1090
+## [venv-vscode]
+#  Finds a venv and prints helpful commands to remember how to set it for VSCode
+function venv-vscode() {
+  local VENV=
+  if ! VENV="$(find "$(pwd)" -name activate | grep -F '/bin/activate')"; then
+    echo "No virtual env found."
+    return 1
+  fi
+
+  if [[ $(wc -l <<< "${VENV}") -gt 1 ]]; then
+    echo "Choose VENV"
+    VENV="$(echo "${VENV}" | sort -u | fzf)"
+  fi
+
+  VENV="$(sed 's/\/activate$/\/python3/' <<< "${VENV}")"
+
+  echo "Set the Python interpreter in VS Code."
+  echo "You need to explicitly copy the path, not select it from the file picker or it follows the symlink"
+  echo ""
+  echo "CMD+SHIFT+P -> Python: Select Interpreter"
+  echo "Use this path:"
+  echo "${VENV}"
 }
 
 function ffpython() {
