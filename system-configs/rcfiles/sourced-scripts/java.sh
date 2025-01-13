@@ -110,6 +110,10 @@ function mvn-clean-install-quick() {
   mvn clean install -T1C -DskipTests -Ddocker.skip=true "$@"
 }
 
+function mvn-clean-compile-quick() {
+  mvn clean compile test-compile -T1C "$@"
+}
+
 function mvn-test() {
   mvn test -DtrimStackTrace=false -Dstdout=F "$@"
 }
