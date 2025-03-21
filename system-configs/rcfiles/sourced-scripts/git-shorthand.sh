@@ -201,6 +201,17 @@ function gitbranchlog-unpushed() {
   git log @{upstream}.. "$@"
 }
 
+## [git-revert-repo-to-previous-state]  ->  Shorthand
+#  Despite its name, this actually does a git checkout and adds files as a new commit
+function git-revert-repo-to-previous-state() {
+  if [[ -z $1 ]]; then
+    echo "No commit/branch specified"
+    return 1
+  fi
+  local STATE="$1"
+  git checkout --no-overlay "${STATE}" "$(git rev-parse --show-toplevel)"
+}
+
 ## [gitpush-upstream]  ->  Shorthand
 #  First time pushing a branch, use this to set the upstream
 function gitpush-upstream() {
