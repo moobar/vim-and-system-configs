@@ -13,6 +13,8 @@
 # If you experience issues pulling in the changes you can also quit Amethyst and run: `defaults delete com.amethyst.Amethyst.plist`
 # This removes the current preferences and causes Amethyst to restart with default preferences and pull configs from this file.
 
+# REFERENCE DOCS: https://github.com/ianyh/Amethyst/blob/development/docs/configuration-files.md
+
 # layouts - Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column).
 layouts:
   - tall
@@ -260,6 +262,7 @@ window-minimum-width: 0
 # List of bundle identifiers for applications to either be automatically floating or automatically tiled based on floating-is-blacklist (default []).
 floating: 
   - com.1password.1password
+  - com.amethyst.Amethyst
   - com.apple.AppStore
   - com.apple.DiskUtility
   - com.apple.FaceTime
@@ -313,7 +316,7 @@ use-canary-build: false
 new-windows-to-main: false
 
 # true to automatically move to a space when throwing a window to it (default true).
-follow-space-thrown-windows: false
+follow-space-thrown-windows: true
 
 # The integer percentage of the screen dimension to increment and decrement main pane ratios by (default 5).
 window-resize-step: 5
