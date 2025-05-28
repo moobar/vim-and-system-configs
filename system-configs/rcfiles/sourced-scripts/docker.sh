@@ -52,6 +52,33 @@ function docker-exec() {
   fi
 }
 
+function docker-build-and-push-multiarch() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: docker-build-and-push-multiarch [MULTI_ARCH_IMAGE_SORCE] [PUSH_DESTINATION]"
+    echo "Example: docker-build-and-push-multiarch \"gcr.io/google.com/cloudsdktool/google-cloud-cli:518.0.0-emulators\" \"us.gcr.io/MY_COOL_PROJECT/google-cloud-cli:518.0.0-emulators\""
+    return 1
+  fi
+  local IMAGE_SOURCE="$1"
+  local PUSH_DESTINATION="$2"
+  (
+
+    function cleanup-dockerfile() {
+      # shellcheck disable=SC2317
+      rm -f temp-dockerbuidfile-for-pushing-multiarch
+    }
+
+    trap cleanup-dockerfile EXIT
+
+    echo "FROM ${IMAGE_SOURCE}" > temp-dockerbuidfile-for-pushing-multiarch
+    echo About to run: docker buildx build . --platform linux/amd64,linux/arm64 -f temp-dockerbuidfile-for-pushing-multiarch -t "${PUSH_DESTINATION}" --progress plain --push
+    echo "Enter to continue, CTRL-C to quit"
+    read -r _
+    set -x
+    docker buildx build . --platform linux/amd64,linux/arm64 -f temp-dockerbuidfile-for-pushing-multiarch -t "${PUSH_DESTINATION}" --progress plain --push
+    set +x
+  )
+}
+
 function ffdocker() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

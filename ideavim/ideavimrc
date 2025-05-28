@@ -85,6 +85,7 @@ nnoremap ,,s :action GotoImplementation<CR>
 nnoremap ,,u :action GotoSuperMethod<CR>
 
 nnoremap <SPACE>fs :action FileStructurePopup<CR>
+nnoremap gm :action FileStructurePopup<CR>
 nnoremap ,,f :action GotoFile<CR>
 
 " Search

@@ -118,6 +118,14 @@ function mvn-test() {
   mvn test -DtrimStackTrace=false -Dstdout=F "$@"
 }
 
+function mvn-check() {
+  mvn checkstyle:check "$@"
+}
+
+function mvn-dependency() {
+  mvn dependency:tree "$@"
+}
+
 function mvn-classpath() {
   mvn dependency:build-classpath -pl :server \
     | grep -Fv '[INFO]' \
@@ -246,7 +254,25 @@ function generate-dto-from-proto() {
     "${OUTPUT_DIRECTORY}"
 }
 
+function find-file-on-classpath() {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: find-file-on-classpath <GREP ARGS>"
+    return 1
+  fi
 
+  (
+    cdroot
+    mvn clean install -T1C -DskipTests -Ddocker.skip=true
+    for jar in server/target/lib/*.jar; do
+      echo "Extracting and searching: ${jar}"
+      jar -tvf "${jar}" | grep "$@"
+    done
+  )
+}
+
+function find-logback-in-classpath() {
+  find-file-on-classpath -iF logback.xml | grep -iF "logback.xml" -B1
+}
 
 function ffjava() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"

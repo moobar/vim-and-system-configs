@@ -1,0 +1,49 @@
+#!/bin/bash
+set -eo pipefail
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+git_root="$(git rev-parse --show-toplevel)"
+input_from_tty=/dev/tty
+
+function branch-check() {
+  if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+    echo "⚠️  You are about to push to '{$branch}'!"
+    echo ""
+
+    echo "Type the branch name ('$branch') to confirm push: "
+    read -r confirm < "${input_from_tty}"
+    echo ""
+
+    if [[ "$confirm" != "$branch" ]]; then
+      echo "✖ Aborting push: branch name did not match."
+      exit 1
+    fi
+
+    echo "✔ Confirmation matched. Proceeding with push."
+  fi
+}
+
+function checkstyle() {
+  local output=""
+
+  if [[ -f "${git_root}/pom.xml" ]]; then
+    echo "Java Repo Found - Running Checkstyle"
+    if ! output="$(mvn checkstyle:check)"; then
+        echo "Checksytle failed"
+        echo "-----------------"
+        grep -E 'WARNING.*(java|scala)|ERROR.*Checkstyle' <<< "${output}"
+        exit 1
+    fi 
+    echo ""
+
+    echo "✔ Checkstyle succeeded. Proceeding with push."
+  fi 
+}
+
+branch-check
+checkstyle
+
+echo ""
+echo "All checks passed. Pushing to [${branch}]"
+exit 0
+

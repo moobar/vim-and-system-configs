@@ -3,7 +3,7 @@
 [core]
   pager = delta
   ignorecase = false
-  hooksPath = ~/finco-scripts/git-hooks
+  hooksPath = ~/.vim/system-configs/githooks
 
 [interactive]
   diffFilter = delta --color-only
@@ -40,4 +40,4 @@
   prompt = true
 
 [alias]
-	diffw = diff -w
+  diffw = diff -w
