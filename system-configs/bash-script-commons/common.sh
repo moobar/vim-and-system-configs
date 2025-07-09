@@ -412,7 +412,7 @@ function cache_command() {
     esac
   done
 
-  if [[ -z "$FUNCTION" || -z "$COMMAND" || -d "$DIR" ]]; then
+  if [[ -z "$FUNCTION" || -z "$COMMAND" || -z "$DIR" ]]; then
     return 1
   fi
 
