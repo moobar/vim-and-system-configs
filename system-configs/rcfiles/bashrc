@@ -7,7 +7,7 @@ OS_NAME=$(uname -s)
 
 if [[ $OS_NAME == "Darwin" ]]; then
   #export SHELL=/bin/bash
-  export SHELL=~/bin/bash
+  export SHELL=/opt/homebrew/bin/bash
 fi
 
 # Set a fresh path if path_helper: MacOS
@@ -69,22 +69,6 @@ if [[ $OS_NAME == "Darwin" ]]; then
     # shellcheck disable=SC1091
     source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
   fi
-fi
-
-if type kubectl >/dev/null 2>&1; then
-  # Leaving this for now. But purge at some point
-  # BASH_VERSION_SHORT="${BASH_VERSION:0:3}"
-  # if (( $(echo "${BASH_VERSION_SHORT} >= 3.3" | bc -l) )); then
-  KUBECTL_VERSION=$(kubectl version --output json 2>/dev/null | jq -r '(.clientVersion.major + "." + .clientVersion.minor)' || true)
-  (
-    if [[ -n $KUBECTL_VERSION && ! -f /tmp/kubectl-completion-bash-$KUBECTL_VERSION ]]; then
-      kubectl completion bash > "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
-    fi
-  )
-
-  # shellcheck disable=SC1090
-  source "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
-  unset KUBECTL_VERSION
 fi
 
 # shellcheck disable=SC1090,1091
@@ -263,6 +247,22 @@ if [[ $OS_NAME == "Darwin" ]]; then
     }
     export PATH=${PATH}:~/Library/Android/sdk/tools:~/Library/Android/sdk/build-tools:~/Library/Android/sdk/platform-tools:~/Library/Android/sdk/tools/bin
   fi
+fi
+
+if type kubectl >/dev/null 2>&1; then
+  # Leaving this for now. But purge at some point
+  # BASH_VERSION_SHORT="${BASH_VERSION:0:3}"
+  # if (( $(echo "${BASH_VERSION_SHORT} >= 3.3" | bc -l) )); then
+  KUBECTL_VERSION=$(kubectl version --output json 2>/dev/null | jq -r '(.clientVersion.major + "." + .clientVersion.minor)' || true)
+  (
+    if [[ -n $KUBECTL_VERSION && ! -f /tmp/kubectl-completion-bash-$KUBECTL_VERSION ]]; then
+      kubectl completion bash > "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+    fi
+  )
+
+  # shellcheck disable=SC1090
+  source "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+  unset KUBECTL_VERSION
 fi
 
 # Alawys add this, because we want it to take precdence no matter what
