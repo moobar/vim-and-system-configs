@@ -224,20 +224,24 @@ function gitbranchfiles-origin() {
   gitbranchdiff-origin --name-only "$@" | awk '{print $0}'
 }
 
-function gh-list-authored-prs() {
+function gh-search-authored-prs() {
   gh search prs --limit=200 --state=open --author="@me"
 }
 
-function gh-list-authored-prs-json() {
-  gh search prs --limit=200 --state=open --author="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url | jq -c .[]
+function gh-search-authored-prs-json() {
+  gh search prs --limit=200 --state=open --author="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url "$@" | jq -c .[]
 }
 
-function gh-list-assigned-prs() {
-  gh search prs --limit=200 --state=open --assignee="@me"
+function gh-search-assigned-prs() {
+  gh search prs --limit=200 --state=open --assignee="@me" "$@"
 }
 
-function gh-list-assigned-prs-json() {
-  gh search prs --limit=200 --state=open --assignee="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url | jq -c .[]
+function gh-search-assigned-prs-json() {
+  gh search prs --limit=200 --state=open --assignee="@me" --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url "$@" | jq -c .[]
+}
+
+function gh-search-merged-prs() {
+  gh search prs --author=@me --state closed --merged "$@"
 }
 
 function repo-name() {

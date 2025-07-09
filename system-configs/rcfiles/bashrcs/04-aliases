@@ -6,6 +6,7 @@ alias cdt='cd ~/forge/todo'
 alias cdp='cd ~/forge/projects'
 alias cdr='cd ~/repos'
 alias cdw='cd ~/workspaces'
+alias cds='cd ~/forge/scratch'
 
 alias watch='watch --color'
 

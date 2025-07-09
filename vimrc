@@ -265,7 +265,7 @@ set t_kB=[Z
 
 " Use UTF-8
 set encoding=utf-8
-set termencoding=utf-8
+" set termencoding=utf-8
 set fileencoding=utf-8
 
 " Explicitly list tabs for better consistency
