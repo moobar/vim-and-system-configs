@@ -324,6 +324,23 @@ function clean_cached_commands() {
   fi
 }
 
+function yn_prompt() {
+  if [[ -z $1 ]]; then
+    echo "Must supply a prompt message"
+    return 1
+  fi
+  local PROMPT="$1"
+  local YN=""
+
+  echo -n "${PROMPT} [y/N]: "
+  read -r YN
+  if [[ "$YN" == [Yy] || "$YN" == [Yy][Ee][Ss] ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 ## [subprocesses-kill]
 # Kill all the subprocesses of the current process
 # DANGEROUS - This will kill all subprocesses of the current shell!

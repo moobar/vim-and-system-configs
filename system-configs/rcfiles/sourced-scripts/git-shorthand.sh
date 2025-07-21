@@ -467,6 +467,22 @@ function gh-pr-create() {
   gh pr create --fill "$@"
 }
 
+function git-branch-jira() {
+  if [[ -z $1 ]]; then
+    echo "Must enter a branch name"
+    return 1
+  fi
+  local BRANCH_NAME=$1
+  local TICKET=""
+
+  TICKET="$(acli jira workitem search --limit 100 --jql "assignee = currentUser() AND status NOT IN (Completed, \"Won't Do\", Resolved) AND sprint IN openSprints()" --json | jq -r '.[] | .key + " " + .fields.summary' | fzf --prompt="Select ticket" | cut -d' ' -f1)"
+  if yn_prompt "Checkout branch ${TICKET}-${BRANCH_NAME}?"; then
+    git checkout -b "${TICKET}-${BRANCH_NAME}"
+  else
+    echo "Manually run: git checkout -b ${TICKET}-${BRANCH_NAME}"
+  fi
+}
+
 ## Taken from junegunn's rcfiles ##
 
 ## [gitzip]  ->  Alias

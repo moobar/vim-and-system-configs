@@ -42,6 +42,15 @@ function rsa-key-verify-and-print() {
   openssl rsa -noout -text -check "$@"
 }
 
+# rsa public key check
+function rsa-public-key-print() {
+  if [[ $# -eq 0 ]]; then
+    echo "You probably want to add -in <FILE>"
+    return 1
+  fi
+  openssl rsa -pubin -text -noout "$@"
+}
+
 # Check and display a certificate request (CSR):
 function certs-csr-verify-and-print() {
   if [[ $# -eq 0 ]]; then

@@ -119,7 +119,12 @@ function gcloud-whoami() {
 ## [docker-auth]  ->  Shorthand
 #  use gloud princpal to authenticate to https://us.gcr.io via the gcloud cli + docker cli
 function docker-auth() {
-  gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us.gcr.io
+  local URI="https://us.gcr.io"
+  if [[ -n $1 ]]; then
+    URI="$1"
+  fi
+
+  gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin "${URI}"
 }
 
 ## [gcloud-config]  ->  Alias
