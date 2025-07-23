@@ -27,6 +27,8 @@ elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
 fi
 
 function __terminal_error_handler__() {
+  # trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
+  #
   # Reset
   local NC='\033[0m' # No Color
 
@@ -36,8 +38,9 @@ function __terminal_error_handler__() {
 
   local last_status_code=$1;
   local lc="$BASH_COMMAND"
+  local line="$LINENO"
 
-  echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code${NC}";
+  echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code on line: ${line} ${NC}";
 
 }
 set -o vi

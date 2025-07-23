@@ -201,15 +201,30 @@ function gitbranchlog-unpushed() {
   git log @{upstream}.. "$@"
 }
 
-## [git-revert-repo-to-previous-state]  ->  Shorthand
-#  Despite its name, this actually does a git checkout and adds files as a new commit
-function git-revert-repo-to-previous-state() {
+## [git-checkout-repo-to-previous-state]  ->  Shorthand
+#  Use this to stage changes from HEAD to <previous-state>, which can be a branch or commit
+#  Unilike git reset, this doesn't move tip of the branch
+function git-checkout-repo-to-previous-state() {
   if [[ -z $1 ]]; then
     echo "No commit/branch specified"
     return 1
   fi
   local STATE="$1"
   git checkout --no-overlay "${STATE}" "$(git rev-parse --show-toplevel)"
+}
+
+## [git-restore-repo-to-previous-state]  ->  Shorthand
+#  Use this to stage changes from HEAD to <previous-state>, which can be a branch or commit
+#  Unilike git reset, this doesn't move tip of the branch
+#
+#  This is identical to git-checkout-repo-to-previous-state, using modern git syntax
+function git-restore-repo-to-previous-state() {
+  if [[ -z $1 ]]; then
+    echo "No commit/branch specified"
+    return 1
+  fi
+  local STATE="$1"
+  git restore --source="${STATE}" --staged --worktree "$(git rev-parse --show-toplevel)"
 }
 
 ## [gitpush-upstream]  ->  Shorthand
