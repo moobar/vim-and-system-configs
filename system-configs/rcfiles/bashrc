@@ -8,6 +8,9 @@ OS_NAME=$(uname -s)
 if [[ $OS_NAME == "Darwin" ]]; then
   #export SHELL=/bin/bash
   export SHELL=/opt/homebrew/bin/bash
+
+  # Turn off that hold thing for keys, globally
+  defaults write -g ApplePressAndHoldEnabled -bool false
 fi
 
 # Set a fresh path if path_helper: MacOS
@@ -176,7 +179,7 @@ fi
 
 #### VS Code Support on OSX
 if [[ $OS_NAME == "Darwin" ]]; then
-  # Key repeat works correctly in VS Code
+  # Explicilty set key repeat works correctly in VS Code
   defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
   # Add a symlink to settings and keybindings 

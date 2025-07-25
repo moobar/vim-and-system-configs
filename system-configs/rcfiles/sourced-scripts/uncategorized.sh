@@ -478,6 +478,30 @@ function mkdir-today() {
   mkdir "$(date '+%Y-%m-%d')"
 }
 
+function ssh-port-forward() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: ssh-port_-orward PORT [ssh options] user@host"
+        echo "Example: ssh_port_forward 8080 -i key.pem user@example.com"
+        return 1
+    fi
+
+    local port="$1"
+    shift
+
+    if ! [[ "$port" =~ ^[0-9]+$ ]]; then
+        echo "Error: Port must be a number"
+        return 1
+    fi
+
+    if [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
+        echo "Error: Port must be between 1 and 65535"
+        return 1
+    fi
+
+    ssh -L "${port}:localhost:${port}" "$@"
+}
+
+
 function ffb() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }
