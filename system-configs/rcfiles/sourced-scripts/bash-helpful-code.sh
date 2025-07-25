@@ -39,7 +39,6 @@ function robust-while-loop() {
       return 0
     fi
   done 3< "${FILE}"
-  return 1
 EOM
 }
 
