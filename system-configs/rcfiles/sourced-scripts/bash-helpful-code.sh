@@ -29,16 +29,29 @@ EOM
 }
 
 function robust-while-loop() {
-  cat << 'EOM'
   echo "This reads in a file, handles when the file has no newline at the end and puts it in FD 3 to avoid STDIN conflicts"
   echo "  -----  "
-  while read -r line || [[ -n "$line" ]] <&3; do
-    k="$(awk -F '=' '{print $1}' <<< "${line}")"
-    if [[ "${k,,}" == "${KEY,,}" ]]; then
-      cut -d '=' -f2- <<< "${line}"
-      return 0
-    fi
-  done 3< "${FILE}"
+  cat << 'EOM'
+while read -r line <&3 || [[ -n "$line" ]]; do
+  k="$(awk -F '=' '{print $1}' <<< "${line}")"
+  if [[ "${k,,}" == "${KEY,,}" ]]; then
+    cut -d '=' -f2- <<< "${line}"
+    return 0
+  fi
+done 3< "${FILE}"
+EOM
+
+  echo ""
+  echo "Using a safer approach with the redirects at the end, which will always work:"
+  echo "  -----  "
+  cat << 'EOM'
+while read -r line || [[ -n "$line" ]]; do
+  k="$(awk -F '=' '{print $1}' <<< "${line}")"
+  if [[ "${k,,}" == "${KEY,,}" ]]; then
+    cut -d '=' -f2- <<< "${line}"
+    return 0
+  fi
+done 3< "${FILE}" <&3
 EOM
 }
 

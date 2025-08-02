@@ -524,13 +524,13 @@ function kubectl-get-deployments() {
     echo "PROJECT: ${PROJECT}"
     echo 'DEPLOYMENT NAMESPACE NAME AGE'
     DEPLOYMENTS=$(
-      while read -r cluster_info <&3; do
+      while read -r cluster_info; do
         GCLOUD_CLUSTER=$(awk '{print $1}' <<< "${cluster_info}")
         kubectl-get-cluster-deployment --cluster "${cluster_info}" --project "${PROJECT}" |
           awk -v cluster="${GCLOUD_CLUSTER}" '{ printf "%-30s%-30s%-40s%-10s\n", (NR==1? "DEPLOYMENT" : cluster), $1, $2, $6 }' |
           grep -v 'NAMESPACE' |
           grep -v "kube-system"
-      done 3< <(gcloud-container-clusters --project "${PROJECT}" | tail -n +2)
+      done 3< <(gcloud-container-clusters --project "${PROJECT}" | tail -n +2) <&3
     )
 
     (

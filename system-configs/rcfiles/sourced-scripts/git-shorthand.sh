@@ -442,7 +442,7 @@ function gh-download-all-repos() {
 
   local repo_info=
   (
-    while read -r repo_info <&3; do
+    while read -r repo_info; do
       local archive_status='' repo_name=''
 
       #printf "OWNER info: %s\n" "${owner}"
@@ -466,7 +466,8 @@ function gh-download-all-repos() {
         if [[ $RUNNING -le $MAX_PARALLEL ]]; then break; fi
         sleep 5
       done
-    done 3< <( gh repo list "${OWNER}" --limit 1000 )
+    done 3< <( gh repo list "${OWNER}" --limit 1000 ) <&3
+
     echo "The vast majority of the repos were cloned. Still waiting for"
     echo Running: 'ps auxww | grep -v grep | grep "git clone --quiet"'
     # shellcheck disable=SC2009
