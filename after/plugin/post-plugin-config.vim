@@ -1,1 +1,1 @@
-../../vimrc.after.plugins.vim
+../../vimrcfiles/post-plugin-config.vim

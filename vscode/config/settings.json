@@ -10,10 +10,9 @@
     "vscode-neovim.logOutputToConsole": true,
     "settingsSync.ignoredExtensions": [],
     "workbench.sideBar.location": "right",
-    "python.analysis.inlayHints.functionReturnTypes": true,
     "python.analysis.inlayHints.pytestParameters": true,
     "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.inlayHints.callArgumentNames": "all",
+    "python.analysis.inlayHints.callArgumentNames": "partial",
     "editor.formatOnSave": true,
     "githd.blameView.enabled": false,
     "window.zoomLevel": 1,
@@ -43,12 +42,11 @@
         },
         "enableRemoteMockServer": false
     },
-    "terminal.external.osxExec": "iterm.app",
+    "terminal.external.osxExec": "/Applications/iTerm.app",
     "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
     "workbench.preferredLightColorTheme": "GitHub Light Colorblind (Beta)",
-    "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
     "editor.tokenColorCustomizations": {
         "[GitHub Dark Colorblind (Beta)]": {
             "textMateRules": [
@@ -75,9 +73,27 @@
     },
     "scm.diffDecorationsIgnoreTrimWhitespace": "true",
     "githubPullRequests.quickDiff": true,
-    "cloudcode.duetAI.project": "sagarlikelogger",
     "cloudcode.project": "sagarlikelogger",
     "editor.accessibilitySupport": "off",
     "cloudcode.kubectlExecShell": "bash",
-    "gitlens.ai.experimental.model": "openai:gpt-4o"
+    "gitlens.ai.experimental.model": "openai:gpt-4o",
+    "window.confirmBeforeClose": "keyboardOnly",
+    "geminicodeassist.project": "sagarlikelogger",
+    "terminal.integrated.defaultProfile.osx": "bash",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "python.analysis.addHoverSummaries": true,
+    "python.analysis.aiCodeActions": {
+        "implementAbstractClasses": true,
+        "generateSymbol": true,
+        "convertFormatString": true
+    },
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.enableTroubleshootMissingImports": true,
+    "python.analysis.generateWithTypeAnnotation": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.typeEvaluation.strictDictionaryInference": true,
+    "python.analysis.typeEvaluation.strictListInference": true,
+    "python.analysis.typeEvaluation.strictSetInference": true,
+    "python.analysis.userFileIndexingLimit": 10000
 }
