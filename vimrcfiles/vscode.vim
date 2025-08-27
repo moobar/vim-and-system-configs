@@ -12,6 +12,15 @@ function! s:gotoEditor(...) abort
     call VSCodeCall(count ? 'workbench.action.openEditorAtIndex' . count : 'workbench.action.nextEditorInGroup')
 endfunction
 
+function! s:vscodeGoToDefinition(str)
+    if exists('b:vscode_controlled') && b:vscode_controlled
+        call VSCodeNotify('editor.action.' . a:str)
+    else
+        " Allow to function in help files
+        exe "normal! \<C-]>"
+    endif
+endfunction
+
 "" VS Code Commands to migrate over ""
 " gj, and gk added by me
 nnoremap <C-n> <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
@@ -20,7 +29,6 @@ nnoremap gj <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
 nnoremap gk <Cmd>call <SID>switchEditor(v:count, 'prev')<CR>
 nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 nnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
-nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
 nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
 "" Taken from coc-this is pretty nice
 nnoremap gy <Cmd>call VSCodeNotify('editor.action.goToTypeDefinition')<CR>
