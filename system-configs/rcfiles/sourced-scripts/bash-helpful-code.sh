@@ -55,6 +55,34 @@ done 3< "${FILE}" <&3
 EOM
 }
 
+function debug-gke-node() {
+  cat << 'EOM'
+# 1. Find the node
+kubectl get pods -o=wide | grep POD_NAME
+
+# 2. ssh to the node with fgcloud-ssh
+fgcloud-ssh
+
+# 3. Find the process associated witht he pod
+sudo ps auxwww | grep -F POD_NAME
+sudo ps auxwww | grep -F POD_NAME | grep -Fv 'grep' | awk '{print $2}'
+
+# 4. Inspect memory maps
+sudo pmap -x PID
+sudo pmap -x PID | grep -F anon | sort -nk3 | tail -10
+
+# 5. Inspect raw memory
+sudo xxd -s 0xMAP_ADDRESS -l BYTES_TO_INSPECT -g1 /proc/PID/mem
+
+# example: sudo xxd -s 0x00007d62a0000000 -l 1024 -g1 /proc/2724172/mem
+
+# 6. Need more? Try sudo toolbox
+# https://cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/troubleshooting/toolbox
+sudo toolbox
+
+EOM
+}
+
 function make_script_fzfable() {
   echo "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }
