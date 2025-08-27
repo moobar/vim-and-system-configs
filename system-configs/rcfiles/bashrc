@@ -291,6 +291,13 @@ fn.fzf() {
         --bind 'ctrl-e:execute:vim {f}'
 }
 
+# Ensure bash is set to homebrew
+if ! grep -qF /opt/homebrew/bin/bash /etc/shells; then
+  echo "Changing shells to homebrew - going to need to enter sudo password"
+  sudo sh -c 'echo /opt/homebrew/bin/bash >> /etc/shells'
+  chsh -s /opt/homebrew/bin/bash
+fi
+
 #PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
 
 

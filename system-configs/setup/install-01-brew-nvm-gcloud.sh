@@ -168,7 +168,7 @@ countdown 5
   brew upgrade
   brew update
   brew install autoconf automake bc bat coreutils cowsay curl fd fx fzf gh git \
-               git-delta grpcurl htop jq neovim nmap pstree pup pv \
+               bash git-delta grpcurl htop jq neovim nmap pstree pup pv \
                python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
                tmux tree tree-sitter util-linux vim watch wget xz yq termshark \
                websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz \
