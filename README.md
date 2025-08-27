@@ -41,6 +41,12 @@ git clone https://github.com/moobar/vim-and-system-configs.git && ln -s vim-and-
 bash ~/.vim/system-configs/install-everything.sh
 ```
 
+### VS Code
+Switch to VS Code, and sync extensions (sign in) and settings [settings.json]
+
+Open settings and update 'Window: Zoom Level' 
+* For 13" MBA, with Resolution set to `2560 x 1664` --> Set to: `2`
+* For 14" MBP, with Resolution set to `2294 x 1490` --> Set to: `1` 
 
 ## Install on a VPS
 

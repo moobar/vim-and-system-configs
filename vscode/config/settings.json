@@ -15,7 +15,7 @@
     "python.analysis.inlayHints.callArgumentNames": "partial",
     "editor.formatOnSave": true,
     "githd.blameView.enabled": false,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 2,
     "vscode-neovim.revealCursorScrollLine": true,
     "terminal.integrated.fontFamily": "Monaco",
     "editor.fontFamily": "Monaco, 'Courier New', monospace",
