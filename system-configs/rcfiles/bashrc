@@ -283,4 +283,15 @@ if [[ -z $DISABLE_UPGRADES ]]; then
   auto_upgrade_terminal
 fi
 
+fn.fzf() {
+  declare -f |
+    perl -0 -pe 's/^}\n/}\0/gm' |
+    bat --plain --language bash --color always |
+    fzf --read0 --ansi --layout reverse --multi --highlight-line --gap \
+        --bind 'ctrl-e:execute:vim {f}'
+}
+
+#PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
+
+
 # shopt -s globstar

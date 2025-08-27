@@ -42,7 +42,7 @@
         },
         "enableRemoteMockServer": false
     },
-    "terminal.external.osxExec": "/Applications/iTerm.app",
+    "terminal.external.osxExec": "/Applications/kitty.app",
     "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
@@ -95,5 +95,6 @@
     "python.analysis.typeEvaluation.strictDictionaryInference": true,
     "python.analysis.typeEvaluation.strictListInference": true,
     "python.analysis.typeEvaluation.strictSetInference": true,
-    "python.analysis.userFileIndexingLimit": 10000
+    "python.analysis.userFileIndexingLimit": 10000,
+    "python.defaultInterpreterPath": "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/bin/python3.13"
 }

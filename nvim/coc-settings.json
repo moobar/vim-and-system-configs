@@ -19,6 +19,14 @@
   "pyright.enable": true,
   "suggest.autoTrigger": "none",
   "suggest.insertMode": "insert",
+  "suggest.noselect": true,
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-playbook.json": "khp-ansible/*.yml",
+    "https://json.schemastore.org/kustomization.json": "/kustomization.yaml",
+    "kubernetes": ["/*.yaml", "!/kustomization.yaml"]
+  },
+  "yaml.customTags": ["!vault scalar"],
+  "yaml.trace.server": "verbose",
   "java.enabled": false,
   "java.compile.nullAnalysis.mode": "automatic",
   "languageserver": {

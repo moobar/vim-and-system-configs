@@ -10,6 +10,11 @@ fi
 ## [venv-create]
 #  Create a new venv
 function venv-create() {
+  local VENV_DIR="$(pwd)/.venv"
+  if [[ -n $1 ]]; then
+    VENV_DIR="$1"
+  fi
+
   local VENV=
   VENV="$(find . -name activate | grep -F '/bin/activate')"
 
@@ -17,10 +22,10 @@ function venv-create() {
     echo "Already a venv here, skipping"
     return 1
   else
-    echo "Creating a venv here in: $(pwd)"
+    echo "Creating a venv here in: ${VENV_DIR}"
     echo "Enter to continue,  CTRL-C to cancel"
     read -r _
-    python3 -m venv .
+    python3 -m venv "${VENV_DIR}"
     source "$(find . -name activate | grep -F '/bin/activate')"
   fi
 }

@@ -172,11 +172,11 @@ countdown 5
                python3 ripgrep shellcheck shtool socat sponge sqlite terraform \
                tmux tree tree-sitter util-linux vim watch wget xz yq termshark \
                websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz \
-               task taskwarrior-tui terraform-ls bashdb ruff
+               task taskwarrior-tui terraform-ls bashdb ruff ranger imagemagick \
+               mise lua docker csvkit go
 
   # Useful but not really super core packages
-  brew install csvkit docker go gpatch gpatch guile lazygit lua maven \
-                poppler protobuf
+  brew install gpatch gpatch guile lazygit maven poppler protobuf
 
   ## Instal OS Specific Apps and CLI tools
   if [[ $(uname -s) == "Darwin" ]]; then
@@ -187,7 +187,7 @@ countdown 5
     #   for our linux installs, since we normally don't have a GUI
     #   May revisit at some point in the future
     #   Consider installing wiht the builtin package manager
-    brew install bash-completion qt
+    brew install bash-completion@2 qt
 
     echo "OSX: Installing pam module for touch id"
     countdown 3
@@ -208,6 +208,8 @@ countdown 5
     countdown 3
     brew install mitmproxy jwt-cli 1password-cli
     brew install --cask iterm2 || true
+    brew install --cask kitty || true
+    brew install --cask visual-studio-code || true
     brew remove google-cloud-sdk -f || true
     brew install google-cloud-sdk
   elif [[ $(uname -s) == "Linux" ]]; then
