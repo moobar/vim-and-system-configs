@@ -173,7 +173,9 @@ countdown 5
                tmux tree tree-sitter util-linux vim watch wget xz yq termshark \
                websocat dhcping ldns fping iftop iperf iperf3 w3m fswatch pigz \
                task taskwarrior-tui terraform-ls bashdb ruff ranger imagemagick \
-               mise lua docker csvkit go
+               mise lua docker csvkit go kubectx cmake
+
+  brew install derailed/k9s/k9s
 
   # Useful but not really super core packages
   brew install gpatch gpatch guile lazygit maven poppler protobuf

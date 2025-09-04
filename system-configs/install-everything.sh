@@ -61,20 +61,10 @@ set -e -o pipefail
 ## Only run this script when on OSX
 if [[ $(uname -s) == "Darwin" ]]; then
   echo "Install looks good I think! Double check by relaounching Terminal"
-  echo "This script is about to close Terminal and relaunch iTerm"
-  countdown 10
 
-  (
-    # shellcheck disable=SC2009
-    TERMINAL_PID="$(ps auxww | grep -F Terminal.app | grep -v grep | awk '{print $2}' || true)"
-    if [[ -n $TERMINAL_PID ]]; then
-      open /Applications/iTerm.app && kill -9 "${TERMINAL_PID}"
-    else
-      echo "Not running in Terminal.app. Leaving this window open"
+  echo "Sourcing ~/.bashrc - check and see if it works"
+  # shellcheck disable=SC1090
+  source ~/.bashrc
 
-      echo "sourcing .bashrc"
-      #shellcheck disable=SC1090
-      source ~/.bashrc
-    fi
-  ) || exit 1
+  echo "All set! Close this window and then open terminal of choice"
 fi

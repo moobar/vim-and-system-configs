@@ -90,6 +90,17 @@ if [[ $OS_NAME == "Darwin" ]]; then
     source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc"
   fi
 
+  ### New Style
+  # The next line updates PATH for the Google Cloud SDK.
+  if [ -f '/opt/homebrew/share/google-cloud-sdk/path.bash.inc' ]; then 
+    source '/opt/homebrew/share/google-cloud-sdk/path.bash.inc'
+  fi
+
+  # The next line enables shell command completion for gcloud.
+  if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc' ]; then 
+    source '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc'
+  fi
+
   ## Intel
   # The next lines updates PATH for the Google Cloud SDK.
   if [[ -r "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc" ]]; then
@@ -112,6 +123,11 @@ fi
 # Enable shell command completion for terraform
 if type terraform >/dev/null 2>&1; then
   complete -o nospace -C "$(which terraform)" terraform
+fi
+
+# Enable shell command completion for aws
+if type aws &>/dev/null && type aws_completer &>/dev/null; then
+  complete -C '/usr/local/bin/aws_completer' aws
 fi
 
 ## Load Node Version Manager
@@ -300,5 +316,7 @@ fi
 
 #PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
 
+### Experimental ### 
+ssh-agent-start-or-attach
 
 # shopt -s globstar

@@ -81,8 +81,8 @@ function docker-build-and-push-multiarch() {
 
 function docker-pull-tag-and-push() {
   if [[ $# -lt 2 ]]; then
-    echo "Usage: docker-pull-tag-and-reupload [IMAGE_SORCE] [PUSH_DESTINATION] <OPTIONAL ARCH, defaults to linux/amd64 (not host default)>"
-    echo "Example: docker-pull-tag-and-reupload \"gcr.io/google.com/cloudsdktool/google-cloud-cli:518.0.0-emulators\" \"us.gcr.io/MY_COOL_PROJECT/google-cloud-cli:518.0.0-emulators\" \"linux/arm64\""
+    echo "Usage: docker-pull-tag-and-push [IMAGE_SORCE] [PUSH_DESTINATION] <OPTIONAL ARCH, defaults to linux/amd64 (not host default)>"
+    echo "Example: docker-pull-tag-and-push \"gcr.io/google.com/cloudsdktool/google-cloud-cli:518.0.0-emulators\" \"us.gcr.io/MY_COOL_PROJECT/google-cloud-cli:518.0.0-emulators\" \"linux/arm64\""
     return 1
   fi
   local IMAGE_SOURCE="$1"

@@ -66,7 +66,12 @@ function lsusers() {
   else
     dscl . list /Users
   fi
+}
 
+function disable-hold-and-popup() {
+  defaults write -g ApplePressAndHoldEnabled -bool false
+
+  echo "Disabled. You must log out and log back in for it to take effect"
 }
 
 function ffosx() {
