@@ -2,7 +2,7 @@
 
 alias cdf='cd ~/forge'
 alias cda='cd ~/forge/all-repos'
-alias cdt='cd ~/forge/todo'
+alias cdt='cd ~/forge/tools'
 alias cdp='cd ~/forge/projects'
 alias cdr='cd ~/repos'
 alias cdw='cd ~/workspaces'

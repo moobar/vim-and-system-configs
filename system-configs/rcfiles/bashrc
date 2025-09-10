@@ -7,7 +7,8 @@ OS_NAME=$(uname -s)
 
 if [[ $OS_NAME == "Darwin" ]]; then
   #export SHELL=/bin/bash
-  export SHELL=/opt/homebrew/bin/bash
+  SHELL=$(brew --prefix)/bin/bash
+  export SHELL
 
   # Turn off that hold thing for keys, globally
   defaults write -g ApplePressAndHoldEnabled -bool false
@@ -17,16 +18,6 @@ fi
 if [ -x /usr/libexec/path_helper ]; then
   export PATH=
   eval "$(/usr/libexec/path_helper -s)"
-fi
-
-#### Setup brew in Environment ####
-
-if [[ -r /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
-  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
-elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 function __terminal_error_handler__() {
@@ -92,13 +83,13 @@ if [[ $OS_NAME == "Darwin" ]]; then
 
   ### New Style
   # The next line updates PATH for the Google Cloud SDK.
-  if [ -f '/opt/homebrew/share/google-cloud-sdk/path.bash.inc' ]; then 
-    source '/opt/homebrew/share/google-cloud-sdk/path.bash.inc'
+  if [ -f "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc" ]; then
+    source "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc"
   fi
 
   # The next line enables shell command completion for gcloud.
-  if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc' ]; then 
-    source '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc'
+  if [ -f "$(brew --prefix)/share/google-cloud-sdk/completion.bash.inc" ]; then
+    source "$(brew --prefix)/share/google-cloud-sdk/completion.bash.inc"
   fi
 
   ## Intel
@@ -125,17 +116,13 @@ if type terraform >/dev/null 2>&1; then
   complete -o nospace -C "$(which terraform)" terraform
 fi
 
-# Enable shell command completion for aws
-if type aws &>/dev/null && type aws_completer &>/dev/null; then
-  complete -C '/usr/local/bin/aws_completer' aws
-fi
+# ## Load Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+# shellcheck disable=SC1091
+[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh"  # This loads nvm
 
-## Load Node Version Manager
-export NVM_DIR=~/.nvm
 # shellcheck disable=SC1091
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# shellcheck disable=SC1091
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # git-completion
 if [ ! -e ~/.git-completion.bash ]; then
@@ -198,14 +185,14 @@ if [[ $OS_NAME == "Darwin" ]]; then
   # Explicilty set key repeat works correctly in VS Code
   defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
-  # Add a symlink to settings and keybindings 
+  # Add a symlink to settings and keybindings
   if [[ -d ~/"Library/Application Support/Code/User" ]]; then
     # Symlink keybindings
     if [[ -d ~/"Library/Application Support/Code/User/" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/keybindings.json" ]]; then
         mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null
         ln -s ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
-      fi 
+      fi
     fi
 
     # Symlink settings
@@ -213,7 +200,7 @@ if [[ $OS_NAME == "Darwin" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/settings.json" ]]; then
         mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null
         ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
-      fi 
+      fi
     fi
   fi
 fi
@@ -239,8 +226,8 @@ if [[ $OS_NAME == "Darwin" ]]; then
 
   ## Leaving here for reference
   # For compilers to find util-linux you may need to set:
-  #   export LDFLAGS="-L/opt/homebrew/opt/util-linux/lib"
-  #   export CPPFLAGS="-I/opt/homebrew/opt/util-linux/include"
+  #   export LDFLAGS="-L$(brew --prefix)/opt/util-linux/lib"
+  #   export CPPFLAGS="-I$(brew --prefix)/opt/util-linux/include"
 fi
 
 if [[ ":${PATH}:" != *":${HOME}/.cargo/bin:"* ]]; then
@@ -254,7 +241,7 @@ fi
 if [[ $OS_NAME == "Darwin" ]]; then
   export JDK_HOME_21=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
   export JAVA_HOME_21="${JDK_HOME_21}"
-  
+
   export JDK_HOME="${JDK_HOME_21}"
   export JAVA_HOME="${JDK_HOME}"
 
@@ -301,22 +288,33 @@ fi
 
 fn.fzf() {
   declare -f |
-    perl -0 -pe 's/^}\n/}\0/gm' |
-    bat --plain --language bash --color always |
-    fzf --read0 --ansi --layout reverse --multi --highlight-line --gap \
-        --bind 'ctrl-e:execute:vim {f}'
+  perl -0 -pe 's/^}\n/}\0/gm' |
+  bat --plain --language bash --color always |
+  fzf --read0 --ansi --layout reverse --multi --highlight-line --gap \
+    --bind 'ctrl-e:execute:vim {f}'
 }
 
 # Ensure bash is set to homebrew
-if ! grep -qF /opt/homebrew/bin/bash /etc/shells; then
+if ! grep -qF "$(brew --prefix)/bin/bash" /etc/shells; then
   echo "Changing shells to homebrew - going to need to enter sudo password"
-  sudo sh -c 'echo /opt/homebrew/bin/bash >> /etc/shells'
-  chsh -s /opt/homebrew/bin/bash
+  sudo sh -c 'echo $(brew --prefix)/bin/bash >> /etc/shells'
+  chsh -s "$(brew --prefix)/bin/bash"
+fi
+
+#### Setup homebrew/brew in Environment ####
+##   Do this last, so that it takes precedence on the path
+
+if [[ -r "$(brew --prefix)/bin/brew" ]]; then
+  eval "$("$(brew --prefix)/bin/brew" shellenv)"
+elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
+  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 #PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
 
-### Experimental ### 
+### Experimental ###
 ssh-agent-start-or-attach
 
 # shopt -s globstar

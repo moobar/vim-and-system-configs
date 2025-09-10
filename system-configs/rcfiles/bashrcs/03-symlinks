@@ -22,6 +22,14 @@ if [ ! -d ~/forge/todo ]; then
   mkdir -p ~/forge/todo
 fi
 
+if [ ! -d ~/forge/tools ]; then
+  mkdir -p ~/forge/tools
+fi
+
+if [ ! -d ~/forge/scratch ]; then
+  mkdir -p ~/forge/scratch
+fi
+
 if [ ! -d ~/forge/projects ]; then
   mkdir -p ~/forge/projects
 fi

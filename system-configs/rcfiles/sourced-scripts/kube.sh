@@ -560,6 +560,12 @@ function fkubectl-get-cluster-deployment() {
   kubectl-get-cluster-deployment --cluster "$(fgcloud-container-clusters --project "${PROJECT}")"
 }
 
+## [kubectl-config-current-context]  ->  Shorthand
+#  Shows the current kube context auth'd do
+function kubectl-config-current-context() {
+  kubectl config current-context
+}
+
 
 # Taken from Junegunn's config.
 # TODO - I should take some of these params as inspo. For example, the

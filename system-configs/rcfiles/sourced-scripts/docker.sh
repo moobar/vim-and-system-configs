@@ -45,10 +45,21 @@ function docker-kill() {
 }
 
 function docker-exec() {
-  if docker exec -it "$(docker-grep amicus)" /bin/ls /bin/bash &>/dev/null; then
-    docker exec -it "$(docker-grep "$@")" /bin/bash
-  else
-    docker exec -it "$(docker-grep "$@")" /bin/sh
+  local CONTAINER=
+  if ! CONTAINER="$(docker-grep "$@")" || [[ -z "$CONTAINER" ]]; then
+    echo "Failed to find a valid docker container for [$*]"
+    return 1
+  fi
+
+  if (( $(grep -c . <<< "${CONTAINER}") > 1 )); then
+    echo "Too many containers return. Fix your grep string"
+    echo "${CONTAINER}"
+    return 1
+  fi
+
+  if ! docker exec -it "${CONTAINER}" /bin/bash; then
+    echo "Bash not found on docker image, trying /bin/sh"
+    docker exec -it "${CONTAINER}" /bin/sh
   fi
 }
 
@@ -96,6 +107,10 @@ function docker-pull-tag-and-push() {
   docker pull --platform="${PLATFORM}" "${IMAGE_SOURCE}"
   docker tag "${IMAGE_SOURCE}" "${PUSH_DESTINATION}"
   docker push "${PUSH_DESTINATION}"
+}
+
+function docker-kill-all-containers() {
+  docker ps | tail -n +2 | awk '{print $1}' | xargs -n1 docker kill
 }
 
 function ffdocker() {

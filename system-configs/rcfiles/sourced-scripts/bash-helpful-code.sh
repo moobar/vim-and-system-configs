@@ -83,6 +83,16 @@ sudo toolbox
 EOM
 }
 
+function print-function-name() {
+  cat << 'EOM'
+# Refers to the name of the currently executing function.
+${FUNCNAME[0]}
+
+# Refers to the name of the calling function.
+${FUNCNAME[1]}
+EOM
+}
+
 function make_script_fzfable() {
   echo "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

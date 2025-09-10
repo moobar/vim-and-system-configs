@@ -113,6 +113,11 @@ function openssl_client() {
   openssl s_client -connect "${HOST}":443
 }
 
+function lsof-ports() {
+  # No name resolution
+  lsof -nPi
+}
+
 function ffnet() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }
