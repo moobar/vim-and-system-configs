@@ -268,18 +268,22 @@ floating:
   - com.apple.FaceTime
   - com.apple.MobileSMS
   - com.apple.Photos
+  - com.apple.Preview
   - com.apple.QuickTimePlayerX
   - com.apple.ScreenSharing
   - com.apple.calculator
   - com.apple.finder
+  - com.apple.installer
   - com.apple.systempreferences
   - com.docker.docker
   - com.google.android.mtpviewer
   - com.google.android.studio
   - com.jetbrains.intellij
   - com.mongodb.compass
+  - com.yubico.ykman
   - com.zscaler.Zscaler
   - org.wireshare.Wireshark
+  - org.yanex.marta
   - us.zoom.xos
 
 # Boolean flag determining behavior of the floating list. true if the applications should be floating and all others tiled. false if the applications should be tiled and all others floating (default true).

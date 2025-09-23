@@ -1,0 +1,21 @@
+#[tool.ruff]
+## ruff.toml
+#
+## Set the maximum line length to 100 characters.
+#line-length = 100
+#
+## # Optional: Enable preview mode to get the latest formatting rules.
+## # This is often recommended for the best formatting results.
+## preview = true
+#
+#[tool.ruff.format]
+## # Use double quotes for strings.
+## quote-style = "double"
+#
+## Determines how magic trailing commas are handled.
+## 'respect' (default): Keep trailing commas if they exist.
+## 'ignore': Remove trailing commas.
+## 'add': Add a trailing comma where applicable.
+#magic-trailing-comma = "respect"
+#skip-magic-trailing-comma = false
+#

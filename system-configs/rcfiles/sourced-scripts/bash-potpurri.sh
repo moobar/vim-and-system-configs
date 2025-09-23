@@ -1,9 +1,38 @@
 #!/bin/bash
 
+# shellcheck disable=SC2218
 CONFIGROOT_DIR_SCRIPT="$( cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || echo ~/.vim )"
 if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh" ]; then
   source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
 fi
+
+function add-untracked-dir-to-sourced-scripts() {
+  if [[ -z $1 || ! -d $1 ]]; then
+    echo "Must provide a valid directory"
+    return 1
+  fi
+  local SCRIPT_TO_SOURCE="$1"
+
+  ln -s "$(readlink -f "${SCRIPT_TO_SOURCE}")" "${HOME}/.vim/system-configs/rcfiles/untracked-sourced-scripts/"
+}
+
+function list-untracked-sourced-scripts() {
+  echo "Checking: ${HOME}/.vim/system-configs/rcfiles/untracked-sourced-scripts/"
+  ls -la "${HOME}/.vim/system-configs/rcfiles/untracked-sourced-scripts/"
+}
+
+
+## [watch]  ->  Alias
+#  Make watch better at working with a piped string
+function watch() {
+  local STDIN_STR=
+  if test ! -t 0; then
+    STDIN_STR="$(cat)"
+    command watch "$@" "${STDIN_STR}" < /dev/tty
+  else
+    command watch "$@"
+  fi
+}
 
 ## [diff]  ->  Alias
 #  Replace builtin diff with delta (https://github.com/dandavison/delta)
@@ -93,7 +122,11 @@ function milliseconds-to-iso8601() {
     MILLISECONDS=$(cat)
   fi
 
-  python3 -c "import datetime; print(datetime.datetime.fromtimestamp(${MILLISECONDS}/1000, datetime.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'))"
+  python3 -c "$(cat <<EOM
+import datetime
+print(datetime.datetime.fromtimestamp(${MILLISECONDS}/1000, datetime.UTC).strftime('%Y-%m-%dT%H:%M:%SZ'))"
+EOM
+)"
 }
 
 

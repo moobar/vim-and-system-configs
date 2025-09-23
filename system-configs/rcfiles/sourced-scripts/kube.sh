@@ -125,6 +125,18 @@ function docker-auth() {
   fi
 
   gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin "${URI}"
+  # gcloud auth configure-docker
+}
+
+## [gcloud-docker-auth]  ->  Shorthand
+#  use gloud princpal to authenticate to https://us.gcr.io via the gcloud cli + docker cli
+function gcloud-docker-auth() {
+  local URI="https://us.gcr.io"
+  if [[ -n $1 ]]; then
+    URI="$1"
+  fi
+
+  gcloud auth configure-docker "$1"
 }
 
 ## [gcloud-config]  ->  Alias
@@ -390,7 +402,13 @@ function fssh-gcloud() {
 ## [kubectl-event-logs]  ->  Alias
 #  Print out all GKE event logs for current working GKE cluster
 function kubectl-event-logs() {
-  kubectl get events --sort-by='.lastTimestamp' -w
+  kubectl get events --sort-by='.lastTimestamp' "$@"
+}
+
+## [kubectl-event-logs-watch]  ->  Alias
+#  Print out all GKE event logs for current working GKE cluster
+function kubectl-event-logs-watch() {
+  kubectl get events --sort-by='.lastTimestamp' -w "$@"
 }
 
 ## [kubectl-get-cluster-deployment] | Cache enabled
@@ -564,6 +582,33 @@ function fkubectl-get-cluster-deployment() {
 #  Shows the current kube context auth'd do
 function kubectl-config-current-context() {
   kubectl config current-context
+}
+
+## [kubectl-config-current-namespace]  ->  Shorthand
+#  Shows the current kube namespace
+function kubectl-config-current-namespace() {
+  kubectl config view --minify --output=json  | jq -r .contexts[0].context.namespace
+}
+
+## [kubectl-namespace]  ->  Shorthand
+#  Shows the current kube namespace
+function kubectl-namespace() {
+  kubectl config view --minify --output=json  | jq -r .contexts[0].context.namespace
+}
+
+
+
+function fdebug-pod-with-netshoot() {
+  FZF_DEFAULT_COMMAND="kubectl get pods --all-namespaces" \
+    fzf --info=inline --layout=reverse --header-lines=1 \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
+    --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+    --bind 'enter:execute:kubectl debug -it --namespace {1} {2} --image=nicolaka/netshoot > /dev/tty' \
+    --bind 'ctrl-o:execute:${EDITOR:-vim} <(kubectl logs --all-containers --namespace {1} {2}) > /dev/tty' \
+    --bind 'ctrl-r:reload:$FZF_DEFAULT_COMMAND' \
+    --preview-window up:follow \
+    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
 }
 
 

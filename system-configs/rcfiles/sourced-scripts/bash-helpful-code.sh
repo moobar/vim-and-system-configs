@@ -93,6 +93,23 @@ ${FUNCNAME[1]}
 EOM
 }
 
+function pipe-from-stdin-or-use-args() {
+  cat << 'EOM'
+# Check if anything is in stdin
+# [cat] is a way to get the input out of stdin
+if test ! -t 0; then
+  cat | COMMAND_ASSUMING_DATA_FROM_STDIN
+else
+  if [[ -z "${1}" ]]; then
+    echo "Expecting input or with an ARG"
+    return 1
+  fi
+
+  COMMAND_WITHOUT_STDIN "$@"
+fi
+EOM
+}
+
 function make_script_fzfable() {
   echo "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

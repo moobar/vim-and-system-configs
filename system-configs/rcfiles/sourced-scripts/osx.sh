@@ -68,6 +68,38 @@ function lsusers() {
   fi
 }
 
+function finder-replace-with-app() {
+  if [[ -z $1 ]]; then
+    echo 'Must provide the bundleID of the app'
+    return 1
+  fi
+  local APP_BUNDLE_ID="$1"
+  local ARRAY_ADD=
+
+  ARRAY_ADD="$(cat <<EOM
+{LSHandlerContentType="public.folder";LSHandlerRoleAll="${APP_BUNDLE_ID}";}
+EOM
+)"
+
+  echo "About to run:"
+  echo defaults write -g NSFileViewer -string "${APP_BUNDLE_ID}"
+  echo defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add "${ARRAY_ADD}"
+  echo "CTRL-C to quit"
+  read -r _;
+
+  set -x
+  defaults write -g NSFileViewer -string "${APP_BUNDLE_ID}"
+  defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add "${ARRAY_ADD}"
+  set +x
+
+  echo "Done! Requires a restart to take effect"
+}
+
+function finder-restore-as-default-app() {
+  defaults delete -g NSFileViewer
+  defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerContentType="public.folder";LSHandlerRoleAll="com.apple.finder";}'
+}
+
 function disable-hold-and-popup() {
   defaults write -g ApplePressAndHoldEnabled -bool false
 

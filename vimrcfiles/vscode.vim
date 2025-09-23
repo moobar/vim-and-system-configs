@@ -25,50 +25,67 @@ endfunction
 " gj, and gk added by me
 nnoremap <C-n> <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
 nnoremap <C-p> <Cmd>call <SID>switchEditor(v:count, 'prev')<CR>
+nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+nnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
+nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 nnoremap gj <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
 nnoremap gk <Cmd>call <SID>switchEditor(v:count, 'prev')<CR>
-nnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
-nnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
-nnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+
+"" New ones
+" TODO: Pick gr or gu
+nnoremap gr <Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>
+xnoremap gr <Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>
+nnoremap gu <Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>
+xnoremap gu <Cmd>call VSCodeNotify('editor.action.goToReferences')<CR>
+nnoremap gs <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+xnoremap gs <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+
+nnoremap gc <Cmd>call VSCodeNotify('editor.showCallHierarchy')<CR>
+xnoremap gc <Cmd>call VSCodeNotify('editor.showCallHierarchy')<CR>
+
+nnoremap gt <Cmd>call VSCodeNotify('editor.showTypeHierarchy')<CR>
+xnoremap gt <Cmd>call VSCodeNotify('editor.showTypeHierarchy')<CR>
+"" End new ones
+
 "" Taken from coc-this is pretty nice
-nnoremap gy <Cmd>call VSCodeNotify('editor.action.goToTypeDefinition')<CR>
-nnoremap gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
 nnoremap gO <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+nnoremap gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
+nnoremap gy <Cmd>call VSCodeNotify('editor.action.goToTypeDefinition')<CR>
 
-nnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
 nnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
+nnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
 nnoremap gH <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
-nnoremap gY <Cmd>call VSCodeNotify('editor.action.peekTypeDefinition')<CR>
 nnoremap gI <Cmd>call VSCodeNotify('editor.action.peekImplementation')<CR>
+nnoremap gY <Cmd>call VSCodeNotify('editor.action.peekTypeDefinition')<CR>
 
 " open quickfix menu for spelling corrections and refactoring
-nnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
-nnoremap g= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 nnoremap g. <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+nnoremap g= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+nnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 
-xnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
-xnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
-xnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
-xnoremap gy <Cmd>call VSCodeNotify('editor.action.goToTypeDefinition')<CR>
-xnoremap gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
 xnoremap gO <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
+xnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
+xnoremap gf <Cmd>call <SID>vscodeGoToDefinition('revealDeclaration')<CR>
+xnoremap gh <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+xnoremap gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
+xnoremap gy <Cmd>call VSCodeNotify('editor.action.goToTypeDefinition')<CR>
 
-xnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
 xnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
+xnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
 xnoremap gH <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
-xnoremap gY <Cmd>call VSCodeNotify('editor.action.peekToTypeDefinition')<CR>
 xnoremap gI <Cmd>call VSCodeNotify('editor.action.peekImplementation')<CR>
+xnoremap gY <Cmd>call VSCodeNotify('editor.action.peekToTypeDefinition')<CR>
 
 " open quickfix menu for spelling corrections and refactoring
-xnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
-xnoremap g= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 xnoremap g. <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+xnoremap g= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+xnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 
 " <C-w> gf opens definition on the side
-nnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
 nnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
-xnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+nnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
 xnoremap <C-w>gd <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
+xnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
 
 "" REMOVED "" " nnoremap K <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 "" REMOVED "" nnoremap <C-]> <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>

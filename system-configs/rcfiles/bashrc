@@ -34,9 +34,36 @@ function __terminal_error_handler__() {
   local lc="$BASH_COMMAND"
   local line="$LINENO"
 
-  echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code on line: ${line} ${NC}";
+  # TODO: The on line: doesn't work
+  # echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code on line: ${line} ${NC}";
+  echo -e 1>&2 "${Red}Error:${NC}${Yellow} [$lc] ${NC}-${Red} exited with status $last_status_code ${NC}";
 
 }
+
+function am-i-in-tmux() {
+  local MY_TTY=
+  local TMUX_CHECK=
+  MY_TTY="$(tty)"
+
+
+  if [[ -z $TMUX ]]; then
+    # Do nothing
+    return 1
+  fi
+
+  TMUX_CHECK="$(
+    for s in $(tmux list-sessions -F '#{session_name}' 2>/dev/null); do
+      tmux list-panes -F '#{pane_tty} #{session_name}' -t "$s"
+    done | grep "${MY_TTY}" | awk '{print $2}'
+  )"
+
+  if [[ -z $TMUX_CHECK ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
 set -o vi
 
 #### Source bash files and autocomplete, not maintained by me ####
@@ -134,6 +161,7 @@ fi
 #### END Source bash files and autocomplete, not maintained by me ####
 
 ## Turn error handling back on
+# trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND";' ERR
 trap  '__terminal_error_handler__ $?' ERR
 
 #### Source core bash files maintained by me ####
@@ -188,19 +216,25 @@ if [[ $OS_NAME == "Darwin" ]]; then
   # Add a symlink to settings and keybindings
   if [[ -d ~/"Library/Application Support/Code/User" ]]; then
     # Symlink keybindings
-    if [[ -d ~/"Library/Application Support/Code/User/" ]]; then
-      if [[ ! -L ~/"Library/Application Support/Code/User/keybindings.json" ]]; then
-        mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null
-        ln -s ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
-      fi
+    if [[ ! -L ~/"Library/Application Support/Code/User/keybindings.json" ]]; then
+      mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null
+      ln -s ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
     fi
 
     # Symlink settings
-    if [[ -d ~/"Library/Application Support/Code/User/" ]]; then
-      if [[ ! -L ~/"Library/Application Support/Code/User/settings.json" ]]; then
-        mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null
-        ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
+    if [[ ! -L ~/"Library/Application Support/Code/User/settings.json" ]]; then
+      mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null
+      ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
+    fi
+
+    # Symlink tasks
+    if [[ -f ~/"Library/Application Support/Code/User/tasks.json" ]]; then
+      if [[ ! -L ~/"Library/Application Support/Code/User/tasks.json" ]]; then
+        mv ~/"Library/Application Support/Code/User/tasks.json" ~/"Library/Application Support/Code/User/tasks.json.bak" &>/dev/null
+        ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
       fi
+    else 
+        ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
     fi
   fi
 fi
@@ -315,6 +349,7 @@ fi
 #PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
 
 ### Experimental ###
-ssh-agent-start-or-attach
 
-# shopt -s globstar
+ssh-agent-start-or-attach
+#venv-activate-in-tmux
+

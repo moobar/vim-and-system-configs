@@ -69,11 +69,32 @@ function aws() {
   if [[ -z "$AWS_PROFILE" ]]; then
     # shellcheck disable=SC2016
     echo 'Must set $AWS_PROFILE first'
-    echo 'Use: [faws-set-profile]'
-    return 1
+    if yn_prompt 'Run: [faws-set-profile]?'; then
+      faws-set-profile
+    else
+      return 1
+    fi
   fi
 
   command aws "$@"
+}
+
+function _validate_aws_profile() {
+  local ERROR_MSG=
+  local ERROR_CODE=
+
+  #TODO: only capture stderr
+  ERROR_MSG="$(aws eks list-clusters 2>&1 )"
+  ERROR_CODE="$?"
+
+  if [[ "$ERROR_MSG" == *"AWS_PROFILE"* ]]; then
+    echo "${ERROR_MSG}"
+    return 1
+  elif [[ "$ERROR_MSG" == *"Token has expired"* ]]; then
+    echo "${ERROR_MSG}"
+    echo "Try [aws sso login]"
+    return "${ERROR_CODE}"
+  fi
 }
 
 function aws-list-profiles() {
@@ -97,6 +118,12 @@ function aws-describe-instances() {
 }
 
 function faws-eks-update-kubeconfig() {
+  if ! _validate_aws_profile; then
+    # TODO: Why isn't this $? working
+    # return "$?"
+    return "$?"
+  fi
+
   local CLUSTER_NAME=""
   if CLUSTER_NAME="$(aws eks list-clusters  | jq -r '.clusters[]' | fzf)" && [[ -n "$CLUSTER_NAME" ]]; then
     echo "Authing to: ${CLUSTER_NAME}"

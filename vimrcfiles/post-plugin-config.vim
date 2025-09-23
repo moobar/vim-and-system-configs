@@ -485,6 +485,7 @@ if executable('node') && !exists('g:vscode')
   nnoremap gd :call CocActionAsync('jumpDefinition')<CR>
   nnoremap gi :call CocActionAsync('jumpImplementation')<CR>
   nnoremap gO :CocList outline<CR>
+  nnoremap gs :CocList outline<CR>
   "" No good way to make the jump declaration or definition in a float
   " nnoremap gF <Cmd>call VSCodeNotify('editor.action.peekDeclaration')<CR>
   " nnoremap gD <Cmd>call VSCodeNotify('editor.action.peekDefinition')<CR>
@@ -501,6 +502,7 @@ if executable('node') && !exists('g:vscode')
   xnoremap gd :call CocActionAsync('jumpDefinition')<CR>
   xnoremap gi :call CocActionAsync('jumpImplementation')<CR>
   xnoremap gO :CocList outline<CR>
+  xnoremap gs :CocList outline<CR>
   xnoremap gH :call CocActionAsync('jumpReferences')<CR>
   xnoremap z= <Plug>(coc-codeaction-cursor)
   xnoremap g= <Plug>(coc-codeaction-cursor)

@@ -109,9 +109,61 @@ function docker-pull-tag-and-push() {
   docker push "${PUSH_DESTINATION}"
 }
 
+function docker-inspect-and-get-entrypoint() {
+  local DOCKER_ID=
+  if [[ -z $1 ]]; then
+    DOCKER_ID="$(docker ps | fzf --accept-nth 1 --header-lines=1)"
+  fi
+
+  if [[ -z $DOCKER_ID ]]; then
+    echo "No image id selected"
+    return 1
+  else
+    set -- "${DOCKER_ID}" "$@"
+  fi
+
+  docker inspect -f '{{.Config.Entrypoint}}' "$@"
+}
+
+function docker-list-cached-images() {
+  docker images --format '{{.Repository}}:{{.Tag}}' | grep -Fv '<none>' | sort | uniq
+}
+
+function docker-crictl-images-pull() {
+  docker exec "$(docker-grep "$@")" crictl images -o=json \
+    | jq -r .images[].repoTags[] \
+    | xargs -n1 docker pull
+}
+
 function docker-kill-all-containers() {
   docker ps | tail -n +2 | awk '{print $1}' | xargs -n1 docker kill
 }
+
+function docker-create-container-for-file-access() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: ${FUNCNAME[0]} TEMP_NAME IMAGE_PATH"
+    echo "Ex ${FUNCNAME[0]} google-emulator gcr.io/google.com/cloudsdktool/google-cloud-cli:518.0.0-emulators"
+    return 1
+  fi
+  local CONTAINER_NAME="$1"
+  local IMAGE_PATH="$2"
+  set -x
+  docker create --name "${CONTAINER_NAME}" "${IMAGE_PATH}"
+  set +x
+  echo "Can now run:"
+  echo "> docker cp ${CONTAINER_NAME}:/path/to/file/in/container /path/to/destination/on/host"
+}
+
+#https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
+function docker-rm-all-volumes() {
+  docker volume ls --format=json | jq -r .Name | xargs -n1 docker volume rm
+}
+
+function docker-prune-images() {
+  # use -a to do all intermediate images too
+  docker system prune "$@"
+}
+
 
 function ffdocker() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"

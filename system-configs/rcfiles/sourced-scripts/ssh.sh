@@ -13,7 +13,8 @@ function ssh-agent-start-or-attach() {
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519
   else
-    SSH_AUTH_SOCK_LOCAL="$(find /var/folders 2>/dev/null | grep "ssh.*agent.*${SSH_AGENT_PID}\$")"
+    #SSH_AUTH_SOCK_LOCAL="$(find /var/folders 2>/dev/null | grep "ssh.*agent.*${SSH_AGENT_PID}\$")"
+    SSH_AUTH_SOCK_LOCAL="$(find /var/folders 2>/dev/null | grep -E "ssh.*agent.*\d+$")"
     SSH_AUTH_SOCK="$SSH_AUTH_SOCK_LOCAL"
     SSH_AGENT_PID="$SSH_AGENT_PID_LOCAL"
     export SSH_AUTH_SOCK

@@ -227,6 +227,10 @@ function git-restore-repo-to-previous-state() {
   git restore --source="${STATE}" --staged --worktree "$(git rev-parse --show-toplevel)"
 }
 
+function git-restore-staged-files-all() {
+  git restore --staged "$(git rev-parse --show-toplevel)"
+}
+
 ## [gitpush-upstream]  ->  Shorthand
 #  First time pushing a branch, use this to set the upstream
 function gitpush-upstream() {
@@ -275,6 +279,10 @@ function gh-search-prs() {
 
 function gh-search-prs-json() {
   gh search prs --limit=200 --json assignees,author,authorAssociation,body,closedAt,commentsCount,createdAt,id,isDraft,isLocked,isPullRequest,labels,number,repository,state,title,updatedAt,url "$@" | jq -c .[]
+}
+
+function fgit-switch-localbranch() {
+  git switch "$(git branch | tail -n +2 | tr -d '[:blank:]' | fzf)"
 }
 
 ## [fgitswitch]  ->  Shorthand
@@ -497,6 +505,35 @@ function git-branch-jira() {
   else
     echo "Manually run: git checkout -b ${TICKET}-${BRANCH_NAME}"
   fi
+}
+
+### All of these git-branch ones should be correct. But I'm not 100% familiar with git rev-list
+
+## [git-branch-commit-history-reverse]  ->  Alias
+#  Show the branch commit history in chronological order
+function git-branch-commit-history-reverse() {
+  # git rev-list main..HEAD, means “commits in HEAD not in main.”
+  git rev-list --reverse main..HEAD
+}
+
+## [git-branch-print-history-reverse]  ->  Alias
+#  Show the branch commit history in chronological order
+function git-branch-print-history-reverse() {
+  git rev-list --reverse main..HEAD | xargs -n1 git show -s --format='%h %ad %an %s' --date=short
+}
+
+## [git-branch-show-commit]  ->  Alias
+#  Git the first commit in the branch, then find the ancestor from main
+#  Probably doesnt work right when you branch off a branch, but thats okay for now
+function git-branch-show-first-commit() {
+  git rev-list --reverse main..HEAD | head -1
+}
+
+## [git-branch-show-first-main-ancestor]  ->  Alias
+#  Git the first commit in the branch, then find the ancestor from main
+#  Probably doesnt work right when you branch off a branch, but thats okay for now
+function git-branch-show-first-main-ancestor() {
+  git merge-base main "$(git rev-list --reverse main..HEAD | head -1)"
 }
 
 ## Taken from junegunn's rcfiles ##

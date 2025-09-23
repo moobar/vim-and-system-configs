@@ -57,7 +57,7 @@ EOF
 
 }
 
-function make-docker-creds-for-kind ()
+function kind-make-docker-creds()
 {
   local DOMAIN=
   local DOCKER_CREDS=
@@ -96,7 +96,21 @@ EOM
 
 function kind-delete-cluster()
 {
-  kind delete cluster "$@"
+  local KIND_CLUSTER=
+  local CMD=
+  if [[ $# -eq 0 ]]; then
+    # echo "FYI: You probably wanted to add the flag [-n <NAME>]"
+    # echo ""
+
+    KIND_CLUSTER="$(kind get clusters | fzf --prompt="Kind cluster to delete:> ")"
+    if [[ -n "$KIND_CLUSTER" ]] && yn_prompt "Delete cluster: ${KIND_CLUSTER}?"; then
+      set -x
+      kind delete cluster -n "${KIND_CLUSTER}"
+      set +x
+    fi
+  else
+    kind delete cluster "$@"
+  fi
 }
 
 function kind-get-clusters ()
@@ -114,7 +128,7 @@ function kind-verify-docker-creds()
   if ! _verify_kube_kind_context; then
     return 1
   fi
-  kubectl get secret regcred -o=yaml | yq '.data.".dockerconfigjson"' | base64 -d
+  kubectl get secret regcred -o=yaml "$@" | yq '.data.".dockerconfigjson"' | base64 -d
 }
 
 function ffkind() {

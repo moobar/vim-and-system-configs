@@ -6,6 +6,10 @@ if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bas
   source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
 fi
 
+function venv-find-from-pwd() {
+  find $(pwd) -name 'activate' -maxdepth 3 | grep '/bin/activate$'
+}
+
 # shellcheck disable=SC1090
 ## [venv-create]
 #  Create a new venv
@@ -16,7 +20,8 @@ function venv-create() {
   fi
 
   local VENV=
-  VENV="$(find . -name activate | grep -F '/bin/activate')"
+  # VENV="$(find . -name activate | grep -F '/bin/activate')"
+  VENV="$(venv-find-from-pwd)"
 
   if [[ $(wc -l <<< "${VENV}") -gt 1 ]]; then
     echo "Already a venv here, skipping"
@@ -35,7 +40,8 @@ function venv-create() {
 #  Finds a venv and activates it
 function venv-activate() {
   local VENV=
-  if ! VENV="$(find . -name activate | grep -F '/bin/activate')"; then
+  #if ! VENV="$(find . -name activate | grep -F '/bin/activate')"; then
+  if ! VENV="$(venv-find-from-pwd)"; then
     echo "No virtual env found."
     return 1
   fi
@@ -82,6 +88,28 @@ function venv-vscode() {
   echo "CMD+SHIFT+P -> Python: Select Interpreter"
   echo "Use this path:"
   echo "${VENV}"
+}
+
+function venv-activate-in-tmux() {
+  if ! am-i-in-tmux; then
+    # Do nothing
+    return 0
+  fi
+  local TMUX_SESSION_NAME=
+  local VENV=
+
+  if ! TMUX_SESSION_NAME="$(tmux display-message -p '#S')"; then
+    # Can't get the session name, do nothing
+    return 0
+  fi
+
+  if [[ "$TMUX_SESSION_NAME" == "py-"* ]]; then
+    if VENV="$(venv-find-from-pwd)" && [[ -n "$VENV" ]]; then
+      if ! venv-activate; then
+        echo "Tried to activate a venv and failed."
+      fi
+    fi
+  fi
 }
 
 function ffpython() {

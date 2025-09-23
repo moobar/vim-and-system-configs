@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Py Fuzzy Find Function and Copy",
+      "type": "shell",
+      "command": "${env:HOME}/.vim/system-configs/python-scripts/python-tools/list_py_functions.py '${file}' | sort -u | fzf --reverse | pbcopy",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "close": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
