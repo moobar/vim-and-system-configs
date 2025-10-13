@@ -227,6 +227,12 @@ augroup supertab
   \ endif
 augroup end
 
+augroup json
+  au!
+  autocmd BufRead,BufNewFile settings.json set filetype=jsonc
+  autocmd BufRead,BufNewFile launch.json set filetype=jsonc
+augroup end
+
 " }}}
 " ============================================================================
 " VIM UX Settings {{{1

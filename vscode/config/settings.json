@@ -1,52 +1,61 @@
 {
-    "vim.vimrc.enable": true,
-    "editor.inlineSuggest.enabled": true,
-    "security.workspace.trust.untrustedFiles": "open",
-    "git.openRepositoryInParentFolders": "always",
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
+    "[dockercompose]": {
+        "editor.autoIndent": "advanced",
+        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
     },
-    "settingsSync.ignoredSettings": [],
-    "vscode-neovim.logOutputToConsole": true,
-    "settingsSync.ignoredExtensions": [],
-    "workbench.sideBar.location": "right",
-    "python.analysis.inlayHints.pytestParameters": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.inlayHints.callArgumentNames": "partial",
-    "editor.formatOnSave": true,
-    "githd.blameView.enabled": false,
-    "window.zoomLevel": 2,
-    "vscode-neovim.revealCursorScrollLine": true,
-    "terminal.integrated.fontFamily": "Monaco",
-    "editor.fontFamily": "Monaco, 'Courier New', monospace",
-    "editor.fontSize": 12,
-    "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
-    "javascript.inlayHints.parameterNames.enabled": "all",
-    "javascript.inlayHints.parameterTypes.enabled": true,
-    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
-    "typescript.inlayHints.variableTypes.enabled": true,
-    "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-    "typescript.inlayHints.parameterTypes.enabled": true,
-    "typescript.inlayHints.parameterNames.enabled": "all",
-    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-    "typescript.inlayHints.enumMemberValues.enabled": true,
-    "javascript.inlayHints.variableTypes.enabled": true,
-    "gitlens.currentLine.enabled": false,
-    "redhat.telemetry.enabled": false,
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "never",
+            "source.organizeImports.ruff": "explicit"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": false
+    },
+    "[yaml]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.autoIndent": "keep",
+        "editor.defaultColorDecorators": "never",
+        "editor.formatOnSave": false,
+        "editor.insertSpaces": false,
+        "editor.quickSuggestions": {
+            "comments": false,
+            "other": true,
+            "strings": true
+        },
+        "editor.tabSize": 2
+    },
+    "chat.tools.terminal.autoApprove": {
+        "git fetch": true
+    },
     "cloudcode.apigee.gemini.options": {
+        "enableRemoteMockServer": false,
         "enterpriseContext": {
             "enabled": true,
             "includeMetadata": true,
-            "includeSecurity": true,
-            "includeSchema": true
-        },
-        "enableRemoteMockServer": false
+            "includeSchema": true,
+            "includeSecurity": true
+        }
     },
-    "terminal.external.osxExec": "/Applications/kitty.app",
-    "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
-    "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
-    "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
-    "workbench.preferredLightColorTheme": "GitHub Light Colorblind (Beta)",
+    "cloudcode.kubectlExecShell": "bash",
+    "cloudcode.project": "sagarlikelogger",
+    "diffEditor.renderIndicators": true,
+    "editor.accessibilitySupport": "off",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "never"
+    },
+    "editor.foldingHighlight": false,
+    "editor.fontFamily": "Monaco, 'Courier New', monospace",
+    "editor.fontSize": 12,
+    "editor.formatOnSave": true,
+    "editor.inlineSuggest.enabled": false,
     "editor.tokenColorCustomizations": {
         "[GitHub Dark Colorblind (Beta)]": {
             "textMateRules": [
@@ -65,36 +74,118 @@
             ]
         }
     },
-    "git.terminalGitEditor": true,
+    "errorLens.enabledInMergeConflict": false,
+    "errorLens.enableOnDiffView": true,
+    "errorLens.messageEnabled": false,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "files.trimTrailingWhitespace": true,
+    "git.autofetch": true,
+    "git.blame.editorDecoration.enabled": false,
+    "git.blame.statusBarItem.enabled": true,
     "git.closeDiffOnOperation": true,
     "git.mergeEditor": true,
-    "scm.diffDecorationsGutterPattern": {
-        "added": true
-    },
-    "scm.diffDecorationsIgnoreTrimWhitespace": "true",
-    "githubPullRequests.quickDiff": true,
-    "cloudcode.project": "sagarlikelogger",
-    "editor.accessibilitySupport": "off",
-    "cloudcode.kubectlExecShell": "bash",
-    "gitlens.ai.experimental.model": "openai:gpt-4o",
-    "window.confirmBeforeClose": "keyboardOnly",
-    "geminicodeassist.project": "sagarlikelogger",
-    "terminal.integrated.defaultProfile.osx": "bash",
+    "git.openRepositoryInParentFolders": "always",
+    "git.terminalGitEditor": true,
     "github.copilot.nextEditSuggestions.enabled": true,
-    "python.analysis.addHoverSummaries": true,
+    "githubPullRequests.fileListLayout": "tree",
+    "githubPullRequests.quickDiff": true,
+    "gitlens.blame.ignoreWhitespace": true,
+    "gitlens.codeLens.includeSingleLineSymbols": true,
+    "gitlens.currentLine.enabled": false,
+    "go.lintTool": "golangci-lint",
+    "helm-intellisense.excludeFromLinting": [],
+    "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "javascript.inlayHints.parameterNames.enabled": "all",
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "javascript.inlayHints.variableTypes.enabled": true,
     "python.analysis.aiCodeActions": {
-        "implementAbstractClasses": true,
+        "convertFormatString": true,
         "generateSymbol": true,
-        "convertFormatString": true
+        "implementAbstractClasses": true
     },
+    "python.analysis.aiHoverSummaries": true,
     "python.analysis.autoImportCompletions": true,
-    "python.analysis.enableTroubleshootMissingImports": true,
     "python.analysis.generateWithTypeAnnotation": true,
+    "python.analysis.inlayHints.callArgumentNames": "partial",
     "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.regenerateStdLibIndices": true,
+    "python.analysis.typeCheckingMode": "off",
     "python.analysis.typeEvaluation.strictDictionaryInference": true,
     "python.analysis.typeEvaluation.strictListInference": true,
     "python.analysis.typeEvaluation.strictSetInference": true,
     "python.analysis.userFileIndexingLimit": 10000,
-    "python.defaultInterpreterPath": "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/bin/python3.13"
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+    "python.languageServer": "Pylance",
+    "python.terminal.activateEnvironment": false,
+    "redhat.telemetry.enabled": false,
+    "ruff.configurationPreference": "filesystemFirst",
+    "ruff.format.backend": "uv",
+    "ruff.format.preview": true,
+    "scm.diffDecorations": "all",
+    "scm.diffDecorationsGutterVisibility": "always",
+    "scm.diffDecorationsIgnoreTrimWhitespace": "true",
+    "scm.graph.badges": "all",
+    "scm.graph.pageSize": 10,
+    "security.workspace.trust.untrustedFiles": "open",
+    "settingsSync.ignoredExtensions": [],
+    "settingsSync.ignoredSettings": [],
+    "terminal.external.osxExec": "/Applications/kitty.app",
+    "terminal.integrated.defaultProfile.osx": "bash",
+    "terminal.integrated.fontFamily": "Monaco",
+    "terminal.integrated.stickyScroll.enabled": false,
+    "typescript.inlayHints.enumMemberValues.enabled": true,
+    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.parameterTypes.enabled": true,
+    "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": true,
+    "vscode-neovim.compositeTimeout": 100,
+    "vscode-neovim.logOutputToConsole": true,
+    "vscode-neovim.mouseSelectionDebounceTime": 50,
+    "vscode-neovim.normalSelectionDebounceTime": 20,
+    "vscode-neovim.revealCursorScrollLine": true,
+    "window.confirmBeforeClose": "keyboardOnly",
+    "window.zoomLevel": 1,
+    "workbench.colorCustomizations": {
+        // Diff editor & inline/peek highlights
+        "diffEditor.border": "#2a2e33",
+        "diffEditor.insertedLineBackground": "#33CCFF1A",
+        "diffEditor.insertedTextBackground": "#0033ff33",
+        "diffEditor.removedLineBackground": "#FF6E4226",
+        "diffEditor.removedTextBackground": "#FF6E4280",
+        // Gutter bars
+        "editorGutter.addedBackground": "#0A84FF",
+        "editorGutter.background": "#0f1113",
+        "editorGutter.deletedBackground": "#FF6E42",
+        "editorGutter.modifiedBackground": "#FFD400",
+        // Overview ruler (right scrollbar map)
+        "editorOverviewRuler.addedForeground": "#0A84FF",
+        "editorOverviewRuler.deletedForeground": "#FF6E42",
+        "editorOverviewRuler.modifiedForeground": "#FFD400",
+        // Minimap gutter
+        "minimapGutter.addedBackground": "#0A84FF",
+        "minimapGutter.deletedBackground": "#FF6E42",
+        "minimapGutter.modifiedBackground": "#FFD400",
+        "peekView.border": "#FFD400",
+        // Peek view
+        "peekViewEditor.background": "#10161A",
+        "peekViewEditor.matchHighlightBackground": "#FFD40044"
+    },
+    "workbench.colorTheme": "GitHub Dark Default",
+    "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
+    "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
+    "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
+    "workbench.preferredLightColorTheme": "GitHub Light Colorblind (Beta)",
+    "workbench.sideBar.location": "right",
+    "errorLens.codeLensLength": {
+        "min": 0,
+        "max": 20
+    },
+    "errorLens.gutterIconsEnabled": true,
+    "python.analysis.languageServerMode": "full"
 }

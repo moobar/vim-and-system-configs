@@ -27,8 +27,6 @@ Plug 'phleet/vim-mercenary'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -40,6 +38,15 @@ Plug 'vim-test/vim-test'
 Plug 'szw/vim-maximizer'
 Plug 'tpope/vim-repeat'
 Plug 'kdheepak/lazygit.nvim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'neoclide/jsonc.vim'
+
+if has('nvim') || has('patch-8.0.902')
+  Plug 'mhinz/vim-signify'
+else
+  Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
+endif
 
 " Testing "
 Plug 'airblade/vim-gitgutter'

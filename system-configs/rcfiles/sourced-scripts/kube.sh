@@ -411,6 +411,19 @@ function kubectl-event-logs-watch() {
   kubectl get events --sort-by='.lastTimestamp' -w "$@"
 }
 
+function kubectl-list-rolebindings() {
+  kubectl get rolebindings \
+    -o custom-columns='SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")].name,NAME:metadata.name,KIND:kind,NAMESPACE:metadata.namespace' \
+    "$@"
+}
+
+function kubectl-list-clusterrolebindings() {
+  kubectl get clusterrolebindings \
+    -o custom-columns='SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")].name,NAME:metadata.name,KIND:kind,NAMESPACE:metadata.namespace' \
+    "$@"
+
+}
+
 ## [kubectl-get-cluster-deployment] | Cache enabled
 #  Print out all of the GKE deployments (workloads) for a given cluster.
 #  This function will get the cluster credentials, if it's not authenticated

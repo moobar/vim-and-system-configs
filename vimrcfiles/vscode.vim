@@ -21,6 +21,11 @@ function! s:vscodeGoToDefinition(str)
     endif
 endfunction
 
+nnoremap j <Cmd>call VSCodeCall('cursorDown')<CR>
+nnoremap k <Cmd>call VSCodeCall('cursorUp')<CR>
+nnoremap h <Cmd>call VSCodeCall('cursorLeft')<CR>
+nnoremap l <Cmd>call VSCodeCall('cursorRight')<CR>
+
 "" VS Code Commands to migrate over ""
 " gj, and gk added by me
 nnoremap <C-n> <Cmd>call <SID>gotoEditor(v:count, 'next')<CR>
