@@ -112,6 +112,46 @@ function venv-activate-in-tmux() {
   fi
 }
 
+function vscode-debug-file-launch-json() {
+  cat<< 'EOM'
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File [venv]",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "justMyCode": false,
+            "args": [],
+            "env": {},
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+    ]
+}
+EOM
+}
+
+function vscode-debug-file-launch-json-config-only() {
+  cat<< 'EOM'
+        {
+            "name": "Python Debugger: Current File [venv]",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "justMyCode": false,
+            "args": [],
+            "env": {},
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+EOM
+}
+
+
 function ffpython() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

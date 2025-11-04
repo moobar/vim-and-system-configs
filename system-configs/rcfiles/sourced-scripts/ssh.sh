@@ -6,9 +6,24 @@ if [ -f "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bas
   source "${CONFIGROOT_DIR_SCRIPT}/system-configs/bash-script-commons/heredoc_bash_macros.sh"
 fi
 
+# shellcheck disable=SC2009
 function ssh-agent-start-or-attach() {
   local SSH_AUTH_SOCK_LOCAL=
   local SSH_AGENT_PID_LOCAL=
+  local SSH_PROCESSES=
+
+  # Check if there are too many ssh-agents
+
+  SSH_PROCESSES="$(ps auxwww | grep ssh-agent | grep -c -Fv grep)"
+  if [[ $SSH_PROCESSES -gt 1 ]]; then
+    echo "Too many ssh-agents"
+    if yn_prompt "Kill and try again?"; then
+      ps auxwww | grep ssh-agent | grep -Fv grep | awk '{print $2}' | xargs kill
+    else
+      echo Run: 'ps auxwww | grep ssh-agent | grep -Fv grep'
+    fi
+  fi
+
   if ! SSH_AGENT_PID_LOCAL="$(pgrep ssh-agent)"; then
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519

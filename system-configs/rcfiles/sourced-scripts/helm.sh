@@ -11,6 +11,27 @@ fi
 #         https://helm.sh/docs/intro/using_helm/
 #         https://helm.sh/docs/intro/cheatsheet/
 
+function helm-build-locally() {
+  local HELM_WORKING_DIR=
+  local HELM_WORKING_DIR_NAME=
+  if [[ -z $1 ]]; then
+    echo "Usage: ${FUNCNAME[0]} LOCAL_WORKING_DIR [ARGS...]"
+    return 1
+  fi
+
+  if [[ "$1" == '-'* ]]; then
+    echo "Don't provide -options until after the first positional argument"
+    echo "Usage: ${FUNCNAME[0]} LOCAL_WORKING_DIR [ARGS...]"
+    return 1
+  fi
+
+  HELM_WORKING_DIR="$1"; shift;
+
+  # Build the chart locally:
+  set -x
+  helm dependency build "${HELM_WORKING_DIR}" "$@"
+  set +x
+}
 
 function helm-build-and-install-locally() {
   local HELM_WORKING_DIR=
@@ -29,7 +50,6 @@ function helm-build-and-install-locally() {
 
   HELM_CHART_INSTANCE="$1"; shift;
   HELM_WORKING_DIR="$1"; shift;
-  HELM_WORKING_DIR_NAME="$(basename "$(readlink -f "${HELM_WORKING_DIR}")")"
 
   # Build the chart locally:
   set -x

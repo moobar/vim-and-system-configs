@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set -x for debugging. bashrc hasn't stalled for a long time
-# set -x
+# set -ex
 
 OS_NAME=$(uname -s)
 
@@ -71,7 +71,7 @@ set -o vi
 trap - ERR
 
 if [[ -r /etc/bashrc ]]; then
-  source /etc/bashrc
+  source /etc/bashrc || true
 fi
 
 if [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
@@ -91,7 +91,7 @@ fi
 if [[ $OS_NAME == "Darwin" ]]; then
   if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
     # shellcheck disable=SC1091
-    source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    source "$(brew --prefix)/etc/profile.d/bash_completion.sh" 2>/dev/null || true
   fi
 fi
 

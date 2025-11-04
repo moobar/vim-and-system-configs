@@ -312,5 +312,52 @@
         "key": "ctrl+shift+g",
         "command": "-workbench.view.scm",
         "when": "workbench.scm.active && !gitlens:disabled && config.gitlens.keymap == 'chorded'"
-    }
+    },
+    {
+        "key": "pagedown",
+        "when": "editorTextFocus && neovim.init",
+        "command": "vscode-neovim.send",
+        "args": "<C-d>"
+    },
+    {
+        "key": "ctrl+d",
+        "when": "editorTextFocus && neovim.init",
+        "command": "vscode-neovim.send",
+        "args": "<C-d>"
+    },
+    {
+        "key": "pageup",
+        "when": "editorTextFocus && neovim.init",
+        "command": "vscode-neovim.send",
+        "args": "<C-u>"
+    },
+    {
+        "key": "ctrl+u",
+        "when": "editorTextFocus && neovim.init",
+        "command": "vscode-neovim.send",
+        "args": "<C-u>"
+    },
+    {
+        "key": "ctrl+cmd+x",
+        "command": "workbench.view.extensions",
+        "when": "viewContainer.workbench.view.extensions.enabled"
+    },
+    // This pr showdiff isn't working
+    {
+        "key": "cmd+' cmd+r",
+        "command": "pr.showDiffSinceLastReview"
+    },
+    // TODO: Not working but I'm tired of the neovim undo 
+    //{
+    //    "key": "u",
+    //    "command": "vscode-neovim.send",
+    //    "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
+    //    "args": "<Cmd-z>"
+    //},
+    //{
+    //    "key": "ctrl+r",
+    //    "command": "vscode-neovim.send",
+    //    "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
+    //    "args": "<M-Z>"
+    //}
 ]

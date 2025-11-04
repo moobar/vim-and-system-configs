@@ -41,6 +41,12 @@ function gitsbs() {
   git -c delta.side-by-side=true "$@"
 }
 
+## [gitsbs-diffw <git ARGS>]  ->  Alias
+#  git diff, excluding whitespace, with the [delta.side-by-side] setting enabled
+function gitsbs-diffw() {
+  git -c delta.side-by-side=true diffw "$@"
+}
+
 ## [gitroot]  ->  Alias
 #  Print the root of the repo
 function gitroot() {

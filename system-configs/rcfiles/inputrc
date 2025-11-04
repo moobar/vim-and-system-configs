@@ -31,4 +31,16 @@ Control-y: yank
 Control-p: previous-history
 Control-n: next-history
 
-#$endif
+$endif
+
+$if llmi
+  set editing-mode vi
+  set keymap vi-insert
+  "\e[A": ""
+  "\e[B": ""
+
+  set keymap vi-command
+  "\e[A": ""
+  "\e[B": ""
+
+$endif 

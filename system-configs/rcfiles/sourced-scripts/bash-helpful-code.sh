@@ -110,6 +110,27 @@ fi
 EOM
 }
 
+function yn_prompt-function() {
+  cat << 'EOM'
+yn_prompt() {
+  if [[ -z $1 ]]; then
+    echo "Must supply a prompt message"
+    return 1
+  fi
+  local PROMPT="$1"
+  local YN=""
+
+  echo -n "${PROMPT} [y/N]: "
+  read -r YN
+  if [[ "$YN" == [Yy] || "$YN" == [Yy][Ee][Ss] ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+EOM
+}
+
 function make_script_fzfable() {
   echo "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }
