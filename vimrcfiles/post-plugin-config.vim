@@ -58,12 +58,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 "  Syntax highlighting with treesiter {{{1
 " ============================================================================
 
-" In my experience, treesitter has been pretty good. Use its highlighting
-" Only turn on tree-sitter highlighting for nvim
-if has('nvim') && executable('node') && !exists('g:vscode')
-  TSEnable highlight
-endif
-
 " }}}
 " ============================================================================
 "  HG {{{1
