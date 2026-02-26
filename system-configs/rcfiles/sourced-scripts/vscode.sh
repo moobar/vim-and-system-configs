@@ -26,6 +26,25 @@ function reinstall-vscode-extensions() {
   cat /tmp/failed-vscode-extensions.txt
 }
 
+function cli-to-arg-array-for-vscode() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: cli-to-arg-array-for-vscode <command> [args...]"
+        return 1
+    fi
+    # Expect the initial thing to be tool call
+    shift
+
+    local result=""
+    for arg in "$@"; do
+        local escaped="${arg//\\/\\\\}"
+        escaped="${escaped//\"/\\\"}"
+
+        result="$result\"$escaped\", "
+    done
+
+    # Remove the trailing comma and space
+    echo "${result%, }"
+}
 
 function instructions-to-run-fix-copilot() {
   local UPDATED_NORTH_AGENT_CONFIG_B64=""

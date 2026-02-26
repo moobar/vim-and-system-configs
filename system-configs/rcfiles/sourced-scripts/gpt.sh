@@ -38,6 +38,10 @@ function ask-llm() {
     "$*"
 }
 
+function prompt-review-pr() {
+  echo "Diffing this branch against main is a PR currently up for review. Can you create a file in the root of this directory called PR_REVIEW.md and summarize the PR, give an overview the the changes in each file and then explain how those code changes, per file, relate to the overall goal of this PR"
+}
+
 #function ask-gpt5() {
 #  if ! _gpt_prereq; then
 #    return

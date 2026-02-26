@@ -623,6 +623,25 @@ function git-squash-branch() {
   echo git gc --aggressive --prune=all  # remove the old files
 }
 
+function git-fixup-and-squash() {
+  if [[ -z $1 ]]; then
+    echo "Must supply commit"
+    return 1
+  fi
+  local COMMIT="$1"
+
+  # Will edit a commit and then spit out the commands for you to run
+  echo "Dont forget to do [git add <FILES>] -- Files must be staged beforehand"
+
+  if yn_prompt "Run: git commit --fixup ${COMMIT}"; then
+    git commit --fixup "${COMMIT}"
+
+    if yn_prompt "Run: git rebase -i --autosquash ${COMMIT}~1"; then
+      git rebase -i --autosquash "${COMMIT}"~1
+    fi
+  fi
+}
+
 function ffgit() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

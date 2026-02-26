@@ -112,7 +112,7 @@ EOM
 
 function yn_prompt-function() {
   cat << 'EOM'
-yn_prompt() {
+function yn_prompt() {
   if [[ -z $1 ]]; then
     echo "Must supply a prompt message"
     return 1

@@ -118,6 +118,21 @@
         "when": "inDebugRepl"
     },
     {
+      "key": "enter",
+      "command": "acceptSelectedSuggestion",
+      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+    },
+    {
+      "key": "ctrl+j",
+      "command": "selectNextSuggestion",
+      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+    },
+    {
+      "key": "ctrl+k",
+      "command": "selectPrevSuggestion",
+      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+    },
+    {
         "key": "ctrl+cmd+\\",
         "command": "editor.action.inspectTMScopes"
     },
@@ -186,6 +201,39 @@
         "when": "editorTextFocus && !findInputFocussed && !isCompositeNotebook && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed && editorLangId == 'python'"
     },
     {
+        "key": "ctrl+enter",
+        "command": "acceptSelectedSuggestionOnEnter"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "git.openFile",
+        "when": "isInDiffEditor"
+    },
+    // Trying to get shift+enter to end CTRL+J when in terminal. Not working
+    //{
+    //    "key": "shift+enter",
+    //    "command": "workbench.action.terminal.sendSequence",
+    //    "when": "terminalFocus",
+    //    "args": {
+    //        //"text": "\\\r\n"
+    //        "text": "\u000a"
+    //    }
+    //},
+    //{
+    //    "key": "shift+enter",
+    //    "command": "workbench.action.terminal.sendSequence",
+    //    "args": { "text": "\u000a" },
+    //    "when": "terminalFocus"
+    //},
+    //{
+    //    "key": "ctrl+enter",
+    //    "command": "workbench.action.terminal.sendSequence",
+    //    "when": "terminalFocus",
+    //    "args": {
+    //        "text": "\\\r\n"
+    //    }
+    //},
+    {
         "key": "cmd+l g",
         "command": "extension.openInGitHub"
     },
@@ -234,15 +282,6 @@
     {
         "key": "ctrl+cmd+space",
         "command": "periscope.search"
-    },
-    {
-        "key": "ctrl+enter",
-        "command": "acceptSelectedSuggestionOnEnter"
-    },
-    {
-        "key": "ctrl+enter",
-        "command": "git.openFile",
-        "when": "isInDiffEditor"
     },
     {
         "key": "ctrl+j",
@@ -342,22 +381,19 @@
         "command": "workbench.view.extensions",
         "when": "viewContainer.workbench.view.extensions.enabled"
     },
+    {
+        "key": "u",
+        "command": "undo",
+        "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
+    },
+    {
+        "key": "ctrl+r",
+        "command": "redo",
+        "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
+    },
     // This pr showdiff isn't working
     {
         "key": "cmd+' cmd+r",
         "command": "pr.showDiffSinceLastReview"
     },
-    // TODO: Not working but I'm tired of the neovim undo 
-    //{
-    //    "key": "u",
-    //    "command": "vscode-neovim.send",
-    //    "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
-    //    "args": "<Cmd-z>"
-    //},
-    //{
-    //    "key": "ctrl+r",
-    //    "command": "vscode-neovim.send",
-    //    "when": "editorTextFocus && neovim.init && neovim.mode == 'normal'",
-    //    "args": "<M-Z>"
-    //}
 ]

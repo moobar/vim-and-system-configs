@@ -227,15 +227,40 @@ if [[ $OS_NAME == "Darwin" ]]; then
       ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
     fi
 
+    # Symlink mcp
+    if [[ ! -L ~/"Library/Application Support/Code/User/mcp.json" ]]; then
+      mv ~/"Library/Application Support/Code/User/mcp.json" ~/"Library/Application Support/Code/User/mcp.json.bak" &>/dev/null
+      ln -s ~/".vim/vscode/config/mcp.json" ~/"Library/Application Support/Code/User/mcp.json"
+    fi
+
     # Symlink tasks
     if [[ -f ~/"Library/Application Support/Code/User/tasks.json" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/tasks.json" ]]; then
         mv ~/"Library/Application Support/Code/User/tasks.json" ~/"Library/Application Support/Code/User/tasks.json.bak" &>/dev/null
         ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
       fi
-    else 
+    else
         ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
     fi
+  fi
+fi
+
+#### Copilot and Cursor CLI 
+if [[ $OS_NAME == "Darwin" ]]; then
+
+  # Add a symlink to settings and keybindings
+  if [[ -d ~/".cursor" ]]; then
+    # Symlink keybindings
+    if [[ ! -L ~/".cursor/mcp.json" ]]; then
+      mv ~/".cursor/mcp.json" ~/".cursor/mcp.json.bak"
+      ln -s ~/".vim/cursor-copilot/mcp.json" ~/".cursor/mcp.json"
+    fi
+
+    if [[ ! -L ~/".copilot/mcp-config.json" ]]; then
+      mv ~/".copilot/mcp-config.json" ~/".cursor/mcp.json-config.bak"
+      ln -s ~/".vim/cursor-copilot/mcp.json" ~/".copilot/mcp-config.json"
+    fi
+
   fi
 fi
 
@@ -292,21 +317,21 @@ if [[ $OS_NAME == "Darwin" ]]; then
   fi
 fi
 
-if type kubectl >/dev/null 2>&1; then
-  # Leaving this for now. But purge at some point
-  # BASH_VERSION_SHORT="${BASH_VERSION:0:3}"
-  # if (( $(echo "${BASH_VERSION_SHORT} >= 3.3" | bc -l) )); then
-  KUBECTL_VERSION=$(kubectl version --output json 2>/dev/null | jq -r '(.clientVersion.major + "." + .clientVersion.minor)' || true)
-  (
-    if [[ -n $KUBECTL_VERSION && ! -f /tmp/kubectl-completion-bash-$KUBECTL_VERSION ]]; then
-      kubectl completion bash > "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
-    fi
-  )
-
-  # shellcheck disable=SC1090
-  source "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
-  unset KUBECTL_VERSION
-fi
+# if type kubectl >/dev/null 2>&1; then
+#   # Leaving this for now. But purge at some point
+#   # BASH_VERSION_SHORT="${BASH_VERSION:0:3}"
+#   # if (( $(echo "${BASH_VERSION_SHORT} >= 3.3" | bc -l) )); then
+#   KUBECTL_VERSION=$(kubectl version --output json 2>/dev/null | jq -r '(.clientVersion.major + "." + .clientVersion.minor)' || true)
+#   (
+#     if [[ -n $KUBECTL_VERSION && ! -f /tmp/kubectl-completion-bash-$KUBECTL_VERSION ]]; then
+#       kubectl completion bash > "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+#     fi
+#   )
+#
+#   # shellcheck disable=SC1090
+#   source "/tmp/kubectl-completion-bash-${KUBECTL_VERSION}"
+#   unset KUBECTL_VERSION
+# fi
 
 # Alawys add this, because we want it to take precdence no matter what
 export PATH=${HOME}/bin:${PATH}
@@ -352,4 +377,8 @@ fi
 
 ssh-agent-start-or-attach
 #venv-activate-in-tmux
+
+if am-i-in-tmux; then
+  unset GIT_EDITOR
+fi
 

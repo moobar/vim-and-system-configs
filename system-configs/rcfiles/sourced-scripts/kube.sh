@@ -617,11 +617,47 @@ function fdebug-pod-with-netshoot() {
     --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
     --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
     --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
-    --bind 'enter:execute:kubectl debug -it --namespace {1} {2} --image=nicolaka/netshoot > /dev/tty' \
+    --bind 'enter:execute:kubectl debug -it --namespace {1} {2} --image=nicolaka/netshoot --share-processes > /dev/tty' \
     --bind 'ctrl-o:execute:${EDITOR:-vim} <(kubectl logs --all-containers --namespace {1} {2}) > /dev/tty' \
     --bind 'ctrl-r:reload:$FZF_DEFAULT_COMMAND' \
     --preview-window up:follow \
     --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@"
+}
+
+function fdebug-pod-with-netshoot2() {
+  # First fzf: select pod
+  local selection
+  selection=$(FZF_DEFAULT_COMMAND="kubectl get pods --all-namespaces" \
+    fzf --info=inline --layout=reverse --header-lines=1 \
+    --prompt "$(kubectl config current-context | sed 's/-context$//')> " \
+    --header $'╱ Enter (select pod) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
+    --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+    --bind 'ctrl-o:execute:${EDITOR:-vim} <(kubectl logs --all-containers --namespace {1} {2}) > /dev/tty' \
+    --bind 'ctrl-r:reload:$FZF_DEFAULT_COMMAND' \
+    --preview-window up:follow \
+    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "$@")
+
+  [[ -z "$selection" ]] && return
+
+  local namespace pod
+  namespace=$(echo "$selection" | awk '{print $1}')
+  pod=$(echo "$selection" | awk '{print $2}')
+
+  # Second fzf: select container
+  local container
+  container=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.spec.containers[*].name}' | tr ' ' '\n' | \
+    fzf --info=inline --layout=reverse \
+    --prompt "Container> " \
+    --header "Select container to target in pod: $pod" \
+    --preview "kubectl logs --tail=50 --namespace $namespace $pod -c {}")
+
+  [[ -z "$container" ]] && return
+
+  # Launch debug session
+  kubectl debug -it --namespace "$namespace" "$pod" \
+    --image=nicolaka/netshoot \
+    --target="$container" \
+    --share-processes
 }
 
 

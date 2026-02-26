@@ -106,6 +106,10 @@ function disable-hold-and-popup() {
   echo "Disabled. You must log out and log back in for it to take effect"
 }
 
+function caffeinate-prevent-sleep-on-ac() {
+  caffeinate -dims
+}
+
 function ffosx() {
   eval "${BASH_FZF_IN_SOURCED_SCRIPT}"
 }

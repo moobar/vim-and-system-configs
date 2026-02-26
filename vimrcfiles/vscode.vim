@@ -67,6 +67,7 @@ nnoremap gY <Cmd>call VSCodeNotify('editor.action.peekTypeDefinition')<CR>
 nnoremap g. <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 nnoremap g= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 nnoremap z= <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
+nnoremap <leader>. <Cmd>call VSCodeNotify('editor.action.quickFix')<CR>
 
 xnoremap gO <Cmd>call VSCodeNotify('workbench.action.gotoSymbol')<CR>
 xnoremap gd <Cmd>call <SID>vscodeGoToDefinition('revealDefinition')<CR>
@@ -102,6 +103,9 @@ xnoremap <C-w>gf <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<C
 "" Commands from keyboard shorcuts that are managed via vimrc ""
 nnoremap <leader>e <Cmd>call VSCodeNotify('workbench.action.problems.focus')<CR>
 nnoremap <leader>t <Cmd>call VSCodeNotify('workbench.action.terminal.toggleTerminal')<CR>
+
+"" Code refactoring:
+nnoremap <leader>r <Cmd>call VSCodeCall('editor.action.rename')<CR>
 
 
 "" DEBUGGING KEYBINDINGS "" -- FIND by searching [editor.debug]  in Keyboard Shortcuts
