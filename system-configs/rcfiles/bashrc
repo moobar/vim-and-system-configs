@@ -22,6 +22,17 @@ if [ -x /usr/libexec/path_helper ]; then
   eval "$(/usr/libexec/path_helper -s)"
 fi
 
+#### Setup homebrew/brew in Environment ####
+if [[ -r "${BREW_BIN}" ]]; then
+  eval "$(${BREW_BIN} shellenv)"
+elif [[ -r /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
+  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 function __terminal_error_handler__() {
   # trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
   #
@@ -262,17 +273,6 @@ if [[ $OS_NAME == "Darwin" ]]; then
 fi
 
 #### Add Path Variables here that need to take them most Precedence ###
-
-#### Setup homebrew/brew in Environment ####
-if [[ -r "${BREW_BIN}" ]]; then
-  eval "$(${BREW_BIN} shellenv)"
-elif [[ -r /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
-  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
-elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
 
 if [[ $OS_NAME == "Darwin" ]]; then
   UTIL_LINUX_DARWIN_BIN_PATH="$(brew --prefix)/opt/util-linux/bin"
