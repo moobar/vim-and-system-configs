@@ -5,6 +5,8 @@
 
 OS_NAME=$(uname -s)
 
+BREW_BIN="$(brew --prefix)/bin/brew"
+
 if [[ $OS_NAME == "Darwin" ]]; then
   #export SHELL=/bin/bash
   SHELL=$(brew --prefix)/bin/bash
@@ -210,30 +212,30 @@ if [[ $OS_NAME == "Darwin" ]]; then
   if [[ -d ~/"Library/Application Support/Code/User" ]]; then
     # Symlink keybindings
     if [[ ! -L ~/"Library/Application Support/Code/User/keybindings.json" ]]; then
-      mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null
-      ln -s ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
+      mv ~/"Library/Application Support/Code/User/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json.bak" &>/dev/null || true
+      ln -Fs ~/".vim/vscode/config/keybindings.json" ~/"Library/Application Support/Code/User/keybindings.json"
     fi
 
     # Symlink settings
     if [[ ! -L ~/"Library/Application Support/Code/User/settings.json" ]]; then
-      mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null
-      ln -s ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
+      mv ~/"Library/Application Support/Code/User/settings.json" ~/"Library/Application Support/Code/User/settings.json.bak" &>/dev/null || true
+      ln -Fs ~/".vim/vscode/config/settings.json" ~/"Library/Application Support/Code/User/settings.json"
     fi
 
     # Symlink mcp
     if [[ ! -L ~/"Library/Application Support/Code/User/mcp.json" ]]; then
-      mv ~/"Library/Application Support/Code/User/mcp.json" ~/"Library/Application Support/Code/User/mcp.json.bak" &>/dev/null
-      ln -s ~/".vim/vscode/config/mcp.json" ~/"Library/Application Support/Code/User/mcp.json"
+      mv ~/"Library/Application Support/Code/User/mcp.json" ~/"Library/Application Support/Code/User/mcp.json.bak" &>/dev/null || true
+      ln -Fs ~/".vim/vscode/config/mcp.json" ~/"Library/Application Support/Code/User/mcp.json"
     fi
 
     # Symlink tasks
     if [[ -f ~/"Library/Application Support/Code/User/tasks.json" ]]; then
       if [[ ! -L ~/"Library/Application Support/Code/User/tasks.json" ]]; then
-        mv ~/"Library/Application Support/Code/User/tasks.json" ~/"Library/Application Support/Code/User/tasks.json.bak" &>/dev/null
-        ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
+        mv ~/"Library/Application Support/Code/User/tasks.json" ~/"Library/Application Support/Code/User/tasks.json.bak" &>/dev/null || true
+        ln -Fs ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
       fi
     else
-        ln -s ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
+        ln -Fs ~/".vim/vscode/config/tasks.json" ~/"Library/Application Support/Code/User/tasks.json"
     fi
   fi
 fi
@@ -245,19 +247,32 @@ if [[ $OS_NAME == "Darwin" ]]; then
   if [[ -d ~/".cursor" ]]; then
     # Symlink keybindings
     if [[ ! -L ~/".cursor/mcp.json" ]]; then
-      mv ~/".cursor/mcp.json" ~/".cursor/mcp.json.bak"
-      ln -s ~/".vim/cursor-copilot/mcp.json" ~/".cursor/mcp.json"
+      mv ~/".cursor/mcp.json" ~/".cursor/mcp.json.bak" || true
+      ln -Fs ~/".vim/cursor-copilot/mcp.json" ~/".cursor/mcp.json"
     fi
+  fi
 
+  if [[ -d ~/".copilot" ]]; then
     if [[ ! -L ~/".copilot/mcp-config.json" ]]; then
-      mv ~/".copilot/mcp-config.json" ~/".cursor/mcp.json-config.bak"
-      ln -s ~/".vim/cursor-copilot/mcp.json" ~/".copilot/mcp-config.json"
+      mv ~/".copilot/mcp-config.json" ~/".cursor/mcp.json-config.bak" || true
+      ln -Fs ~/".vim/cursor-copilot/mcp.json" ~/".copilot/mcp-config.json"
     fi
 
   fi
 fi
 
 #### Add Path Variables here that need to take them most Precedence ###
+
+#### Setup homebrew/brew in Environment ####
+if [[ -r "${BREW_BIN}" ]]; then
+  eval "$(${BREW_BIN} shellenv)"
+elif [[ -r /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
+  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 if [[ $OS_NAME == "Darwin" ]]; then
   UTIL_LINUX_DARWIN_BIN_PATH="$(brew --prefix)/opt/util-linux/bin"
@@ -351,17 +366,6 @@ if ! grep -qF "$(brew --prefix)/bin/bash" /etc/shells; then
   echo "Changing shells to homebrew - going to need to enter sudo password"
   sudo sh -c 'echo $(brew --prefix)/bin/bash >> /etc/shells'
   chsh -s "$(brew --prefix)/bin/bash"
-fi
-
-#### Setup homebrew/brew in Environment ####
-##   Do this last, so that it takes precedence on the path
-
-if [[ -r "$(brew --prefix)/bin/brew" ]]; then
-  eval "$("$(brew --prefix)/bin/brew" shellenv)"
-elif [[ -r /usr/local/Homebrew/bin/brew ]]; then
-  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
-elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # ## Load Node Version Manager
