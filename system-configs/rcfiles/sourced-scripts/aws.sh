@@ -114,7 +114,8 @@ function aws-describe-instances() {
   # shellcheck disable=SC2016
   aws ec2 describe-instances \
     --query 'Reservations[*].Instances[*].{ID:InstanceId, Type:InstanceType, State:State.Name, Name:Tags[?Key==`Name`].Value | [0]}' \
-    --output table
+    --output table \
+    "$@"
 }
 
 function faws-eks-update-kubeconfig() {
@@ -125,18 +126,19 @@ function faws-eks-update-kubeconfig() {
   fi
 
   local CLUSTER_NAME=""
-  if CLUSTER_NAME="$(aws eks list-clusters  | jq -r '.clusters[]' | fzf)" && [[ -n "$CLUSTER_NAME" ]]; then
+  if CLUSTER_NAME="$(aws eks list-clusters "$@" | jq -r '.clusters[]' | fzf)" && [[ -n "$CLUSTER_NAME" ]]; then
     echo "Authing to: ${CLUSTER_NAME}"
   else
     echo "No profile selected"
     return 1
   fi
+  echo Running: aws eks update-kubeconfig --name "${CLUSTER_NAME}" "$@"
   aws eks update-kubeconfig --name "${CLUSTER_NAME}" "$@"
 }
 
 function faws-set-profile() {
   local PROFILE=""
-  if PROFILE="$(command aws configure list-profiles  | grep -Fv default | fzf)" && [[ -n "$PROFILE" ]]; then
+  if PROFILE="$(command aws configure list-profiles | grep -Fv default | fzf)" && [[ -n "$PROFILE" ]]; then
     export AWS_PROFILE="${PROFILE}"
   else
     echo "No profile selected"

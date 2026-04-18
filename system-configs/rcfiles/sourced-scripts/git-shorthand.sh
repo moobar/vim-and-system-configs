@@ -204,7 +204,11 @@ function gitbranchlog-unpushed() {
   # git log @{upstream}..
   ## I slightly prefer the upstream because it's clearer
 
-  git log @{upstream}.. "$@"
+  git log '@{upstream}..' "$@"
+}
+
+function gitlog-oneline() {
+  git log --decorate=full --oneline --color=always "$@"
 }
 
 ## [git-checkout-repo-to-previous-state]  ->  Shorthand

@@ -143,14 +143,6 @@ if type terraform >/dev/null 2>&1; then
   complete -o nospace -C "$(which terraform)" terraform
 fi
 
-# ## Load Node Version Manager
-export NVM_DIR="$HOME/.nvm"
-# shellcheck disable=SC1091
-[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh"  # This loads nvm
-
-# shellcheck disable=SC1091
-[ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
 # git-completion
 if [ ! -e ~/.git-completion.bash ]; then
   curl -s https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
@@ -193,6 +185,7 @@ unset CONFIGROOT_DIR_BASHRC
 export KUBECTL_EXTERNAL_DIFF=delta
 export LESS=" -JiXmR"
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+export AWS_PAGER=""
 
 if type nvim 2>/dev/null >/dev/null; then
   export VISUAL="nvim"
@@ -245,7 +238,7 @@ if [[ $OS_NAME == "Darwin" ]]; then
   fi
 fi
 
-#### Copilot and Cursor CLI 
+#### Copilot and Cursor CLI
 if [[ $OS_NAME == "Darwin" ]]; then
 
   # Add a symlink to settings and keybindings
@@ -371,6 +364,15 @@ elif [[ -r /home/linuxbrew/.linuxbrew/bin ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+# ## Load Node Version Manager
+##  Loaded AFTER `brew shellenv` so nvm's node/npm shims win on PATH.
+export NVM_DIR="$HOME/.nvm"
+# shellcheck disable=SC1091
+[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh"  # This loads nvm
+
+# shellcheck disable=SC1091
+[ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 #PS1='\[\e[38;5;161m\]▌\[\e[38;5;151m\]\w\[\e[1;30m\]$(__git_ps1)\[\e[1;31m\] > \[\e[0m\]'
 
 ### Experimental ###
@@ -381,4 +383,3 @@ ssh-agent-start-or-attach
 if am-i-in-tmux; then
   unset GIT_EDITOR
 fi
-

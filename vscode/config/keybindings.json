@@ -118,19 +118,19 @@
         "when": "inDebugRepl"
     },
     {
-      "key": "enter",
-      "command": "acceptSelectedSuggestion",
-      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+        "key": "enter",
+        "command": "acceptSelectedSuggestion",
+        "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
     },
     {
-      "key": "ctrl+j",
-      "command": "selectNextSuggestion",
-      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+        "key": "ctrl+j",
+        "command": "selectNextSuggestion",
+        "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
     },
     {
-      "key": "ctrl+k",
-      "command": "selectPrevSuggestion",
-      "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
+        "key": "ctrl+k",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetVisible && textInputFocus && inDebugRepl"
     },
     {
         "key": "ctrl+cmd+\\",
@@ -395,5 +395,13 @@
     {
         "key": "cmd+' cmd+r",
         "command": "pr.showDiffSinceLastReview"
+    },
+    {
+        "key": "ctrl+alt+cmd+n",
+        "command": "-welcome.showNewFileEntries"
+    },
+    {
+        "key": "ctrl+alt+cmd+n",
+        "command": "workbench.action.duplicateWorkspaceInNewWindow"
     },
 ]

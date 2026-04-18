@@ -112,9 +112,6 @@ if !exists('g:vscode')
   " Other languages I'll have to do individually
   Plug 'sbdchd/neoformat'
 
-  if has('nvim')
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  endif
 endif
 
 

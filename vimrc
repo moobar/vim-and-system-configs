@@ -33,6 +33,14 @@ if exists('g:vscode')
   " don't want to load when running neovim in VS Code
 
   " let g:coc_start_at_startup = 0  " Disable Coc, use [CocStart] if I want to start it, as per the docs
+
+  " Crazy nvim 0.12 issue that causes the output window to keep popping up
+  " https://stackoverflow.com/questions/78611905/turn-off-neovim-messages-in-vscode
+  " ^----- Found a fix
+  " The gist is every time there are more then cmdheight messages, output pops
+  " up and it's hella annoying. But if set this in regular vim it screws
+  " up your vim window
+  set cmdheight=999999
 endif
 
 " }}}

@@ -33,7 +33,10 @@
         "editor.tabSize": 2
     },
     "chat.tools.terminal.autoApprove": {
-        "git fetch": true
+        "git fetch": true,
+        "uv": true,
+        "go": true,
+        "poetry": true
     },
     "cloudcode.apigee.gemini.options": {
         "enableRemoteMockServer": false,
@@ -53,7 +56,6 @@
     },
     "editor.foldingHighlight": false,
     "editor.fontFamily": "Monaco, 'Courier New', monospace",
-    "editor.fontSize": 12,
     "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": false,
     "editor.tokenColorCustomizations": {
@@ -81,16 +83,16 @@
         "asvetliakov.vscode-neovim": 1
     },
     "files.trimTrailingWhitespace": true,
-    "git.autofetch": true,
-    "git.blame.editorDecoration.enabled": false,
-    "git.blame.statusBarItem.enabled": true,
+    "git.autofetch": false,
+    "git.autorefresh": true,
+    "git.blame.editorDecoration.enabled": true,
+    "git.blame.statusBarItem.enabled": false,
     "git.closeDiffOnOperation": true,
     "git.mergeEditor": true,
     "git.openRepositoryInParentFolders": "always",
-    "git.terminalGitEditor": true,
+    "git.terminalGitEditor": false,
     "github.copilot.nextEditSuggestions.enabled": true,
     "githubPullRequests.fileListLayout": "tree",
-    "githubPullRequests.quickDiff": true,
     "gitlens.blame.ignoreWhitespace": true,
     "gitlens.codeLens.includeSingleLineSymbols": true,
     "gitlens.currentLine.enabled": false,
@@ -114,7 +116,7 @@
     "python.analysis.inlayHints.pytestParameters": true,
     "python.analysis.inlayHints.variableTypes": true,
     "python.analysis.regenerateStdLibIndices": true,
-    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.typeCheckingMode": "standard",
     "python.analysis.typeEvaluation.strictDictionaryInference": true,
     "python.analysis.typeEvaluation.strictListInference": true,
     "python.analysis.typeEvaluation.strictSetInference": true,
@@ -150,7 +152,6 @@
     "vscode-neovim.normalSelectionDebounceTime": 20,
     "vscode-neovim.revealCursorScrollLine": true,
     "window.confirmBeforeClose": "keyboardOnly",
-    "window.zoomLevel": 1,
     "workbench.colorCustomizations": {
         // Diff editor & inline/peek highlights
         "diffEditor.border": "#2a2e33",
@@ -176,7 +177,6 @@
         "peekViewEditor.background": "#10161A",
         "peekViewEditor.matchHighlightBackground": "#FFD40044"
     },
-    "workbench.colorTheme": "GitHub Dark Default",
     "workbench.preferredDarkColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastColorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.preferredHighContrastLightColorTheme": "GitHub Light Colorblind (Beta)",
@@ -187,5 +187,22 @@
         "max": 20
     },
     "errorLens.gutterIconsEnabled": true,
-    "python.analysis.languageServerMode": "full"
+    "python.analysis.languageServerMode": "full",
+    "chat.agent.maxRequests": 60,
+    "chat.checkpoints.showFileChanges": true,
+    "chat.agentSessionsViewLocation": "view",
+    "githubPullRequests.codingAgent.autoCommitAndPush": false,
+    "gitlens.ai.model": "vscode",
+    "githubPullRequests.showPullRequestNumberInTree": true,
+    "githubPullRequests.quickDiff": true,
+    "terminal.integrated.tabs.enabled": false,
+    "window.zoomLevel": 1,
+    "githubPullRequests.pullBranch": "never",
+    "terminal.integrated.shellIntegration.enabled": false,
+    "terminal.integrated.suggest.enabled": false,
+    "terminal.integrated.enableImages": true,
+    "chat.viewSessions.orientation": "stacked",
+    "go.toolsManagement.autoUpdate": true,
+    "application.shellEnvironmentResolutionTimeout": 90,
+    "workbench.colorTheme": "GitHub Dark Default"
 }

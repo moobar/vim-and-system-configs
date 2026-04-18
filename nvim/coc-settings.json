@@ -29,6 +29,8 @@
   "yaml.trace.server": "verbose",
   "java.enabled": false,
   "java.compile.nullAnalysis.mode": "automatic",
+  "npm.binPath": "/opt/homebrew/bin/npm",
+  "coc.preferences.nodePath": "/opt/homebrew/bin/node",
   "languageserver": {
     "helm": {
       "command": "helm_ls",
@@ -37,7 +39,7 @@
       "rootPatterns": ["Chart.yaml"]
     },
     "bash": {
-      "command": "bash-language-server",
+      "command": "/opt/homebrew/bin/bash-language-server",
       "args": [
         "start"
       ],
@@ -46,7 +48,10 @@
       ],
       "ignoredRootPaths": [
         "~"
-      ]
+      ],
+      "env": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin"
+      }
     },
     "terraform": {
       "command": "terraform-ls",

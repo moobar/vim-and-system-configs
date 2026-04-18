@@ -122,12 +122,6 @@ function upgrade_package_managers() {
     echo "Completed."
     echo ""
 
-    echo "## TreeSitter needs to be updated after CocUpdate ##"
-    nvim +TSUpdateSync +qall
-    nvim -S "${CONFIGROOT_DIR_LOCAL}/system-configs/setup/vimscript-add-treesitter-modules.vim"
-    echo "Completed."
-    echo ""
-
     echo "## Manually reinstalling jdtls (java lsp).. ##"
     reinstall_java_jdtls_1_9
     echo "Completed."
