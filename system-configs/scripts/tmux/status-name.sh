@@ -2,7 +2,7 @@
 
 function github-repo-name() {
   local REPO_NAME=
-  REPO_NAME=$(git rev-parse --show-toplevel)
+  REPO_NAME=$(git rev-parse --show-toplevel 2>/dev/null) || return 1
 
   echo "[${REPO_NAME##*/}]"
 }
@@ -12,7 +12,7 @@ function get-window-name() {
 
   CURRENT_DIR="$(pwd)"
   CURRENT_DIR="${CURRENT_DIR##*/}"
-  if git status &> /dev/null; then
+  if git rev-parse &> /dev/null; then
     REPO_NAME="$(github-repo-name)"
     STATUS="${REPO_NAME}"
   else
