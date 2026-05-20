@@ -204,5 +204,6 @@
     "chat.viewSessions.orientation": "stacked",
     "go.toolsManagement.autoUpdate": true,
     "application.shellEnvironmentResolutionTimeout": 90,
-    "workbench.colorTheme": "GitHub Dark Default"
+    "workbench.colorTheme": "GitHub Dark Default",
+    "makefile.configureOnOpen": false
 }

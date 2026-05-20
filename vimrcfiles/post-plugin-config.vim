@@ -514,6 +514,11 @@ if executable('node') && !exists('g:vscode')
   nnoremap <silent> yt :call CopyPythonTypeInfoToPasteBuffer()<CR>
   nnoremap <silent> gt :call AppendPythonTypeInfo()<CR>
 
+  " Git, navigate changes
+  nnoremap <C-J> <Plug>(coc-git-nextchunk)
+  nnoremap <C-K> <Plug>(coc-git-prevchunk)
+  nnoremap <C-I> <Plug>(coc-git-chunkinfo)
+
   "" Add a helper for easily restarting CoC. This is useful when you're
   "  referencing other files and you want it
   function! RestartCoC()

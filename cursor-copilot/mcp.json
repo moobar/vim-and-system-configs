@@ -2,7 +2,6 @@
   "mcpServers": {
     "serena": {
       "tools": [ "*" ],
-      "type": "local",
       "command": "uvx",
       "args": [
         "--from",
