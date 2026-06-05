@@ -205,5 +205,6 @@
     "go.toolsManagement.autoUpdate": true,
     "application.shellEnvironmentResolutionTimeout": 90,
     "workbench.colorTheme": "GitHub Dark Default",
-    "makefile.configureOnOpen": false
+    "makefile.configureOnOpen": false,
+    "debug.console.acceptSuggestionOnEnter": "on"
 }
